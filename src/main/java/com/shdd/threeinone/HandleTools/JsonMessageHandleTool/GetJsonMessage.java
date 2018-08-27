@@ -11,7 +11,6 @@ public class GetJsonMessage {
     public String GetJsonStr(String hostip , Integer hostport, String JsonStr) throws IOException {
         /**
          * 向主机 hostip 的hostport 端口发送 报文 JsonStr ，return 接收到的报文
-         *
          */
         DataInputStream is;
         DataOutputStream os;

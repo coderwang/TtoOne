@@ -1,4 +1,4 @@
-package com.shdd.threeinone.web;
+package com.shdd.threeinone.web.InstrumentApi;
 
 import com.shdd.threeinone.dto.instrumentPane.WarnInfoDetail;
 import com.shdd.threeinone.dto.instrumentPane.WarningInfoDto;

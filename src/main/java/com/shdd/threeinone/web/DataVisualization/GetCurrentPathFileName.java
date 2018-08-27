@@ -1,4 +1,4 @@
-package com.shdd.threeinone.web;
+package com.shdd.threeinone.web.DataVisualization;
 
 import com.shdd.threeinone.dto.DataVisualization.CurrentPathFileName;
 import io.swagger.annotations.ApiOperation;
