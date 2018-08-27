@@ -18,6 +18,9 @@ public class DetailedOverviewOfOpticalSystemNodes {
     public JSONObject TapeSystemNodeInfo(String value){
         /*组织获取光盘库节点信息*/
 
+
+
+
         /*组织发送光盘库节点信息*/
         JSONObject Jarrary = new JSONObject();
         OpticalNodeDetail[] tapenode = new OpticalNodeDetail[1];

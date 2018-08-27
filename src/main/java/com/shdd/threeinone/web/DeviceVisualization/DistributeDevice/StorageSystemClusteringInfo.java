@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 public class StorageSystemClusteringInfo {
 
-    @GetMapping(value = "gg/clusterinfo")
+    @GetMapping(value = "device/distribute/hosts")
     @ApiOperation(value = "获取分布式存储系统集群情况")
 
     public JSONObject GetInfoOfDistribute(String value){

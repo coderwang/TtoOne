@@ -1,4 +1,4 @@
-package com.shdd.threeinone.web;
+package com.shdd.threeinone.web.InstrumentApi;
 
 
 import com.shdd.threeinone.dto.instrumentPane.*;
@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 public class CurrentCapacityInstrumentPanelInfo {
 
-    @GetMapping(value = "gg/current")
+    @GetMapping(value = "dashboard/curcapacitystatus")
     @ApiOperation(value = "获取仪表盘当前容量信息")
 
 

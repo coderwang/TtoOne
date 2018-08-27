@@ -1,4 +1,4 @@
-package com.shdd.threeinone.web;
+package com.shdd.threeinone.web.DataVisualization;
 
 import com.shdd.threeinone.dto.DataVisualization.RootFolderName;
 import io.swagger.annotations.ApiOperation;
@@ -19,7 +19,7 @@ public class RootDirFolderName {
      * 获取目录下文件夹名称
      * */
 
-    @GetMapping(value = "gg/root")
+    @GetMapping(value = "dashboard/rootdirs")
     @ApiOperation(value = "获取目录下的文件夹名")
 
     public JSONObject SendRootPathFolderName(String val){
