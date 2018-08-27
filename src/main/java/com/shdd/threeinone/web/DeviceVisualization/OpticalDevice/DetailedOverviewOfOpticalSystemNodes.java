@@ -1,7 +1,9 @@
 package com.shdd.threeinone.web.DeviceVisualization.OpticalDevice;
 
 
+import com.shdd.threeinone.HandleTools.JsonMessageHandleTool.GetJsonMessage;
 import com.shdd.threeinone.dto.DevicesVisualization.Optical.OpticalNodeDetail;
+import com.shdd.threeinone.dto.SystemDetail;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import net.sf.json.JSONObject;
@@ -17,8 +19,12 @@ public class DetailedOverviewOfOpticalSystemNodes {
 
     public JSONObject TapeSystemNodeInfo(String value){
         /*组织获取光盘库节点信息*/
+        JSONObject getjsoninfo = new JSONObject();
+        GetJsonMessage jsoninfo = new GetJsonMessage();
+        String cmdstr="{\"protoname\":\"basicinfo\",\"jukeid\":\"001\"}";
 
-
+        getjsoninfo = GetJsonMessage.GetJsonStr("192.168.100.199",8000,cmdstr);
+        System.out.println("获取到的光盘库状态"+ getjsoninfo);
 
 
         /*组织发送光盘库节点信息*/
