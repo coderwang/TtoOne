@@ -1,6 +1,24 @@
+# Gradle #
 .gradle
 /build/
 !gradle/wrapper/gradle-wrapper.jar
+.gradletasknamecache
+
+# Log file
+*.log
+
+# Package Files #
+*.jar
+*.war
+*.ear
+*.zip
+*.tar.gz
+*.rar
+
+# Build target
+target
+out
+build
 
 ### STS ###
 .apt_generated
