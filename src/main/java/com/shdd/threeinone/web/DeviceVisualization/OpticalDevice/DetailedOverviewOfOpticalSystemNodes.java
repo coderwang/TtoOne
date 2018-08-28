@@ -1,7 +1,9 @@
 package com.shdd.threeinone.web.DeviceVisualization.OpticalDevice;
 
 
+import com.shdd.threeinone.HandleTools.JsonMessageHandleTool.GetJsonMessage;
 import com.shdd.threeinone.dto.DevicesVisualization.Optical.OpticalNodeDetail;
+import com.shdd.threeinone.dto.SystemDetail;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import net.sf.json.JSONObject;
@@ -17,6 +19,21 @@ public class DetailedOverviewOfOpticalSystemNodes {
 
     public JSONObject TapeSystemNodeInfo(String value){
         /*组织获取光盘库节点信息*/
+        JSONObject getjsoninfo = new JSONObject();
+        JSONObject getcapacity = new JSONObject();
+        GetJsonMessage jsoninfo = new GetJsonMessage();
+
+        String cmdstr="{\"protoname\":\"basicinfo\",\"jukeid\":\"001\"}";// 获取光盘库型号
+        String capacity = "{\"protoname\":\"nodeconnect\"}"; //获取光盘库容量, 节点状态
+
+        getjsoninfo = GetJsonMessage.GetJsonStr("192.168.100.199",8000,cmdstr);
+        getcapacity = GetJsonMessage.GetJsonStr("192.168.100.199",8000,capacity);
+        System.out.println("型号" + getjsoninfo);
+        System.out.println("容量信息" + getcapacity);
+//        valuestauts = String.valueOf(getcapacity.getString("nodestatus"));
+//        if (valuestauts != 1) {
+//            value = 2;
+//        }
 
 
 
@@ -29,7 +46,7 @@ public class DetailedOverviewOfOpticalSystemNodes {
         tapenode[0].setId(1);
         tapenode[0].setCapacity(80);
         tapenode[0].setUsed(30);
-        tapenode[0].setName("xx");
+        tapenode[0].setName(getjsoninfo.getString("label"));
         tapenode[0].setStatus(1);
 
         Jarrary.accumulate("disk",tapenode);
