@@ -5,8 +5,8 @@ import lombok.Data;
 @Data
 public class TapeLibraryStorageSystemStoresDetail {
     private String name;
-    private Integer  capacity;
-    private Integer used;
-    private Integer free;
+    private Double  capacity;
+    private Double used;
+    private Double free;
     private Integer status;
 }
