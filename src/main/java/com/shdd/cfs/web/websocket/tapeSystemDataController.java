@@ -14,16 +14,16 @@ import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.stereotype.Controller;
 
 /**
- * @author: xphi
+ * @author: wangpeng
  * @version: 1.0 2018/8/28
  */
 @Controller
-public class DistSystemDataController {
+public class tapeSystemDataController {
 
-    @ApiOperation(value = "获取分布式存储主机cpu/内存/带宽使用情况")
-    @MessageMapping("/hello")
-    @SendTo("/topic/greetings")
-    public DistSystemData getDistSystemData(HelloMessage helloMessage) throws Exception {
+    @ApiOperation(value = "获取磁带库存储cpu/内存/带宽使用情况")
+    @MessageMapping("/tapeSystemInfo")
+    @SendTo("/topic/tapeSystemInfo")
+    public DistSystemData getTapeSystemData(HelloMessage helloMessage) throws Exception {
         Thread.sleep(1000); // simulated delay
 
         DistSystemData distSystemData = new DistSystemData();
