@@ -32,6 +32,6 @@ public class warningDataController {
         warningInfo.setName("distribute");
         warningInfo.setMessage(1);
 
-        return distSystemData;
+        return warningInfo;
     }
 }
