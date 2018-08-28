@@ -15,7 +15,7 @@ public class OpticalDetailedOverview {
     @GetMapping(value = "gg/opticaldetail")
     @ApiOperation(value = "获取光盘库存储系统存储详细概况")
 
-    public JSONObject OpticalDetailInfo(String value){
+    public JSONObject OpticalDetailInfo(String value) {
         JSONObject getbasicinfo = new JSONObject();
         JSONObject getcapacity = new JSONObject();
         GetJsonMessage jsoninfo = new GetJsonMessage();
@@ -37,10 +37,10 @@ public class OpticalDetailedOverview {
         tapearrary[0].setName(getbasicinfo.getString("label"));
         tapearrary[0].setCapacity(Double.parseDouble(getcapacity.getString("totalinfo")));
         tapearrary[0].setUsed(Double.parseDouble(getcapacity.getString(("usedinfo"))));
-        tapearrary[0].setFree(Double.parseDouble(getcapacity.getString("totalinfo"))-Double.parseDouble(getcapacity.getString(("usedinfo"))));
+        tapearrary[0].setFree(Double.parseDouble(getcapacity.getString("totalinfo")) - Double.parseDouble(getcapacity.getString(("usedinfo"))));
         tapearrary[0].setStatus(valuestauts);
         //返回存储池数组
-        Jarrary.accumulate("pool",tapearrary);
+        Jarrary.accumulate("pool", tapearrary);
         return Jarrary;
     }
 }

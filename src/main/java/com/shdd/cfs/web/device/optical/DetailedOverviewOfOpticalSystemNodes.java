@@ -34,8 +34,8 @@ public class DetailedOverviewOfOpticalSystemNodes {
         getcapacity = GetJsonMessage.GetJsonStr("192.168.100.199", 8000, capacity);
         System.out.println(getjsoninfo);
         System.out.println(getcapacity);
-         //1.工作中 2.服务未启动 -98.创建中 3.硬盘报警 4.网络错误 -99.删除中
-         //光盘库1为工作中，1之外的状态认为是非工作状态
+        //1.工作中 2.服务未启动 -98.创建中 3.硬盘报警 4.网络错误 -99.删除中
+        //光盘库1为工作中，1之外的状态认为是非工作状态
         int valuestauts = Integer.parseInt(getcapacity.getString("nodestatus"));//
         if (valuestauts != 1) {
             valuestauts = 2;

@@ -15,9 +15,9 @@ public class SystemStoragePoolOverview {
     @GetMapping(value = "dashboard/pools")
     @ApiOperation(value = "获取分布式存储系统存储池总体概况")
 
-    public   JSONObject PoolGeneralInfo(String value){
+    public JSONObject PoolGeneralInfo(String value) {
 
-        JSONObject storagePool =  new JSONObject();
+        JSONObject storagePool = new JSONObject();
         PoolGeneralOverviewDetail[] jarrary = new PoolGeneralOverviewDetail[2];
 
         jarrary[0] = new PoolGeneralOverviewDetail();
@@ -27,9 +27,9 @@ public class SystemStoragePoolOverview {
         jarrary[1].setId(2);
         jarrary[1].setName("长期保存库2");
 
-        storagePool.accumulate("poolCount","3");
-        storagePool.accumulate("status",1);
-        storagePool.accumulate("poolName",jarrary);
+        storagePool.accumulate("poolCount", "3");
+        storagePool.accumulate("status", 1);
+        storagePool.accumulate("poolName", jarrary);
         return storagePool;
     }
 }

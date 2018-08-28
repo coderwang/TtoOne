@@ -13,7 +13,7 @@ public class TapeLibraryStorageSystemOverview {
 
     @GetMapping(value = "dashboard/tapes")
     @ApiOperation(value = "获取磁带库存储系统概况")
-    public JSONObject TapeLibraryInfo(String val){
+    public JSONObject TapeLibraryInfo(String val) {
         JSONObject Jarrary = new JSONObject();
         OpticalSystemInfoDetail[] tapearrary = new OpticalSystemInfoDetail[1];
         tapearrary[0] = new OpticalSystemInfoDetail();
@@ -24,7 +24,7 @@ public class TapeLibraryStorageSystemOverview {
         tapearrary[0].setName("node111");
         tapearrary[0].setStatus(1);
 
-        Jarrary.accumulate("tape",tapearrary);
-       return Jarrary;
+        Jarrary.accumulate("tape", tapearrary);
+        return Jarrary;
     }
 }

@@ -5,5 +5,5 @@ import lombok.Data;
 @Data
 public class CurrentPathFolderName {
     private Integer id;
-    private String  name;
+    private String name;
 }

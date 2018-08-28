@@ -16,7 +16,7 @@ public class DetailedOverviewOfTapeSystemNodes {
     @GetMapping(value = "dashboard/tape/detail/1")
     @ApiOperation(value = "获取磁带库存储系统节点详细概况")
 
-    public JSONObject TapeSystemNodeInfo(String value){
+    public JSONObject TapeSystemNodeInfo(String value) {
         JSONObject Jarrary = new JSONObject();
         TapeNodeDetail[] tapenode = new TapeNodeDetail[1];
 
@@ -27,7 +27,7 @@ public class DetailedOverviewOfTapeSystemNodes {
         tapenode[0].setName("xx");
         tapenode[0].setStatus(1);
 
-        Jarrary.accumulate("disk",tapenode);
+        Jarrary.accumulate("disk", tapenode);
         return Jarrary;
     }
 }

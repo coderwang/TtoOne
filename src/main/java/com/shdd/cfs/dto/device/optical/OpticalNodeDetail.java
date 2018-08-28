@@ -17,7 +17,7 @@ import lombok.Data;
 @Data
 public class OpticalNodeDetail {
     /**
-     *光盘库节点id
+     * 光盘库节点id
      */
     private Integer id;
     /**

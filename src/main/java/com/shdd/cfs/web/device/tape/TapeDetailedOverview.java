@@ -14,7 +14,7 @@ public class TapeDetailedOverview {
     @GetMapping(value = "dashboard/tape/1")
     @ApiOperation(value = "获取磁带库存储系统存储详细概况")
 
-    public JSONObject TapeDetailInfo(String value){
+    public JSONObject TapeDetailInfo(String value) {
 
         JSONObject Jarrary = new JSONObject();
         TapeLibraryStorageSystemStoresDetail[] tapearrary = new TapeLibraryStorageSystemStoresDetail[1];
@@ -25,7 +25,7 @@ public class TapeDetailedOverview {
         tapearrary[0].setFree(3.0);
         tapearrary[0].setStatus(1);
 
-        Jarrary.accumulate("pool",tapearrary);
+        Jarrary.accumulate("pool", tapearrary);
         return Jarrary;
     }
 }

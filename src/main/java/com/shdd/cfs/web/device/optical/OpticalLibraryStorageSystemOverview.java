@@ -14,7 +14,7 @@ public class OpticalLibraryStorageSystemOverview {
 
     @GetMapping(value = "gg/opticalinfo")
     @ApiOperation(value = "获取光盘库存储系统概况")
-    public JSONObject TapeLibraryInfo(String val){
+    public JSONObject TapeLibraryInfo(String val) {
         //光盘库存储信息组织接口
         JSONObject getbasicinfo = new JSONObject();
         JSONObject getnodecapacity = new JSONObject();
@@ -39,7 +39,7 @@ public class OpticalLibraryStorageSystemOverview {
         if (valuestauts != 1) {
             valuestauts = 2;
         }
-       //光盘库存储信息发送接口
+        //光盘库存储信息发送接口
         JSONObject Jarrary = new JSONObject();
         OpticalSystemInfoDetail[] tapearrary = new OpticalSystemInfoDetail[1];
         tapearrary[0] = new OpticalSystemInfoDetail();
@@ -50,7 +50,7 @@ public class OpticalLibraryStorageSystemOverview {
         tapearrary[0].setName(getbasicinfo.getString("label"));
         tapearrary[0].setStatus(valuestauts);
 
-        Jarrary.accumulate("optical",tapearrary);
-       return Jarrary;
+        Jarrary.accumulate("optical", tapearrary);
+        return Jarrary;
     }
 }

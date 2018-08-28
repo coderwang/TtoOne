@@ -5,6 +5,6 @@ import lombok.Data;
 @Data
 public class SystemClusterInfoDetail {
     private Integer id;
-    private String  name;
+    private String name;
     private Integer status;
 }

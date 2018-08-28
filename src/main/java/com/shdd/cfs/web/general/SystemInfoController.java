@@ -8,6 +8,7 @@ import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
+
 import java.util.HashMap;
 
 @RestController
@@ -20,7 +21,7 @@ public class SystemInfoController {
             @ApiImplicitParam(paramType = "query", dataType = "String",
                     name = "dummy", value = "码表类型", required = true)
     })
-    public SystemCapacityDto getSystemCapacity(String dummy){
+    public SystemCapacityDto getSystemCapacity(String dummy) {
 
         //Get data from database or slave systems.
         log.info("dummy:{}", dummy);
@@ -35,13 +36,13 @@ public class SystemInfoController {
         systemDetails[0].setUsedCapacity(4.5);
         systemDetails[0].setDevType("tape");
         systemDetails[0].setAttribe(new HashMap<>());
-        systemDetails[0].getAttribe().put("haha","xxxx");
+        systemDetails[0].getAttribe().put("haha", "xxxx");
 
         systemDetails[1] = new SystemDetail();
         systemDetails[1].setDevType("optical");
 
         systemCapacity.setDevices(systemDetails);
 
-          return systemCapacity;
+        return systemCapacity;
     }
 }
