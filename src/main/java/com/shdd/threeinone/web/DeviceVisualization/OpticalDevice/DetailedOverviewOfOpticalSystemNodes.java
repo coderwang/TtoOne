@@ -20,12 +20,20 @@ public class DetailedOverviewOfOpticalSystemNodes {
     public JSONObject TapeSystemNodeInfo(String value){
         /*组织获取光盘库节点信息*/
         JSONObject getjsoninfo = new JSONObject();
+        JSONObject getcapacity = new JSONObject();
         GetJsonMessage jsoninfo = new GetJsonMessage();
-        String cmdstr="{\"protoname\":\"basicinfo\",\"jukeid\":\"001\"}";
+
+        String cmdstr="{\"protoname\":\"basicinfo\",\"jukeid\":\"001\"}";// 获取光盘库型号
+        String capacity = "{\"protoname\":\"nodeconnect\"}"; //获取光盘库容量, 节点状态
 
         getjsoninfo = GetJsonMessage.GetJsonStr("192.168.100.199",8000,cmdstr);
-        System.out.println("获取到的光盘库状态"+ getjsoninfo);
-
+        getcapacity = GetJsonMessage.GetJsonStr("192.168.100.199",8000,capacity);
+        System.out.println("型号" + getjsoninfo);
+        System.out.println("容量信息" + getcapacity);
+//        valuestauts = String.valueOf(getcapacity.getString("nodestatus"));
+//        if (valuestauts != 1) {
+//            value = 2;
+//        }
 
         /*组织发送光盘库节点信息*/
         JSONObject Jarrary = new JSONObject();
@@ -35,7 +43,7 @@ public class DetailedOverviewOfOpticalSystemNodes {
         tapenode[0].setId(1);
         tapenode[0].setCapacity(80);
         tapenode[0].setUsed(30);
-        tapenode[0].setName("xx");
+        tapenode[0].setName(getjsoninfo.getString("label"));
         tapenode[0].setStatus(1);
 
         Jarrary.accumulate("disk",tapenode);
