@@ -20,7 +20,10 @@ public class TotalCapacityInstrumentPaneInfo {
             JSONObject getnodecapacity = new JSONObject();
             String nodecapacity = "{\"protoname\":\"nodeconnect\"}"; //获取光盘库容量, 节点状态
             getnodecapacity = GetJsonMessage.GetJsonStr("192.168.100.199", 8000, nodecapacity);//获取光盘库节点容量信息
-
+            String baseurl ="";
+            String disstorageinfo = baseurl + "api/monitor/clustes/storage/";//获取分布式容量
+            String discapacity = GetJsonMessage.getURLContent(disstorageinfo);
+            JSONObject disjsoncapacity = JSONObject.fromObject(discapacity); //获取回传的json报文
             TotalCapacityInfoDto capacityStatusInfo = new TotalCapacityInfoDto();
             TotalStatusInfoDetail[] allCapacityInfo = new TotalStatusInfoDetail[1];
 
@@ -29,7 +32,7 @@ public class TotalCapacityInstrumentPaneInfo {
             allCapacityInfo[0].setRunning(1);
             allCapacityInfo[0].setCompleted(1);
             allCapacityInfo[0].setAdded(1);
-            allCapacityInfo[0].setDistributedUsed(1.00);
+            allCapacityInfo[0].setDistributedUsed(Double.parseDouble(disjsoncapacity.getString("storage_used")));
             allCapacityInfo[0].setTapeUsed(1.00);
             allCapacityInfo[0].setDiskUsed(Double.parseDouble(getnodecapacity.getString(("usedinfo"))));
             allCapacityInfo[0].setWarning(1);
