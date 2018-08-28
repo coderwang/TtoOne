@@ -6,7 +6,7 @@ import lombok.Data;
 public class TapeNodeDetail {
     private Integer id;
     private String name;
-    private Integer used;
-    private Integer capacity;
+    private Double used;
+    private Double capacity;
     private Integer status;
 }

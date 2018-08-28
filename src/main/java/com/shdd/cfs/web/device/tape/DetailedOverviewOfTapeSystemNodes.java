@@ -2,6 +2,7 @@ package com.shdd.cfs.web.device.tape;
 
 
 import com.shdd.cfs.dto.device.optical.OpticalNodeDetail;
+import com.shdd.cfs.dto.device.tape.TapeNodeDetail;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import net.sf.json.JSONObject;
@@ -17,12 +18,12 @@ public class DetailedOverviewOfTapeSystemNodes {
 
     public JSONObject TapeSystemNodeInfo(String value){
         JSONObject Jarrary = new JSONObject();
-        OpticalNodeDetail[] tapenode = new OpticalNodeDetail[1];
+        TapeNodeDetail[] tapenode = new TapeNodeDetail[1];
 
-        tapenode[0] = new OpticalNodeDetail();
+        tapenode[0] = new TapeNodeDetail();
         tapenode[0].setId(1);
-        tapenode[0].setCapacity(80);
-        tapenode[0].setUsed(30);
+        tapenode[0].setCapacity(80.0);
+        tapenode[0].setUsed(30.0);
         tapenode[0].setName("xx");
         tapenode[0].setStatus(1);
 
