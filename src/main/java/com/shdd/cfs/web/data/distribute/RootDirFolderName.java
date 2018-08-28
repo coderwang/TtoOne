@@ -7,13 +7,15 @@
 package com.shdd.cfs.web.data.distribute;
 
 import com.shdd.cfs.dto.data.RootFolderName;
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import net.sf.json.JSONObject;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.io.File;
+import java.util.ArrayList;
+
 
 /**
  * @author: wangpeng
@@ -21,23 +23,23 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @Slf4j
-public class directoryInfo {
+public class RootDirFolderName {
+
     /**
-     * 点击某文件夹时，返回该文件夹路径下文件夹
+     * 获取目录下文件夹名称
+     * @param val
+     * @return
      */
-    @GetMapping(value = "api/dashboard/distribute/dirs")
-    @ApiOperation(value = "点击某文件夹时，返回该文件夹路径下文件夹")
-    @ApiImplicitParams({
-            @ApiImplicitParam(paramType = "query", dataType = "String",
-                    name = "path", value = "码表类型", required = true)
-    })
 
-    public JSONObject GetDistDirsDataByPath(String path) {
+    @GetMapping(value = "api/dashboard/distribute/rootdirs")
+    @ApiOperation(value = "获取目录下的文件夹名")
 
-        log.info(path);
+    public JSONObject GetDistDirInfo(String val) {
+        log.info(val);
 
         JSONObject rootFolder = new JSONObject();
 
+        /* 将文件夹名赋值给Json数组中*/
         RootFolderName[] rootforder = new RootFolderName[1];
         rootforder[0] = new RootFolderName();
         rootforder[0].setId(1);

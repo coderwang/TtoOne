@@ -4,7 +4,7 @@
  * Copyright (c) 2018 盛和大地数据科技公司 版权所有
  *
  */
-package com.shdd.cfs.web.data.distribute;
+package com.shdd.cfs.web.data.tape;
 
 import com.shdd.cfs.dto.data.RootFolderName;
 import io.swagger.annotations.ApiImplicitParam;
@@ -21,18 +21,18 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @Slf4j
-public class directoryInfo {
+public class TapeDirInfo {
     /**
      * 点击某文件夹时，返回该文件夹路径下文件夹
      */
-    @GetMapping(value = "api/dashboard/distribute/dirs")
+    @GetMapping(value = "api/dashboard/tape/dirs")
     @ApiOperation(value = "点击某文件夹时，返回该文件夹路径下文件夹")
     @ApiImplicitParams({
             @ApiImplicitParam(paramType = "query", dataType = "String",
                     name = "path", value = "码表类型", required = true)
     })
 
-    public JSONObject GetDistDirsDataByPath(String path) {
+    public JSONObject GetTapeDirsData(String path) {
 
         log.info(path);
 
