@@ -8,16 +8,19 @@ import net.sf.json.JSONObject;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
+
 @RestController
 @Slf4j
 public class DetailedOverviewOfTheStoragePool {
 
-    @GetMapping(value = "dashboard/pools/1")
+    @GetMapping(value = "api/dashboard/pool")
     @ApiOperation(value = "获取分布式存储系统存储池详细概况")
 
     public JSONObject SendDetailInfoOfPool(String value) {
 
         log.info(value);
+
         JSONObject Jobject = new JSONObject();
         PoolDetail[] jarrary = new PoolDetail[1];
 

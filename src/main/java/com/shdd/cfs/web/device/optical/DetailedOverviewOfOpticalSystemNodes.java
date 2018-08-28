@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 public class DetailedOverviewOfOpticalSystemNodes {
 
-    @GetMapping(value = "gg/opticalnode")
+    @GetMapping(value = "api/dashboard/disk/detail")
     @ApiOperation(value = "获取光盘库存储系统节点详细概况")
 
     public JSONObject TapeSystemNodeInfo(String value) {

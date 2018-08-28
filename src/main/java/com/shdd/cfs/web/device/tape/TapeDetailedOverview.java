@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 public class TapeDetailedOverview {
 
-    @GetMapping(value = "dashboard/tape/1")
+    @GetMapping(value = "api/dashboard/tape")
     @ApiOperation(value = "获取磁带库存储系统存储详细概况")
 
     public JSONObject TapeDetailInfo(String value){

@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 public class CurrentCapacityInstrumentPanelInfo {
 
-    @GetMapping(value = "gg/current")
+    @GetMapping(value = "api/dashboard/curcapacitystatus")
     @ApiOperation(value = "获取仪表盘当前容量信息")
 
 

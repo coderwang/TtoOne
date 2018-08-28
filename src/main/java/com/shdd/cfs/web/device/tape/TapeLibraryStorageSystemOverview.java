@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 public class TapeLibraryStorageSystemOverview {
 
-    @GetMapping(value = "dashboard/tapes")
+    @GetMapping(value = "api/dashboard/tapes")
     @ApiOperation(value = "获取磁带库存储系统概况")
     public JSONObject TapeLibraryInfo(String val){
         JSONObject Jarrary = new JSONObject();

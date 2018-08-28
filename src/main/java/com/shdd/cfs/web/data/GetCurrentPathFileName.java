@@ -19,7 +19,7 @@ public class GetCurrentPathFileName {
     /*
      * 获取目录下文件名称
      * */
-    @GetMapping(value = "gg/file")
+    @GetMapping(value = "api/dashboard/")
     @ApiOperation(value = "获取目录下的文件名")
 
     public JSONObject SendRootPathFolderName(String val) {

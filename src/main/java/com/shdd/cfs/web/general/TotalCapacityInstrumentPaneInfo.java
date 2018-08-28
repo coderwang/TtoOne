@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @Slf4j
 public class TotalCapacityInstrumentPaneInfo {
-      @GetMapping(value = "gg/total")
+      @GetMapping(value = "api/dashboard/capacitystatus")
       @ApiOperation(value = "发送总容量信息")
 
       public TotalCapacityInfoDto sendTotalCapacityStatusInfo(String TotalInfo) {
