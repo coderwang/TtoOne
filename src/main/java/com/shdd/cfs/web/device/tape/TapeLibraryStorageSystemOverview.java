@@ -1,6 +1,6 @@
 package com.shdd.cfs.web.device.tape;
 
-import com.shdd.cfs.dto.device.Optical.OpticalSystemInfoDetail;
+import com.shdd.cfs.dto.device.optical.OpticalSystemInfoDetail;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import net.sf.json.JSONObject;
@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 public class TapeLibraryStorageSystemOverview {
 
-    @GetMapping(value = "gg/tapeinfo")
+    @GetMapping(value = "dashboard/tapes")
     @ApiOperation(value = "获取磁带库存储系统概况")
     public JSONObject TapeLibraryInfo(String val){
         JSONObject Jarrary = new JSONObject();

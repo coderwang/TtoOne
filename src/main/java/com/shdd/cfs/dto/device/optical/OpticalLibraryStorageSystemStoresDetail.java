@@ -1,4 +1,4 @@
-package com.shdd.cfs.dto.device.Optical;
+package com.shdd.cfs.dto.device.optical;
 
 import lombok.Data;
 

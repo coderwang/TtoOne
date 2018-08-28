@@ -22,9 +22,9 @@ public class GetCurrentPathFileName {
     @GetMapping(value = "gg/file")
     @ApiOperation(value = "获取目录下的文件名")
 
-    public JSONObject SendRootPathFolderName(String val){
+    public JSONObject SendRootPathFolderName(String val) {
         log.info(val);
-        JSONObject jfile = new  JSONObject();
+        JSONObject jfile = new JSONObject();
         ArrayList<CurrentPathFileName> fileList = new ArrayList<CurrentPathFileName>();
         /* 将目录下的文件名和文件类型添加到文件列表*/
         File file = new File("D:\\AstServer");
@@ -44,15 +44,15 @@ public class GetCurrentPathFileName {
         }
         /* 将文件名和文件属性赋值给Json数组中*/
         CurrentPathFileName[] fileNameArr = new CurrentPathFileName[fileList.size()];
-        for(int i = 0; i< fileList.size(); i++){
+        for (int i = 0; i < fileList.size(); i++) {
             fileNameArr[i] = new CurrentPathFileName();
             fileNameArr[i].setId(i + 1);
             fileNameArr[i].setName(fileList.get(i).getName());
             fileNameArr[i].setType(fileList.get(i).getType());
         }
         /*将文件数组塞入Json对象中*/
-        jfile.accumulate("file",fileNameArr);
+        jfile.accumulate("file", fileNameArr);
         /* 发送Json 协议*/
-        return  jfile;
+        return jfile;
     }
 }

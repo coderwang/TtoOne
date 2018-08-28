@@ -1,7 +1,7 @@
 package com.shdd.cfs.web.device.distribute;
 
 
-import com.shdd.cfs.dto.device.Distribute.PoolGeneralOverviewDetail;
+import com.shdd.cfs.dto.device.distribute.PoolGeneralOverviewDetail;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import net.sf.json.JSONObject;
@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 public class SystemStoragePoolOverview {
 
-    @GetMapping(value = "gg/pool")
+    @GetMapping(value = "dashboard/pools")
     @ApiOperation(value = "获取分布式存储系统存储池总体概况")
 
     public   JSONObject PoolGeneralInfo(String value){

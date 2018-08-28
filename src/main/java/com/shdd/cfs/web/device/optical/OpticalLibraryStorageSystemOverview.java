@@ -1,6 +1,6 @@
 package com.shdd.cfs.web.device.optical;
 
-import com.shdd.cfs.dto.device.Optical.OpticalSystemInfoDetail;
+import com.shdd.cfs.dto.device.optical.OpticalSystemInfoDetail;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import net.sf.json.JSONObject;

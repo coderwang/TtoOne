@@ -1,9 +1,9 @@
-package com.shdd.cfs.dto.device.Distribute;
+package com.shdd.cfs.dto.device.optical;
 
 import lombok.Data;
 
 @Data
-public class HostInfoDetail {
+public class OpticalSystemInfoDetail {
     private String name;
     private String cpuType;
     private Integer cpuCount;

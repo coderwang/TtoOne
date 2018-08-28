@@ -1,6 +1,6 @@
 package com.shdd.cfs.web.device.distribute;
 
-import com.shdd.cfs.dto.device.Distribute.HostInfoDetail;
+import com.shdd.cfs.dto.device.distribute.HostInfoDetail;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import net.sf.json.JSONObject;
@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 public class SystemHostOverview {
 
-        @GetMapping(value = "gg/host")
+        @GetMapping(value = "device/distribute/device/node01")
         @ApiOperation(value = "获取分布式存储系统主机概况")
 
         public JSONObject GetHostfDistribute(String value){

@@ -1,6 +1,6 @@
 package com.shdd.cfs.web.device.distribute;
 
-import com.shdd.cfs.dto.device.Distribute.SystemClusterInfoDetail;
+import com.shdd.cfs.dto.device.distribute.SystemClusterInfoDetail;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import net.sf.json.JSONObject;
@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 public class StorageSystemClusteringInfo {
 
-    @GetMapping(value = "gg/clusterinfo")
+    @GetMapping(value = "device/distribute/hosts")
     @ApiOperation(value = "获取分布式存储系统集群情况")
 
     public JSONObject GetInfoOfDistribute(String value){

@@ -1,4 +1,4 @@
-package com.shdd.cfs.dto.device.Tape;
+package com.shdd.cfs.dto.device.tape;
 
 import lombok.Data;
 

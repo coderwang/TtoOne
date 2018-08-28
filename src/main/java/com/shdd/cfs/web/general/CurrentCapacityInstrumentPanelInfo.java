@@ -1,7 +1,9 @@
 package com.shdd.cfs.web.general;
 
-
-import com.shdd.cfs.dto.dashboard.*;
+import com.shdd.cfs.dto.dashboard.CurrentDistributedCapacityDetail;
+import com.shdd.cfs.dto.dashboard.CurrentOpticalCapacityDetail;
+import com.shdd.cfs.dto.dashboard.CurrentTapeCapacityDetail;
+import com.shdd.cfs.dto.dashboard.DistributeCapacityStruct;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import net.sf.json.JSONArray;
@@ -42,11 +44,11 @@ public class CurrentCapacityInstrumentPanelInfo {
 
         /*组织返回JSON数据对象*/
         JSONObject jobject = new JSONObject();
-        JSONArray devices = new  JSONArray();
+        JSONArray devices = new JSONArray();
         devices.add(currentDisVal);
         devices.add(currenttapeVal);
         devices.add(currentOptVal);
-        jobject.accumulate("device",devices);
+        jobject.accumulate("device", devices);
         /*给UI 发送 JSON对象 */
         return jobject;
     }

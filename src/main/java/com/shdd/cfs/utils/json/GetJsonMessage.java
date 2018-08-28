@@ -7,45 +7,36 @@ import java.io.*;
 import java.net.InetAddress;
 import java.net.Socket;
 
-public class GetJsonMessage{
-
-    public boolean reset() {
+public class GetJsonMessage {
+    /*
+     * 处理Json报文类型
+     * */
+    public static JSONObject GetJsonStr(String hostip, Integer hostport, String JsonStr) {
+        /*
+         * 向主机 hostip 的hostport 端口发送 报文 JsonStr ，return 接收到的报文
+         */
         DataInputStream is;
         DataOutputStream os;
-        boolean result = true;
-        String noReset = "Could not reset.";
-        String reset = "The server has been reset.";
 
+        JSONObject result = new JSONObject();
         try {
-            Socket socket = new Socket(InetAddress.getByName("x.x.x.x"), 3994);
-            String string = "{\"id\":1,\"method\":\"object.deleteAll\",\"params\":[\"subscriber\"]}";
+            Socket socket = new Socket(InetAddress.getByName(hostip), hostport);
             is = new DataInputStream(socket.getInputStream());
             os = new DataOutputStream(socket.getOutputStream());
             PrintWriter pw = new PrintWriter(os);
-            pw.println(string);
+            System.out.println("client resquest " + JsonStr);
+            pw.println(JsonStr);
             pw.flush();
-
             BufferedReader in = new BufferedReader(new InputStreamReader(is));
-            //JSONObject json = new JSONObject(in.readLine());
-            JSONObject json = new JSONObject();
-
-            if(!json.has("result")) {
-                System.out.println(noReset);
-                result = false;
-            }
+            JSONObject json = JSONObject.fromObject(in.readLine());
+            result = json;
             is.close();
             os.close();
-
-        } catch (IOException e) {
-            result = false;
-            System.out.println(noReset);
-            e.printStackTrace();
-        } catch (JSONException e) {
-            result = false;
-            System.out.println(noReset);
+        } catch (IOException | JSONException e) {
             e.printStackTrace();
         }
-        System.out.println(reset);
         return result;
     }
 }
+
+

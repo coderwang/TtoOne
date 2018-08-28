@@ -1,4 +1,4 @@
-package com.shdd.cfs.dto.device.Distribute;
+package com.shdd.cfs.dto.device.distribute;
 
 import lombok.Data;
 
