@@ -1,7 +1,7 @@
 /*
  *
  * THIS FILE IS PART OF COLD FUSION STORAGE NEXUS PROJECT
- * Copyright (c) 2018 盛和大地公司 版权所有
+ * Copyright (c) 2018 盛和大地数据科技公司 版权所有
  *
  */
 package com.shdd.cfs.web.device.cdstorage;
@@ -34,7 +34,7 @@ public class CDSpecificPoolDisksDetail {
     @ApiOperation(value = "获取光盘库存储系统指定节点中光盘详细概况", notes = "获取指定光盘匣中的光盘详细信息")
     @ApiImplicitParams({
             @ApiImplicitParam(paramType = "query", dataType = "String",
-                    name = "poolid", value = "分布式存储池ID", required = true)
+                    name = "poolid", value = "光盘库光盘匣ID", required = true)
     })
 
     public JSONObject TapeSystemNodeInfo(String value) {
