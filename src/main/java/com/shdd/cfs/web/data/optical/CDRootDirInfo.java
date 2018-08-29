@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @Slf4j
-public class DiskRootDirInfo {
+public class CDRootDirInfo {
 
     /**
      * 获取目录下文件夹名称
@@ -31,7 +31,7 @@ public class DiskRootDirInfo {
      */
 
     @GetMapping(value = "api/dashboard/disk/rootdirs")
-    @ApiOperation(value = "获取目录下的文件夹名")
+    @ApiOperation(value = "获取目录下的文件夹名", notes = "根据路径参数获取光盘库存储系统根路径下的目录名称列表")
     @ApiImplicitParams({
             @ApiImplicitParam(paramType = "query", dataType = "String",
                     name = "path", value = "指定光盘库下目录树全路径", required = true)

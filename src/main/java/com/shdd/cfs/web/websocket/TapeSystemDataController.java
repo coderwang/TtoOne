@@ -18,7 +18,7 @@ import org.springframework.stereotype.Controller;
  * @version: 1.0 2018/8/28
  */
 @Controller
-public class tapeSystemDataController {
+public class TapeSystemDataController {
     /**
      * 获取磁带库存储cpu/内存/带宽使用情况
      *

@@ -31,7 +31,7 @@ public class TapeRootDirInfo {
      */
 
     @GetMapping(value = "api/dashboard/tape/rootdirs")
-    @ApiOperation(value = "获取目录下的文件夹名")
+    @ApiOperation(value = "获取目录下的文件夹名", notes = "根据路径参数获取磁带库存储系统根路径下的目录名称列表")
     @ApiImplicitParams({
             @ApiImplicitParam(paramType = "query", dataType = "String",
                     name = "path", value = "指定磁带库下目录树全路径", required = true)

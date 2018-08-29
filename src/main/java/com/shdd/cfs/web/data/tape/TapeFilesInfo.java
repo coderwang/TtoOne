@@ -32,7 +32,7 @@ public class TapeFilesInfo {
      */
 
     @GetMapping(value = "api/dashboard/tape/files")
-    @ApiOperation(value = "获取目录下的文件名")
+    @ApiOperation(value = "获取目录下的文件名", notes = "根据路径参数获取指定路径下的文件名称列表")
     @ApiImplicitParams({
             @ApiImplicitParam(paramType = "query", dataType = "String",
                     name = "path", value = "指定磁带库下目录树全路径", required = true)
