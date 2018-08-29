@@ -10,9 +10,14 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @Slf4j
 public class InstrumentWarningInfo {
-
+    /**
+     * 返回仪表盘警告信息
+     *
+     * @param warn
+     * @return
+     */
     @GetMapping(value = "gg/warning")
-    @ApiOperation("返回仪表盘警告信息")
+    @ApiOperation(value = "返回仪表盘警告信息")
 
     public WarningInfoDto sendWarningInfo(String warn) {
         log.info(warn);

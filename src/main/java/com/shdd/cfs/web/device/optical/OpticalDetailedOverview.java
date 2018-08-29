@@ -11,7 +11,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @Slf4j
 public class OpticalDetailedOverview {
-
+    /**
+     * 获取光盘库存储系统存储详细概况
+     *
+     * @param value
+     * @return
+     */
     @GetMapping(value = "api/dashboard/disk")
     @ApiOperation(value = "获取光盘库存储系统存储详细概况")
 

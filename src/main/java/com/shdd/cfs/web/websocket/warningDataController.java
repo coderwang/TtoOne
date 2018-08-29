@@ -21,7 +21,13 @@ import org.springframework.stereotype.Controller;
 @Controller
 public class warningDataController {
 
-
+    /**
+     * 获取告警信息
+     *
+     * @param helloMessage
+     * @return
+     * @throws Exception
+     */
     @ApiOperation(value = "获取告警信息")
     @MessageMapping("/WarningInfo")
     @SendTo("/topic/WarningInfo")

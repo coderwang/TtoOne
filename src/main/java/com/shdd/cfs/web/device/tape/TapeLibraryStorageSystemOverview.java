@@ -10,9 +10,15 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @Slf4j
 public class TapeLibraryStorageSystemOverview {
-
+    /**
+     * 获取磁带库存储系统概况
+     *
+     * @param val
+     * @return
+     */
     @GetMapping(value = "api/dashboard/tapes")
     @ApiOperation(value = "获取磁带库存储系统概况")
+
     public JSONObject TapeLibraryInfo(String val) {
         JSONObject Jarrary = new JSONObject();
         OpticalSystemInfoDetail[] tapearrary = new OpticalSystemInfoDetail[1];

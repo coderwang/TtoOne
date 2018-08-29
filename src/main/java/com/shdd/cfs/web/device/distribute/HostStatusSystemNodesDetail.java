@@ -1,6 +1,8 @@
 package com.shdd.cfs.web.device.distribute;
 
 import com.shdd.cfs.dto.device.distribute.HostNodeInfoDetail;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import net.sf.json.JSONObject;
@@ -11,8 +13,19 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 
 public class HostStatusSystemNodesDetail {
+    /**
+     * 主机信息状态下获取分布式存储系统节点详细概况
+     *
+     * @param value
+     * @return
+     */
     @GetMapping(value = "api/dashboard/distribute/detail")
     @ApiOperation(value = "主机信息状态下获取分布式存储系统节点详细概况")
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType = "query", dataType = "String",
+                    name = "deviceid", value = "分布式设备ID", required = true)
+    })
+
     public JSONObject DistributeStorageInfo(String value) {
         JSONObject jarrary = new JSONObject();
         HostNodeInfoDetail[] arrdtail = new HostNodeInfoDetail[2];

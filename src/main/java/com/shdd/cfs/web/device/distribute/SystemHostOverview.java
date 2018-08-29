@@ -11,9 +11,14 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 public class SystemHostOverview {
 
-
-        @GetMapping(value = "api/device/distribute/device")
-        @ApiOperation(value = "获取分布式存储系统主机概况")
+    /**
+     * 获取分布式存储系统主机概况
+     *
+     * @param value
+     * @return
+     */
+    @GetMapping(value = "api/device/distribute/device")
+    @ApiOperation(value = "获取分布式存储系统主机概况")
 
     public JSONObject GetHostfDistribute(String value) {
 

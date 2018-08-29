@@ -7,6 +7,8 @@
 package com.shdd.cfs.web.data.distribute;
 
 import com.shdd.cfs.dto.data.RootFolderName;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import net.sf.json.JSONObject;
@@ -27,12 +29,17 @@ public class RootDirFolderName {
 
     /**
      * 获取目录下文件夹名称
+     *
      * @param val
      * @return
      */
 
     @GetMapping(value = "api/dashboard/distribute/rootdirs")
     @ApiOperation(value = "获取目录下的文件夹名")
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType = "query", dataType = "String",
+                    name = "path", value = "指定分布式下目录树全路径", required = true)
+    })
 
     public JSONObject GetDistDirInfo(String val) {
         log.info(val);

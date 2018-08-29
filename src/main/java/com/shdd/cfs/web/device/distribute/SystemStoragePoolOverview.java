@@ -11,7 +11,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @Slf4j
 public class SystemStoragePoolOverview {
-
+    /**
+     * 获取分布式存储系统存储池总体概况
+     *
+     * @param value
+     * @return
+     */
     @GetMapping(value = "api/dashboard/pools")
     @ApiOperation(value = "获取分布式存储系统存储池总体概况")
 

@@ -7,6 +7,8 @@
 package com.shdd.cfs.web.data.optical;
 
 import com.shdd.cfs.dto.data.RootFolderName;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import net.sf.json.JSONObject;
@@ -23,12 +25,17 @@ public class DiskRootDirInfo {
 
     /**
      * 获取目录下文件夹名称
+     *
      * @param val
      * @return
      */
 
     @GetMapping(value = "api/dashboard/disk/rootdirs")
     @ApiOperation(value = "获取目录下的文件夹名")
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType = "query", dataType = "String",
+                    name = "path", value = "指定光盘库下目录树全路径", required = true)
+    })
 
     public JSONObject GetDiskRootDirInfo(String val) {
         log.info(val);

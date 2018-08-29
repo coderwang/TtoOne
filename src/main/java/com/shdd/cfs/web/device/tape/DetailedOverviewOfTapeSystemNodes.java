@@ -12,7 +12,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @Slf4j
 public class DetailedOverviewOfTapeSystemNodes {
-
+    /**
+     * 获取磁带库存储系统节点详细概况
+     *
+     * @param value
+     * @return
+     */
     @GetMapping(value = "api/dashboard/tape/detail")
     @ApiOperation(value = "获取磁带库存储系统节点详细概况")
 

@@ -14,7 +14,12 @@ import java.util.HashMap;
 @RestController
 @Slf4j
 public class SystemInfoController {
-
+    /**
+     * 获取当前容量状况
+     *
+     * @param dummy
+     * @return
+     */
     @GetMapping(value = "gg/test")
     @ApiOperation(value = "获取当前容量状况")
     @ApiImplicitParams({

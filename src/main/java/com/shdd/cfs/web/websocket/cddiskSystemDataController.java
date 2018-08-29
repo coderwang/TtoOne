@@ -19,7 +19,13 @@ import org.springframework.stereotype.Controller;
  */
 @Controller
 public class cddiskSystemDataController {
-
+    /**
+     * 获取光盘库存储cpu/内存/带宽使用情况
+     *
+     * @param helloMessage
+     * @return
+     * @throws Exception
+     */
     @ApiOperation(value = "获取光盘库存储cpu/内存/带宽使用情况")
     @MessageMapping("/cddiskSystemInfo")
     @SendTo("/topic/cddiskSystemInfo")

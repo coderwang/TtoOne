@@ -24,12 +24,15 @@ import org.springframework.web.bind.annotation.RestController;
 public class directoryInfo {
     /**
      * 点击某文件夹时，返回该文件夹路径下文件夹
+     *
+     * @param path
+     * @return
      */
     @GetMapping(value = "api/dashboard/distribute/dirs")
     @ApiOperation(value = "点击某文件夹时，返回该文件夹路径下文件夹")
     @ApiImplicitParams({
             @ApiImplicitParam(paramType = "query", dataType = "String",
-                    name = "path", value = "码表类型", required = true)
+                    name = "path", value = "指定分布式下目录树全路径", required = true)
     })
 
     public JSONObject GetDistDirsDataByPath(String path) {

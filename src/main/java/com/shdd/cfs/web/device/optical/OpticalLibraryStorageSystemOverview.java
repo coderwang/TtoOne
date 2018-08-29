@@ -11,7 +11,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @Slf4j
 public class OpticalLibraryStorageSystemOverview {
-
+    /**
+     * 获取光盘库存储系统概况
+     *
+     * @param val
+     * @return
+     */
     @GetMapping(value = "api/dashboard/disks")
     @ApiOperation(value = "获取光盘库存储系统概况")
     public JSONObject TapeLibraryInfo(String val) {
