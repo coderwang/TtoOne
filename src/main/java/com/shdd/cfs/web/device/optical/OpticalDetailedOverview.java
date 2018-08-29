@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 public class OpticalDetailedOverview {
 
-    @GetMapping(value = "gg/opticaldetail")
+    @GetMapping(value = "api/dashboard/disk")
     @ApiOperation(value = "获取光盘库存储系统存储详细概况")
 
     public JSONObject OpticalDetailInfo(String value) {

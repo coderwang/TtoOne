@@ -28,6 +28,8 @@ public class StorageSystemClusteringInfo {
         arrdetail[1].setStatus(1);
 
         distributeStorageInfo.accumulate("colonyCount", 3);
+
+        distributeStorageInfo.accumulate("status", 1);
         distributeStorageInfo.accumulate("colony", arrdetail);
         return distributeStorageInfo;
     }

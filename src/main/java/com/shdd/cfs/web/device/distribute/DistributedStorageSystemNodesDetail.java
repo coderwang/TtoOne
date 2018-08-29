@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 
 public class DistributedStorageSystemNodesDetail {
-    @GetMapping(value = "dashboard/distribute/node")
+    @GetMapping(value = "api/dashboard/distribute/node")
     @ApiOperation(value = "集群信息状态下获取分布式存储系统节点详细概况")
     public JSONObject DistributeStorageInfo(String value) {
         JSONObject jarrary = new JSONObject();

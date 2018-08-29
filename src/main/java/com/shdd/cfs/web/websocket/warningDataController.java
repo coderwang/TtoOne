@@ -8,30 +8,30 @@ package com.shdd.cfs.web.websocket;
 
 import com.shdd.cfs.dto.message.DistSystemData;
 import com.shdd.cfs.dto.message.HelloMessage;
+import com.shdd.cfs.dto.message.WarningInfo;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.stereotype.Controller;
 
 /**
- * @author: xphi
+ * @author: wangpeng
  * @version: 1.0 2018/8/28
  */
 @Controller
-public class DistSystemDataController {
+public class warningDataController {
 
-    @ApiOperation(value = "获取分布式存储主机cpu/内存/带宽使用情况")
-    @MessageMapping("/hello")
-    @SendTo("/topic/greetings")
-    public DistSystemData getDistSystemData(HelloMessage helloMessage) throws Exception {
+
+    @ApiOperation(value = "获取告警信息")
+    @MessageMapping("/WarningInfo")
+    @SendTo("/topic/WarningInfo")
+    public WarningInfo getWarningDataData(HelloMessage helloMessage) throws Exception {
         Thread.sleep(1000); // simulated delay
 
-        DistSystemData distSystemData = new DistSystemData();
-        distSystemData.setCpu(95.3);
-        distSystemData.setRam(23.45);
-        distSystemData.setBw(78.2);
+        WarningInfo warningInfo = new WarningInfo();
+        warningInfo.setName("distribute");
+        warningInfo.setMessage(1);
 
-        return distSystemData;
+        return warningInfo;
     }
-
 }
