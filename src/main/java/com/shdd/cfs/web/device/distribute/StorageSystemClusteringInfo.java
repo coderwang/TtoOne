@@ -14,7 +14,7 @@ public class StorageSystemClusteringInfo {
     @GetMapping(value = "device/distribute/hosts")
     @ApiOperation(value = "获取分布式存储系统集群情况")
 
-    public JSONObject GetInfoOfDistribute(String value){
+    public JSONObject GetInfoOfDistribute(String value) {
 
         JSONObject distributeStorageInfo = new JSONObject();
         SystemClusterInfoDetail[] arrdetail = new SystemClusterInfoDetail[2];
@@ -27,8 +27,8 @@ public class StorageSystemClusteringInfo {
         arrdetail[1].setName("xxx");
         arrdetail[1].setStatus(1);
 
-        distributeStorageInfo.accumulate("colonyCount",3);
-        distributeStorageInfo.accumulate("colony",arrdetail);
+        distributeStorageInfo.accumulate("colonyCount", 3);
+        distributeStorageInfo.accumulate("colony", arrdetail);
         return distributeStorageInfo;
     }
 }

@@ -28,7 +28,7 @@ public class DetailedOverviewOfTheStoragePool {
         jarrary[0].setUsed(3);
         jarrary[0].setStatus(1);
 
-        Jobject.accumulate("pool",jarrary);
+        Jobject.accumulate("pool", jarrary);
         return Jobject;
     }
 

@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class DistributedStorageSystemNodesDetail {
     @GetMapping(value = "dashboard/distribute/node")
     @ApiOperation(value = "集群信息状态下获取分布式存储系统节点详细概况")
-    public JSONObject DistributeStorageInfo(String value){
+    public JSONObject DistributeStorageInfo(String value) {
         JSONObject jarrary = new JSONObject();
         NodeInfoDetail[] arrdtail = new NodeInfoDetail[2];
 
@@ -34,7 +34,7 @@ public class DistributedStorageSystemNodesDetail {
         arrdtail[1].setStatus(0);
 
 
-        jarrary.accumulate("disk",arrdtail);
+        jarrary.accumulate("disk", arrdtail);
         return jarrary;
     }
 }
