@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @Slf4j
-public class CurrentCapacityInstrumentPanelInfo {
+public class CurrentStorageCapacity {
     /**
      * 获取仪表盘当前容量信息
      *
@@ -22,7 +22,7 @@ public class CurrentCapacityInstrumentPanelInfo {
      * @return
      */
     @GetMapping(value = "api/dashboard/curcapacitystatus")
-    @ApiOperation(value = "获取仪表盘当前容量信息")
+    @ApiOperation(value = "获取仪表盘当前容量信息", notes = "获取各存储系统当前的容量使用情况，包含总容量和已使用容量")
 
     public JSONObject SendCurrentCapacity(String SetValue) {
         log.info("SetValue", SetValue);
@@ -39,7 +39,7 @@ public class CurrentCapacityInstrumentPanelInfo {
         currenttapeVal.setDevType("tape");
         //给光盘库当前容量赋值
         currentOptVal.setCapacity(Double.parseDouble(getopticalcapacity.getString("totalinfo")));
-        currentOptVal.setDevType("optical");
+        currentOptVal.setDevType("cdstorage");
         currentOptVal.setUsedCapacity(Double.parseDouble(getopticalcapacity.getString(("usedinfo"))));
         //给分布式容量赋值
         disValData[0] = new CurrentDistributedCapacityDetail();

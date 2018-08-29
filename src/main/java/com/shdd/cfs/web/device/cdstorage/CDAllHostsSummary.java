@@ -1,4 +1,4 @@
-package com.shdd.cfs.web.device.optical;
+package com.shdd.cfs.web.device.cdstorage;
 
 import com.shdd.cfs.dto.device.optical.OpticalSystemInfoDetail;
 import com.shdd.cfs.utils.json.GetJsonMessage;
@@ -10,15 +10,16 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @Slf4j
-public class OpticalLibraryStorageSystemOverview {
+public class CDAllHostsSummary {
     /**
      * 获取光盘库存储系统概况
      *
      * @param val
      * @return
      */
-    @GetMapping(value = "api/dashboard/disks")
-    @ApiOperation(value = "获取光盘库存储系统概况")
+    @GetMapping(value = "api/dashboard/disk/hosts")
+    @ApiOperation(value = "获取光盘库存储系统概况", notes = "获取光盘库存储系统所有节点的概要信息")
+
     public JSONObject TapeLibraryInfo(String val) {
         //光盘库存储信息组织接口
         JSONObject getbasicinfo = new JSONObject();
@@ -55,7 +56,7 @@ public class OpticalLibraryStorageSystemOverview {
         tapearrary[0].setName(getbasicinfo.getString("label"));
         tapearrary[0].setStatus(valuestauts);
 
-        Jarrary.accumulate("optical", tapearrary);
+        Jarrary.accumulate("cdstorage", tapearrary);
         return Jarrary;
     }
 }

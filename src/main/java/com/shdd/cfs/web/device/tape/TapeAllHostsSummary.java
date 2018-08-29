@@ -9,15 +9,15 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @Slf4j
-public class TapeLibraryStorageSystemOverview {
+public class TapeAllHostsSummary {
     /**
      * 获取磁带库存储系统概况
      *
      * @param val
      * @return
      */
-    @GetMapping(value = "api/dashboard/tapes")
-    @ApiOperation(value = "获取磁带库存储系统概况")
+    @GetMapping(value = "api/dashboard/tape/hosts")
+    @ApiOperation(value = "获取磁带库存储系统概况", notes = "获取磁带库存储系统中所有服务器节点的概要信息")
 
     public JSONObject TapeLibraryInfo(String val) {
         JSONObject Jarrary = new JSONObject();

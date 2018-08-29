@@ -11,15 +11,15 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @Slf4j
-public class DetailedOverviewOfTapeSystemNodes {
+public class TapeAllDisksDetail {
     /**
      * 获取磁带库存储系统节点详细概况
      *
      * @param value
      * @return
      */
-    @GetMapping(value = "api/dashboard/tape/detail")
-    @ApiOperation(value = "获取磁带库存储系统节点详细概况")
+    @GetMapping(value = "api/dashboard/tape/disks")
+    @ApiOperation(value = "获取磁带库存储系统节点详细概况", notes = "获取磁带库存储系统中所有磁带的详细信息")
 
     public JSONObject TapeSystemNodeInfo(String value) {
         JSONObject Jarrary = new JSONObject();

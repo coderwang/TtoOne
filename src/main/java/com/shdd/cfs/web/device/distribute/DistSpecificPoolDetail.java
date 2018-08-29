@@ -14,18 +14,18 @@ import javax.servlet.http.HttpServletRequest;
 
 @RestController
 @Slf4j
-public class DetailedOverviewOfTheStoragePool {
+public class DistSpecificPoolDetail {
     /**
      * 获取分布式存储系统存储池详细概况
      *
      * @param value
      * @return
      */
-    @GetMapping(value = "api/dashboard/pool")
-    @ApiOperation(value = "获取分布式存储系统存储池详细概况")
+    @GetMapping(value = "api/dashboard/distribute/pool")
+    @ApiOperation(value = "获取分布式存储系统存储池详细概况", notes = "获取分布式存储系统指定存储池的详细信息")
     @ApiImplicitParams({
             @ApiImplicitParam(paramType = "query", dataType = "String",
-                    name = "poolid", value = "分布式存储池ID", required = true)
+                    name = "poolid", value = "指定分布式存储池ID", required = true)
     })
 
     public JSONObject SendDetailInfoOfPool(String value) {

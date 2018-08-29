@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @Slf4j
-public class TotalCapacityInstrumentPaneInfo {
+public class ThreeinOneSummary {
     /**
      * 发送总容量信息
      *
@@ -19,7 +19,7 @@ public class TotalCapacityInstrumentPaneInfo {
      * @return
      */
     @GetMapping(value = "api/dashboard/capacitystatus")
-    @ApiOperation(value = "发送总容量信息")
+    @ApiOperation(value = "发送总容量信息", notes = "获取三合一系统的概要信息，包含总任务、运行任务、完成任务、新增任务、总容量、总告警")
 
     public TotalCapacityInfoDto sendTotalCapacityStatusInfo(String TotalInfo) {
         log.info(TotalInfo);

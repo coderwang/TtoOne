@@ -1,6 +1,6 @@
 package com.shdd.cfs.web.device.distribute;
 
-import com.shdd.cfs.dto.device.distribute.HostNodeInfoDetail;
+import com.shdd.cfs.dto.device.distribute.NodeInfoDetail;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
@@ -12,26 +12,28 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @Slf4j
 
-public class HostStatusSystemNodesDetail {
+public class DistAllDisksDetail {
     /**
-     * 主机信息状态下获取分布式存储系统节点详细概况
+     * 集群信息状态下获取分布式存储系统节点详细概况
      *
      * @param value
      * @return
      */
-    @GetMapping(value = "api/dashboard/distribute/detail")
-    @ApiOperation(value = "主机信息状态下获取分布式存储系统节点详细概况")
+    @GetMapping(value = "api/dashboard/distribute/disks")
+    @ApiOperation(value = "集群信息状态下获取分布式存储系统节点详细概况", notes = "分布式存储池中的所有磁盘的详细信息")
     @ApiImplicitParams({
             @ApiImplicitParam(paramType = "query", dataType = "String",
-                    name = "deviceid", value = "分布式设备ID", required = true)
+                    name = "page_num", value = "翻页页码", required = true),
+            @ApiImplicitParam(paramType = "query", dataType = "String",
+                    name = "count", value = "每页所含最大条目数", required = true)
     })
 
     public JSONObject DistributeStorageInfo(String value) {
         JSONObject jarrary = new JSONObject();
-        HostNodeInfoDetail[] arrdtail = new HostNodeInfoDetail[2];
+        NodeInfoDetail[] arrdtail = new NodeInfoDetail[2];
 
-        arrdtail[0] = new HostNodeInfoDetail();
-        arrdtail[1] = new HostNodeInfoDetail();
+        arrdtail[0] = new NodeInfoDetail();
+        arrdtail[1] = new NodeInfoDetail();
 
         arrdtail[0].setId(1);
         arrdtail[0].setCapacity(50.0);
