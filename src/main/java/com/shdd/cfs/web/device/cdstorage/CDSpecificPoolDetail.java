@@ -1,7 +1,9 @@
-package com.shdd.cfs.web.device.optical;
+package com.shdd.cfs.web.device.cdstorage;
 
 import com.shdd.cfs.dto.device.optical.OpticalLibraryStorageSystemStoresDetail;
 import com.shdd.cfs.utils.json.GetJsonMessage;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import net.sf.json.JSONObject;
@@ -10,10 +12,19 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @Slf4j
-public class OpticalDetailedOverview {
-
-    @GetMapping(value = "api/dashboard/disk")
-    @ApiOperation(value = "获取光盘库存储系统存储详细概况")
+public class CDSpecificPoolDetail {
+    /**
+     * 获取光盘库存储系统存储详细概况
+     *
+     * @param value
+     * @return
+     */
+    @GetMapping(value = "api/dashboard/disk/pool")
+    @ApiOperation(value = "获取光盘库存储系统存储详细概况", notes = "获取光盘库存储系统中指定光盘匣的详细信息")
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType = "query", dataType = "String",
+                    name = "poolid", value = "光盘库存储系统光盘匣ID", required = true)
+    })
 
     public JSONObject OpticalDetailInfo(String value) {
         JSONObject getbasicinfo = new JSONObject();

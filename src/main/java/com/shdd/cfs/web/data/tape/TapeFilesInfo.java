@@ -26,6 +26,7 @@ public class TapeFilesInfo {
 
     /**
      * 获取目录下文件名称
+     *
      * @param path
      * @return
      */
@@ -34,7 +35,7 @@ public class TapeFilesInfo {
     @ApiOperation(value = "获取目录下的文件名")
     @ApiImplicitParams({
             @ApiImplicitParam(paramType = "query", dataType = "String",
-                    name = "path", value = "码表类型", required = true)
+                    name = "path", value = "指定磁带库下目录树全路径", required = true)
     })
 
     public JSONObject GetTapeFilesInfo(String path) {

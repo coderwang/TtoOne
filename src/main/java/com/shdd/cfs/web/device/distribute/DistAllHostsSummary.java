@@ -9,10 +9,15 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @Slf4j
-public class StorageSystemClusteringInfo {
-
-    @GetMapping(value = "device/distribute/hosts")
-    @ApiOperation(value = "获取分布式存储系统集群情况")
+public class DistAllHostsSummary {
+    /**
+     * 获取分布式存储系统集群情况
+     *
+     * @param value
+     * @return
+     */
+    @GetMapping(value = "api/device/distribute/hosts")
+    @ApiOperation(value = "获取分布式存储系统集群情况", notes = "分布式存储系统所有主机概况")
 
     public JSONObject GetInfoOfDistribute(String value) {
 

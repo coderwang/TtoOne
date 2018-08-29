@@ -19,7 +19,13 @@ import org.springframework.stereotype.Controller;
  */
 @Controller
 public class DistSystemDataController {
-
+    /**
+     * 获取分布式存储主机cpu/内存/带宽使用情况
+     *
+     * @param helloMessage
+     * @return
+     * @throws Exception
+     */
     @ApiOperation(value = "获取分布式存储主机cpu/内存/带宽使用情况")
     @MessageMapping("/hello")
     @SendTo("/topic/greetings")

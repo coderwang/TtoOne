@@ -1,6 +1,8 @@
 package com.shdd.cfs.web.device.distribute;
 
 import com.shdd.cfs.dto.device.distribute.NodeInfoDetail;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import net.sf.json.JSONObject;
@@ -10,9 +12,22 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @Slf4j
 
-public class DistributedStorageSystemNodesDetail {
-    @GetMapping(value = "api/dashboard/distribute/node")
-    @ApiOperation(value = "集群信息状态下获取分布式存储系统节点详细概况")
+public class DistAllDisksDetail {
+    /**
+     * 集群信息状态下获取分布式存储系统节点详细概况
+     *
+     * @param value
+     * @return
+     */
+    @GetMapping(value = "api/dashboard/distribute/disks")
+    @ApiOperation(value = "集群信息状态下获取分布式存储系统节点详细概况", notes = "分布式存储池中的所有磁盘的详细信息")
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType = "query", dataType = "String",
+                    name = "page_num", value = "翻页页码", required = true),
+            @ApiImplicitParam(paramType = "query", dataType = "String",
+                    name = "count", value = "每页所含最大条目数", required = true)
+    })
+
     public JSONObject DistributeStorageInfo(String value) {
         JSONObject jarrary = new JSONObject();
         NodeInfoDetail[] arrdtail = new NodeInfoDetail[2];
