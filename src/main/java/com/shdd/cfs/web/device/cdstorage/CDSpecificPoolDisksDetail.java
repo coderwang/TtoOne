@@ -34,10 +34,14 @@ public class CDSpecificPoolDisksDetail {
     @ApiOperation(value = "获取光盘库存储系统指定节点中光盘详细概况", notes = "获取指定光盘匣中的光盘详细信息")
     @ApiImplicitParams({
             @ApiImplicitParam(paramType = "query", dataType = "String",
-                    name = "poolid", value = "光盘库光盘匣ID", required = true)
+                    name = "poolid", value = "光盘库光盘匣ID", required = true),
+            @ApiImplicitParam(paramType = "query", dataType = "String",
+                    name = "page_num", value = "翻页页码", required = true),
+            @ApiImplicitParam(paramType = "query", dataType = "String",
+                    name = "count", value = "每页所含最大条目数", required = true)
     })
 
-    public JSONObject TapeSystemNodeInfo(String value) {
+    public JSONObject TapeSystemNodeInfo(String value, int poolid, int page_num, int count) {
         //组织获取光盘库节点信息
         JSONObject getjsoninfo = new JSONObject();
         JSONObject getcapacity = new JSONObject();
@@ -63,6 +67,15 @@ public class CDSpecificPoolDisksDetail {
         tapenode[0].setUsed(Double.parseDouble(getcapacity.getString(("usedinfo"))));
         tapenode[0].setName(getjsoninfo.getString("label"));
         tapenode[0].setStatus(valuestauts);
+
+        //计算总页数
+        int totalPage = 0;
+        if (count != 0) {
+            totalPage = 1 / count + 1;
+        }
+        System.out.println(totalPage);
+
+        Jarrary.accumulate("totalPage", totalPage);
         Jarrary.accumulate("disk", tapenode);
         return Jarrary;
     }
