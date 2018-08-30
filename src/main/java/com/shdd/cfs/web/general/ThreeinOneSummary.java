@@ -2,6 +2,7 @@ package com.shdd.cfs.web.general;
 
 import com.shdd.cfs.dto.dashboard.TotalCapacityInfoDto;
 import com.shdd.cfs.dto.dashboard.TotalStatusInfoDetail;
+import com.shdd.cfs.utils.json.DistributeUrlHandle;
 import com.shdd.cfs.utils.json.GetJsonMessage;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -29,8 +30,8 @@ public class ThreeinOneSummary {
 		//获取光盘库节点容量信息
 		getnodecapacity = GetJsonMessage.GetJsonStr("192.168.100.199", 8000, nodecapacity);
 		Double optUserCapacity = Double.parseDouble(getnodecapacity.getString(("usedinfo")));
-		//分布式基础访问接口
-
+		//获取分布式集群信息
+		JSONObject disjsoncapacity = DistributeUrlHandle.ClusterInfo();
 		//获取分布式存储集群总的使用容量
 		Double disUseCapacity = Double.parseDouble(disjsoncapacity.getString("storage_used"));
 		//组织发送给UI的报文

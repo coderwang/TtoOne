@@ -33,15 +33,8 @@ public class CurrentStorageCapacity {
         String capacity = "{\"protoname\":\"nodeconnect\"}";
         //获取光盘库节点返回报文
         getopticalcapacity = GetJsonMessage.GetJsonStr("192.168.100.199", 8000, capacity);
-        //获取分布式单个集群信息
-        JSONObject disjsoncapacity = DistributeUrlHandle.Poolinfo();
-        //获取分布式存储集群总的使用容量
-        Double disUseCapacity = Double.parseDouble(disjsoncapacity.getString("storage_used"));//获取使用容量信息
-        Double disTotalCapacity = Double.parseDouble(disjsoncapacity.getString("storage_total"));
-        String disclusterName = disjsoncapacity.getString("cluster_name");
         //定义Json发送对象
         DistributeCapacityStruct currentDisVal = new DistributeCapacityStruct();
-        CurrentDistributedCapacityDetail[] disValData = new CurrentDistributedCapacityDetail[1];
         CurrentTapeCapacityDetail currenttapeVal = new CurrentTapeCapacityDetail();
         CurrentOpticalCapacityDetail currentOptVal = new CurrentOpticalCapacityDetail();
         //给磁带库当前容量赋值
@@ -53,10 +46,14 @@ public class CurrentStorageCapacity {
         currentOptVal.setDevType("cdstorage");
         currentOptVal.setUsedCapacity(Double.parseDouble(getopticalcapacity.getString(("usedinfo"))));
         //给分布式容量赋值
+
+        //获取分布式单个存储池信息
+        JSONObject poolinfo = DistributeUrlHandle.Poolinfo();
+        CurrentDistributedCapacityDetail[] disValData = new CurrentDistributedCapacityDetail[1];
         disValData[0] = new CurrentDistributedCapacityDetail();
-        disValData[0].setCapacity(disTotalCapacity);
-        disValData[0].setPoolName(disclusterName);
-        disValData[0].setUsedCapacity(disUseCapacity);
+        disValData[0].setCapacity(23.4);
+        disValData[0].setPoolName("123");
+        disValData[0].setUsedCapacity(43.1);
         //组织返回JSON数据对象
         currentDisVal.setDevType("distributed");
         currentDisVal.setData(disValData);
