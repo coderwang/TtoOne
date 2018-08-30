@@ -1,6 +1,7 @@
 package com.shdd.cfs.web.device.distribute;
 
 import com.shdd.cfs.dto.device.distribute.HostInfoDetail;
+import com.shdd.cfs.utils.json.GetJsonMessage;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
@@ -27,11 +28,19 @@ public class DistSpecificHostDetail {
     })
 
     public JSONObject GetHostfDistribute(String value) {
+        //向分布式厂家发送获取单个主机的信息的请求
 
+        //获取分布式集群中单个主机信息
+        String baseurl = "";
+        String getdishstinfo = baseurl + "api/hosts/host_id";
+        String dishostinfo = GetJsonMessage.getURLContent(getdishstinfo);
+        JSONObject hostinfo = JSONObject.fromObject(dishostinfo);
+        String hostname = hostinfo.getString("host_name");
+        //发送单个主机的详细情况
         JSONObject hostInfo = new JSONObject();
         HostInfoDetail[] arrdetail = new HostInfoDetail[1];
         arrdetail[0] = new HostInfoDetail();
-        arrdetail[0].setName("node01");
+        arrdetail[0].setName(hostname);
         arrdetail[0].setCpuType("phytium");
         arrdetail[0].setCpuCount(2);
         arrdetail[0].setMemCapacity(20.5);

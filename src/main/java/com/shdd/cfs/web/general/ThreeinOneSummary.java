@@ -30,12 +30,7 @@ public class ThreeinOneSummary {
 		getnodecapacity = GetJsonMessage.GetJsonStr("192.168.100.199", 8000, nodecapacity);
 		Double optUserCapacity = Double.parseDouble(getnodecapacity.getString(("usedinfo")));
 		//分布式基础访问接口
-		String baseurl = "";
-		//访问分布式容量url接口
-		String disstorageinfo = baseurl + "api/monitor/clustes/storage/";
-		String discapacity = GetJsonMessage.getURLContent(disstorageinfo);
-		//获取分布式回传的json报文
-		JSONObject disjsoncapacity = JSONObject.fromObject(discapacity);
+
 		//获取分布式存储集群总的使用容量
 		Double disUseCapacity = Double.parseDouble(disjsoncapacity.getString("storage_used"));
 		//组织发送给UI的报文
