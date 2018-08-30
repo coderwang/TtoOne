@@ -26,7 +26,7 @@ public class CurrentStorageCapacity {
 
     public JSONObject SendCurrentCapacity(String SetValue) {
         log.info("SetValue", SetValue);
-        JSONObject getopticalcapacity = new JSONObject();
+        JSONObject getopticalcapacity = new JSONObject();//光盘库节点容量获取对象
         String capacity = "{\"protoname\":\"nodeconnect\"}"; //获取光盘库容量, 节点状态
         getopticalcapacity = GetJsonMessage.GetJsonStr("192.168.100.199", 8000, capacity);//获取光盘库节点返回报文
         DistributeCapacityStruct currentDisVal = new DistributeCapacityStruct();
