@@ -26,6 +26,10 @@ import java.util.Random;
 @Controller
 @Slf4j
 public class DistSystemDataController {
+
+    @Autowired
+    private SimpMessagingTemplate template;
+
     /**
      * 获取分布式存储主机cpu/内存/带宽使用情况
      *
@@ -34,9 +38,6 @@ public class DistSystemDataController {
      * @throws Exception
      */
     @ApiOperation(value = "获取分布式存储主机cpu/内存/带宽使用情况")
-
-    @Autowired
-    private SimpMessagingTemplate template;
 
     @MessageMapping("/hello")
     @SendTo("/ws/sysdata")
