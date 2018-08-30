@@ -46,14 +46,14 @@ public class RootDirFolderName {
 
         JSONObject rootFolder = new JSONObject();
 
-        /* 将文件夹名赋值给Json数组中*/
+        // 将文件夹名赋值给Json数组中
         RootFolderName[] rootforder = new RootFolderName[1];
         rootforder[0] = new RootFolderName();
         rootforder[0].setId(1);
         rootforder[0].setName("xx");
-        /*将文件夹数组塞入Json对象中*/
+        //将文件夹数组塞入Json对象中
         rootFolder.accumulate("folder", rootforder);
-        /* 发送Json 协议*/
+        // 发送Json 协议
         return rootFolder;
     }
 }

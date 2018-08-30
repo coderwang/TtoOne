@@ -6,7 +6,6 @@ import com.shdd.cfs.dto.dashboard.CurrentTapeCapacityDetail;
 import com.shdd.cfs.dto.dashboard.DistributeCapacityStruct;
 import com.shdd.cfs.utils.json.GetJsonMessage;
 import io.swagger.annotations.ApiOperation;
-import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
@@ -35,7 +34,6 @@ public class CurrentStorageCapacity {
         getopticalcapacity = GetJsonMessage.GetJsonStr("192.168.100.199", 8000, capacity);
         //获取分布式单个集群信息
         String baseurl = "";
-        //访问分布式容量url接口
         String disstorageinfo = baseurl + "api/monitor/clustes/cluster_id/storage/";
         String discapacity = GetJsonMessage.getURLContent(disstorageinfo);
         //获取分布式回传的json报文
