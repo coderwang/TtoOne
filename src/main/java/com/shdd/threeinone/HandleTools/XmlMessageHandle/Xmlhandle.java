@@ -1,35 +1,7 @@
 package com.shdd.threeinone.HandleTools.XmlMessageHandle;
 
-import com.shdd.cfs.ColdFusionStorageNexus;
-import jdk.internal.org.xml.sax.XMLReader;
-import org.dom4j.Attribute;
-import org.dom4j.DocumentException;
-import org.dom4j.io.SAXReader;
-import org.springframework.boot.SpringApplication;
-import org.xml.sax.helpers.XMLReaderFactory;
-
-import javax.swing.text.Document;
-import javax.swing.text.Element;
-import java.awt.print.Book;
 import java.io.*;
 import java.net.*;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-
-import java.io.File;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-
-import org.dom4j.Attribute;
-//import org.dom4j.Document;
-import org.dom4j.DocumentException;
-//import org.dom4j.Element;
-import org.dom4j.io.SAXReader;
-
-//import com.lune.bean.Book;
-
 
 public class Xmlhandle {
         public static String fromUrlGetxml(String url) throws IOException {
