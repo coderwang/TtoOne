@@ -6,6 +6,7 @@ import com.shdd.cfs.dto.dashboard.CurrentTapeCapacityDetail;
 import com.shdd.cfs.dto.dashboard.DistributeCapacityStruct;
 import com.shdd.cfs.utils.json.GetJsonMessage;
 import io.swagger.annotations.ApiOperation;
+import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
@@ -26,9 +27,24 @@ public class CurrentStorageCapacity {
 
     public JSONObject SendCurrentCapacity(String SetValue) {
         log.info("SetValue", SetValue);
-        JSONObject getopticalcapacity = new JSONObject();//光盘库节点容量获取对象
-        String capacity = "{\"protoname\":\"nodeconnect\"}"; //获取光盘库容量, 节点状态
-        getopticalcapacity = GetJsonMessage.GetJsonStr("192.168.100.199", 8000, capacity);//获取光盘库节点返回报文
+        //光盘库节点容量获取对象
+        JSONObject getopticalcapacity = new JSONObject();
+        //获取光盘库容量, 节点状态
+        String capacity = "{\"protoname\":\"nodeconnect\"}";
+        //获取光盘库节点返回报文
+        getopticalcapacity = GetJsonMessage.GetJsonStr("192.168.100.199", 8000, capacity);
+        //获取分布式单个集群信息
+        String baseurl = "";
+        //访问分布式容量url接口
+        String disstorageinfo = baseurl + "api/monitor/clustes/cluster_id/storage/";
+        String discapacity = GetJsonMessage.getURLContent(disstorageinfo);
+        //获取分布式回传的json报文
+        JSONObject disjsoncapacity = JSONObject.fromObject(discapacity);
+        //获取分布式存储集群总的使用容量
+        Double disUseCapacity = Double.parseDouble(disjsoncapacity.getString("storage_used"));//获取使用容量信息
+        Double disTotalCapacity = Double.parseDouble(disjsoncapacity.getString("storage_total"));
+        String disclusterName = disjsoncapacity.getString("cluster_name");
+        //定义Json发送对象
         DistributeCapacityStruct currentDisVal = new DistributeCapacityStruct();
         CurrentDistributedCapacityDetail[] disValData = new CurrentDistributedCapacityDetail[1];
         CurrentTapeCapacityDetail currenttapeVal = new CurrentTapeCapacityDetail();
@@ -43,12 +59,12 @@ public class CurrentStorageCapacity {
         currentOptVal.setUsedCapacity(Double.parseDouble(getopticalcapacity.getString(("usedinfo"))));
         //给分布式容量赋值
         disValData[0] = new CurrentDistributedCapacityDetail();
-        disValData[0].setCapacity(20.34);
-        disValData[0].setPoolName("xx");
-        disValData[0].setUsedCapacity(15.4);
+        disValData[0].setCapacity(disTotalCapacity);
+        disValData[0].setPoolName(disclusterName);
+        disValData[0].setUsedCapacity(disUseCapacity);
+        //组织返回JSON数据对象
         currentDisVal.setDevType("distributed");
         currentDisVal.setData(disValData);
-        //组织返回JSON数据对象
         JSONObject jobject = new JSONObject();
         JSONArray devices = new JSONArray();
         devices.add(currentDisVal);
