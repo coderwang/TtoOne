@@ -25,7 +25,7 @@ import java.util.ArrayList;
  */
 @RestController
 @Slf4j
-public class RootDirFolderName {
+public class DistRootDirInfo {
 
     /**
      * 获取目录下文件夹名称
@@ -35,7 +35,7 @@ public class RootDirFolderName {
      */
 
     @GetMapping(value = "api/dashboard/distribute/rootdirs")
-    @ApiOperation(value = "获取目录下的文件夹名")
+    @ApiOperation(value = "获取目录下的文件夹名", notes = "根据路径参数获取分布式根路径下的目录名称列表")
     @ApiImplicitParams({
             @ApiImplicitParam(paramType = "query", dataType = "String",
                     name = "path", value = "指定分布式下目录树全路径", required = true)

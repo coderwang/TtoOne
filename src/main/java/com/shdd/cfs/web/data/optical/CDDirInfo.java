@@ -4,7 +4,7 @@
  * Copyright (c) 2018 盛和大地数据科技公司 版权所有
  *
  */
-package com.shdd.cfs.web.data.distribute;
+package com.shdd.cfs.web.data.optical;
 
 import com.shdd.cfs.dto.data.RootFolderName;
 import io.swagger.annotations.ApiImplicitParam;
@@ -21,21 +21,21 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @Slf4j
-public class directoryInfo {
+public class CDDirInfo {
     /**
      * 点击某文件夹时，返回该文件夹路径下文件夹
      *
      * @param path
      * @return
      */
-    @GetMapping(value = "api/dashboard/distribute/dirs")
-    @ApiOperation(value = "点击某文件夹时，返回该文件夹路径下文件夹")
+    @GetMapping(value = "api/dashboard/disk/dirs")
+    @ApiOperation(value = "点击某文件夹时，返回该文件夹路径下文件夹", notes = "根据路径参数获取指定路径下的目录名称列表")
     @ApiImplicitParams({
             @ApiImplicitParam(paramType = "query", dataType = "String",
-                    name = "path", value = "指定分布式下目录树全路径", required = true)
+                    name = "path", value = "指定光盘库下目录树全路径", required = true)
     })
 
-    public JSONObject GetDistDirsDataByPath(String path) {
+    public JSONObject GetDiskDirsDataByPath(String path) {
 
         log.info(path);
 

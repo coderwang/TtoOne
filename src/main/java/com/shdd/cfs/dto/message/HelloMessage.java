@@ -14,5 +14,8 @@ import lombok.Data;
  */
 @Data
 public class HelloMessage {
-    String name;
+    /**
+     * 消息内容
+     */
+    String message;
 }

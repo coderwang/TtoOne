@@ -19,13 +19,17 @@ public class DistSystemData {
     /**
      * 处理器信息
      */
-    double cpu;
+    Double cpu;
     /**
      * 内存信息
      */
-    double ram;
+    Double ram;
     /**
      * 带宽信息
      */
-    double bw;
+    Double bw;
+    /**
+     * 回传测试数据
+     */
+    String helloMessage;
 }

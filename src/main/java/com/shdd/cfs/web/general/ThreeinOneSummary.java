@@ -1,3 +1,9 @@
+/*
+ *
+ * THIS FILE IS PART OF COLD FUSION STORAGE NEXUS PROJECT
+ * Copyright (c) 2018 盛和大地数据科技公司 版权所有
+ *
+ */
 package com.shdd.cfs.web.general;
 
 import com.shdd.cfs.dto.dashboard.TotalCapacityInfoDto;

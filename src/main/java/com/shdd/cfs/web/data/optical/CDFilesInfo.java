@@ -4,7 +4,7 @@
  * Copyright (c) 2018 盛和大地数据科技公司 版权所有
  *
  */
-package com.shdd.cfs.web.data.distribute;
+package com.shdd.cfs.web.data.optical;
 
 import com.shdd.cfs.dto.data.CurrentPathFileName;
 import io.swagger.annotations.ApiImplicitParam;
@@ -12,13 +12,8 @@ import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import net.sf.json.JSONObject;
-import org.apache.commons.io.FilenameUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.io.File;
-import java.util.ArrayList;
-
 
 /**
  * @author: wangpeng
@@ -26,7 +21,7 @@ import java.util.ArrayList;
  */
 @RestController
 @Slf4j
-public class GetCurrentPathFileName {
+public class CDFilesInfo {
 
 
     /**
@@ -36,14 +31,14 @@ public class GetCurrentPathFileName {
      * @return
      */
 
-    @GetMapping(value = "api/dashboard/distribute/files")
-    @ApiOperation(value = "获取目录下的文件名")
+    @GetMapping(value = "api/dashboard/disk/files")
+    @ApiOperation(value = "获取目录下的文件名", notes = "根据路径参数获取指定路径下的文件名称列表")
     @ApiImplicitParams({
             @ApiImplicitParam(paramType = "query", dataType = "String",
-                    name = "path", value = "指定分布式下目录树全路径", required = true)
+                    name = "path", value = "指定光盘库下目录树全路径", required = true)
     })
 
-    public JSONObject GetDistFilesInfo(String path) {
+    public JSONObject GetDiskFilesInfo(String path) {
         log.info(path);
         JSONObject jfile = new JSONObject();
 

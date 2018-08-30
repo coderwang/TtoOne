@@ -29,7 +29,7 @@ public class TapeDirInfo {
      * @return
      */
     @GetMapping(value = "api/dashboard/tape/dirs")
-    @ApiOperation(value = "点击某文件夹时，返回该文件夹路径下文件夹")
+    @ApiOperation(value = "点击某文件夹时，返回该文件夹路径下文件夹", notes = "根据路径参数获取指定路径下的目录名称列表")
     @ApiImplicitParams({
             @ApiImplicitParam(paramType = "query", dataType = "String",
                     name = "path", value = "指定磁带库下目录树全路径", required = true)

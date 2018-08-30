@@ -7,7 +7,6 @@
 package com.shdd.cfs.web.websocket;
 
 import com.shdd.cfs.dto.message.DistSystemData;
-import com.shdd.cfs.dto.message.HelloMessage;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,35 +19,31 @@ import org.springframework.stereotype.Controller;
 import java.util.Random;
 
 /**
- * @author: xphi
- * @version: 1.0 2018/8/28
+ * @author: wangpeng
+ * @version: 1.0 2018/8/29
  */
 @Controller
 @Slf4j
-public class DistSystemDataController {
+public class DistColonySystemDataController {
 
     @Autowired
     private SimpMessagingTemplate template;
 
     /**
-     * 获取分布式存储主机cpu/内存/带宽使用情况
-     *
-     * @param helloMessage
      * @return
-     * @throws Exception
+     * @throws InterruptedException
      */
-    @ApiOperation(value = "获取分布式存储主机cpu/内存/带宽使用情况")
-
-    @MessageMapping("/hello")
-    @SendTo("/ws/sysdata")
-    public DistSystemData getDistSystemData(HelloMessage helloMessage) throws Exception {
+    @ApiOperation(value = "获取分布式存储主机cpu/内存/带宽使用情况", notes = "获取分布式集群中所有节点的信息，取平均值")
+    @MessageMapping("/distColonySystemInfo")
+    @SendTo("/ws/distColonySystemInfo")
+    public DistSystemData getDistColonySystemData() throws InterruptedException {
         Thread.sleep(1000); // simulated delay
 
+        //此处需求CPU，内存，带宽的平均值
         DistSystemData distSystemData = new DistSystemData();
         distSystemData.setCpu(95.3);
         distSystemData.setRam(23.45);
         distSystemData.setBw(78.2);
-        distSystemData.setHelloMessage(helloMessage.getMessage());
 
         return distSystemData;
     }
@@ -64,9 +59,8 @@ public class DistSystemDataController {
         distSystemData.setBw(random.nextDouble());
         distSystemData.setHelloMessage("定时任务");
 
-        log.info("定时任务5……");
+        log.info("定时任务3……");
 
-        template.convertAndSend("/ws/sysdata", distSystemData);
+        template.convertAndSend("/ws/distColonySystemInfo", distSystemData);
     }
-
 }

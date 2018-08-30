@@ -4,7 +4,7 @@
  * Copyright (c) 2018 盛和大地数据科技公司 版权所有
  *
  */
-package com.shdd.cfs.web.device.distribute;
+package com.shdd.cfs.web.device.tape;
 
 import com.shdd.cfs.dto.device.distribute.PoolGeneralOverviewDetail;
 import io.swagger.annotations.ApiOperation;
@@ -15,18 +15,17 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @Slf4j
-public class DistAllPoolsSummary {
+/**
+ * @author: wangpeng
+ * @version: 1.0 2018/8/29
+ */
+public class TapeAllPoolsSummary {
     /**
-     * 获取分布式存储系统存储池总体概况
-     *
-     * @param value
      * @return
      */
-    @GetMapping(value = "api/dashboard/distribute/pools")
-    @ApiOperation(value = "获取分布式存储系统存储池总体概况", notes = "分布式存储系统所有存储池总体概况")
-
-    public JSONObject PoolGeneralInfo(String value) {
-
+    @GetMapping(value = "api/dashboard/tape/pools")
+    @ApiOperation(value = "获取磁带库存储系统存储池总体概况", notes = "磁带库存储系统所有磁带组总体概况")
+    public JSONObject GetTapeAllPoolsSummaryInfo() {
         JSONObject storagePool = new JSONObject();
         PoolGeneralOverviewDetail[] jarrary = new PoolGeneralOverviewDetail[2];
 
