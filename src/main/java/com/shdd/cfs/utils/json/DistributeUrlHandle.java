@@ -30,5 +30,17 @@ public class DistributeUrlHandle {
 		JSONObject vols = JSONObject.fromObject(volinfo);
 		return  vols;
 	}
+	/**
+	 * 通过URL请求获取分布式后台节点详细情况
+	 */
+	public static JSONObject Nodeinfo(){
+		//访问分布式整个集群url接口
+		String nodeinfo = baseurl + "api/hosts/host_id";
+		String node = GetJsonMessage.getURLContent(nodeinfo);
+		//获取分布式回传的json报文
+		JSONObject jnode = JSONObject.fromObject(node);
+		return  jnode;
+	}
 }
+
 
