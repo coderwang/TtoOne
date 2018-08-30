@@ -6,13 +6,24 @@
  */
 package com.shdd.cfs.web.device.tape;
 
-import com.shdd.cfs.dto.device.optical.OpticalNodeDetail;
 import com.shdd.cfs.dto.device.tape.TapeNodeDetail;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
+import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
+import org.dom4j.Document;
+import org.dom4j.DocumentException;
+import org.dom4j.Element;
+import org.dom4j.io.SAXReader;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.List;
 
 @RestController
 @Slf4j
@@ -41,3 +52,4 @@ public class TapeAllDisksDetail {
         return Jarrary;
     }
 }
+
