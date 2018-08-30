@@ -58,12 +58,13 @@ public class DistSystemDataController {
         Random random = new Random();
         DistSystemData distSystemData = new DistSystemData();
 
+        //向下级系统通信，并获取指定数据信息，进行数据填充
         distSystemData.setCpu(random.nextDouble());
         distSystemData.setRam(random.nextDouble());
         distSystemData.setBw(random.nextDouble());
         distSystemData.setHelloMessage("定时任务");
 
-        log.info("定时任务……");
+        log.info("定时任务5……");
 
         template.convertAndSend("/ws/sysdata", distSystemData);
     }

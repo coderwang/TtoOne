@@ -6,12 +6,15 @@
  */
 package com.shdd.cfs.web.websocket;
 
-import com.shdd.cfs.dto.message.DistSystemData;
 import com.shdd.cfs.dto.message.HelloMessage;
 import com.shdd.cfs.dto.message.WarningInfo;
 import io.swagger.annotations.ApiOperation;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Controller;
 
 /**
@@ -19,7 +22,11 @@ import org.springframework.stereotype.Controller;
  * @version: 1.0 2018/8/28
  */
 @Controller
+@Slf4j
 public class WarningDataController {
+
+    @Autowired
+    private SimpMessagingTemplate template;
 
     /**
      * 获取告警信息
@@ -30,7 +37,7 @@ public class WarningDataController {
      */
     @ApiOperation(value = "获取告警信息")
     @MessageMapping("/WarningInfo")
-    @SendTo("/topic/WarningInfo")
+    @SendTo("/ws/WarningInfo")
     public WarningInfo getWarningDataData(HelloMessage helloMessage) throws Exception {
         Thread.sleep(1000); // simulated delay
 
@@ -39,5 +46,18 @@ public class WarningDataController {
         warningInfo.setMessage(1);
 
         return warningInfo;
+    }
+
+    @Scheduled(cron = "0/2 * * * * ? ")//每两秒触发
+    public void publishUpdates() {
+        WarningInfo warningInfo = new WarningInfo();
+
+        //向下级系统通信，并获取指定数据信息，进行数据填充
+        warningInfo.setName("distribute");
+        warningInfo.setMessage(1);
+
+        log.info("定时任务8……");
+
+        template.convertAndSend("/ws/WarningInfo", warningInfo);
     }
 }
