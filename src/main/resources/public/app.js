@@ -13,12 +13,12 @@ function setConnected(connected) {
 }
 
 function connect() {
-    var socket = new SockJS('/websocket_test_retry');
+    var socket = new SockJS('/websocket_entry');
     stompClient = Stomp.over(socket);
     stompClient.connect({}, function (frame) {
         setConnected(true);
         console.log('Connected: ' + frame);
-        stompClient.subscribe('/ws/sysdata', function (greeting) {
+        stompClient.subscribe('/device/dist_sys_data', function (greeting) {
             showGreeting(JSON.parse(greeting.body));
         });
     });
