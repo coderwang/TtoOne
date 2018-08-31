@@ -59,8 +59,6 @@ public class DistColonySystemDataController {
         distSystemData.setBw(random.nextDouble());
         distSystemData.setHelloMessage("定时任务");
 
-        log.info("定时任务3……");
-
         template.convertAndSend("/ws/distColonySystemInfo", distSystemData);
     }
 }

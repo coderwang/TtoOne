@@ -7,18 +7,13 @@
 package com.shdd.cfs.web.data.distribute;
 
 import com.shdd.cfs.dto.data.RootFolderName;
-import com.shdd.cfs.utils.xml.XmlFromURL;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import net.sf.json.JSONObject;
-import org.dom4j.Document;
-import org.dom4j.DocumentException;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.net.MalformedURLException;
 
 /**
  * @author: wangpeng
@@ -40,18 +35,9 @@ public class DistDirInfo {
                     name = "path", value = "指定分布式下目录树全路径", required = true)
     })
 
-    public JSONObject GetDistDirsDataByPath(String path) throws MalformedURLException, DocumentException {
+    public JSONObject GetDistDirsDataByPath(String path) {
 
         log.info(path);
-
-        //从指定URL获取xml数据，并进行解析
-        XmlFromURL xmlFromURL = new XmlFromURL();
-        Document document = xmlFromURL.GetXmlDocument("http://www.w3school.com.cn/example/xmle/note.xml");
-
-        //TODO 确认xml字段，并进行解析
-        xmlFromURL.GetStringsFromXml(document, "to");
-        xmlFromURL.GetStringsFromXml(document, "from");
-        xmlFromURL.GetStringsFromXml(document, "heading");
 
         //将获取到的数据进行填充
         JSONObject rootFolder = new JSONObject();

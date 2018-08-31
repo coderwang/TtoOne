@@ -7,13 +7,18 @@
 package com.shdd.cfs.web.data.tape;
 
 import com.shdd.cfs.dto.data.RootFolderName;
+import com.shdd.cfs.utils.xml.XmlFromURL;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import net.sf.json.JSONObject;
+import org.dom4j.Document;
+import org.dom4j.DocumentException;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.net.MalformedURLException;
 
 /**
  * @author: wangpeng
@@ -35,9 +40,19 @@ public class TapeDirInfo {
                     name = "path", value = "指定磁带库下目录树全路径", required = true)
     })
 
-    public JSONObject GetTapeDirsData(String path) {
+    public JSONObject GetTapeDirsData(String path) throws MalformedURLException, DocumentException {
 
         log.info(path);
+
+        //从指定URL获取xml数据，并进行解析
+        XmlFromURL xmlFromURL = new XmlFromURL();
+        //Document document = xmlFromURL.GetXmlDocument("http://www.w3school.com.cn/example/xmle/note.xml");
+        Document document = xmlFromURL.GetXmlDocument("http://www.w3school.com.cn/example/xmle/simple.xml");
+
+        //TODO 确认xml字段，并进行解析
+        xmlFromURL.GetStringsFromXml(document, "name");
+        //xmlFromURL.GetStringsFromXml(document, "name");
+        //xmlFromURL.GetStringsFromXml(document, "description");
 
         JSONObject rootFolder = new JSONObject();
 

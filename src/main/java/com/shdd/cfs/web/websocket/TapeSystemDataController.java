@@ -62,8 +62,6 @@ public class TapeSystemDataController {
         distSystemData.setBw(random.nextDouble());
         distSystemData.setHelloMessage("定时任务");
 
-        log.info("定时任务7……");
-
         template.convertAndSend("/ws/tapeSystemInfo", distSystemData);
     }
 }

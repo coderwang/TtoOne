@@ -56,8 +56,6 @@ public class WarningDataController {
         warningInfo.setName("distribute");
         warningInfo.setMessage(1);
 
-        log.info("定时任务8……");
-
         template.convertAndSend("/ws/WarningInfo", warningInfo);
     }
 }

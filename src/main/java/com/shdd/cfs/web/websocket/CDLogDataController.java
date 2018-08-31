@@ -52,8 +52,6 @@ public class CDLogDataController {
         journalInfo.setTime("TimeStamp xxx");
         journalInfo.setContent("This is a test warning log from disk.");
 
-        log.info("定时任务1……");
-
         template.convertAndSend("/ws/diskWarningLog", journalInfo);
     }
 }

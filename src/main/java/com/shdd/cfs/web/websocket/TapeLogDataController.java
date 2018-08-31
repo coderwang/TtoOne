@@ -52,8 +52,6 @@ public class TapeLogDataController {
         journalInfo.setTime("TimeStamp xxx");
         journalInfo.setContent("This is a test warning log from disk.");
 
-        log.info("定时任务6……");
-
         template.convertAndSend("/ws/tapeWarningLog", journalInfo);
     }
 }

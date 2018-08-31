@@ -63,8 +63,6 @@ public class CDSystemDataController {
         distSystemData.setBw(random.nextDouble());
         distSystemData.setHelloMessage("定时任务");
 
-        log.info("定时任务2……");
-
         template.convertAndSend("/ws/cddiskSystemInfo", distSystemData);
     }
 }

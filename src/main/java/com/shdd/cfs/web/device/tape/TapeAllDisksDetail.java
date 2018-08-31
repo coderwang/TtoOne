@@ -7,6 +7,7 @@
 package com.shdd.cfs.web.device.tape;
 
 import com.shdd.cfs.dto.device.tape.TapeNodeDetail;
+import com.shdd.cfs.utils.xml.XmlFromURL;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
@@ -45,7 +46,17 @@ public class TapeAllDisksDetail {
                     name = "count", value = "每页所含最大条目数", required = true)
     })
 
-    public JSONObject TapeSystemNodeInfo(int page_num, int count) {
+    public JSONObject TapeSystemNodeInfo(int page_num, int count) throws MalformedURLException, DocumentException {
+
+        //从指定URL获取xml数据，并进行解析
+        XmlFromURL xmlFromURL = new XmlFromURL();
+        Document document = xmlFromURL.GetXmlDocument("http://www.w3school.com.cn/example/xmle/note.xml");
+
+        //TODO 确认xml字段，并进行解析
+        xmlFromURL.GetStringsFromXml(document, "to");
+        xmlFromURL.GetStringsFromXml(document, "from");
+        xmlFromURL.GetStringsFromXml(document, "heading");
+
         JSONObject Jarrary = new JSONObject();
         TapeNodeDetail[] tapenode = new TapeNodeDetail[6];
 

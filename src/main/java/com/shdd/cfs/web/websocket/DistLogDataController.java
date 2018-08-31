@@ -52,8 +52,6 @@ public class DistLogDataController {
         journalInfo.setTime("TimeStamp xxx");
         journalInfo.setContent("This is a test warning log from disk.");
 
-        log.info("定时任务4……");
-
-        template.convertAndSend("/ws/distWarningLog", journalInfo);
+        template.convertAndSend("/ws/distWarningL", journalInfo);
     }
 }
