@@ -35,7 +35,7 @@ public class DistColonySystemDataController {
      */
     @ApiOperation(value = "获取分布式存储主机cpu/内存/带宽使用情况", notes = "获取分布式集群中所有节点的信息，取平均值")
     @MessageMapping("/distColonySystemInfo")
-    @SendTo("/ws/distColonySystemInfo")
+    @SendTo("/device/distColonySystemInfo")
     public DistSystemData getDistColonySystemData() throws InterruptedException {
         Thread.sleep(1000); // simulated delay
 
@@ -59,8 +59,6 @@ public class DistColonySystemDataController {
         distSystemData.setBw(random.nextDouble());
         distSystemData.setHelloMessage("定时任务");
 
-        log.info("定时任务3……");
-
-        template.convertAndSend("/ws/distColonySystemInfo", distSystemData);
+        template.convertAndSend("/device/distColonySystemInfo", distSystemData);
     }
 }

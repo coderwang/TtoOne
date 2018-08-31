@@ -37,7 +37,7 @@ public class WarningDataController {
      */
     @ApiOperation(value = "获取告警信息")
     @MessageMapping("/WarningInfo")
-    @SendTo("/ws/WarningInfo")
+    @SendTo("/log/WarningInfo")
     public WarningInfo getWarningDataData(HelloMessage helloMessage) throws Exception {
         Thread.sleep(1000); // simulated delay
 
@@ -56,8 +56,6 @@ public class WarningDataController {
         warningInfo.setName("distribute");
         warningInfo.setMessage(1);
 
-        log.info("定时任务8……");
-
-        template.convertAndSend("/ws/WarningInfo", warningInfo);
+        template.convertAndSend("/log/WarningInfo", warningInfo);
     }
 }

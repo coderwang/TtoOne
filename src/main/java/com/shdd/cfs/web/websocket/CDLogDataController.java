@@ -31,7 +31,7 @@ public class CDLogDataController {
      */
     @ApiOperation(value = "获取光盘库存储系统告警详细信息", notes = "获取光盘库存储系统告警详细信息")
     @MessageMapping("/diskWarningLog")
-    @SendTo("/ws/diskWarningLog")
+    @SendTo("/log/diskWarningLog")
     public JournalInfo GetCDLogData() {
         JournalInfo journalInfo = new JournalInfo();
 
@@ -52,8 +52,6 @@ public class CDLogDataController {
         journalInfo.setTime("TimeStamp xxx");
         journalInfo.setContent("This is a test warning log from disk.");
 
-        log.info("定时任务1……");
-
-        template.convertAndSend("/ws/diskWarningLog", journalInfo);
+        template.convertAndSend("/log/diskWarningLog", journalInfo);
     }
 }

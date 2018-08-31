@@ -40,7 +40,7 @@ public class DistSystemDataController {
     @ApiOperation(value = "获取分布式存储主机cpu/内存/带宽使用情况")
 
     @MessageMapping("/hello")
-    @SendTo("/ws/sysdata")
+    @SendTo("/device/dist_sys_data")
     public DistSystemData getDistSystemData(HelloMessage helloMessage) throws Exception {
         Thread.sleep(1000); // simulated delay
 
@@ -64,9 +64,7 @@ public class DistSystemDataController {
         distSystemData.setBw(random.nextDouble());
         distSystemData.setHelloMessage("定时任务");
 
-        log.info("定时任务5……");
-
-        template.convertAndSend("/ws/sysdata", distSystemData);
+        template.convertAndSend("/device/dist_sys_data", distSystemData);
     }
 
 }
