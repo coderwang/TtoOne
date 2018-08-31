@@ -29,7 +29,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
-        registry.addEndpoint("/websocket_test_retry").withSockJS();
+        registry.addEndpoint("/websocket_test_retry").setAllowedOrigins("http://localhost:8081").withSockJS();
     }
 
 }
