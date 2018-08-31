@@ -38,8 +38,8 @@ public class TapeSystemDataController {
      * @throws Exception
      */
     @ApiOperation(value = "获取磁带库存储cpu/内存/带宽使用情况")
-    @MessageMapping("/tapeSystemInfo")
-    @SendTo("/device/tapeSystemInfo")
+    @MessageMapping("/tape_sys_info")
+    @SendTo("/device/tape_sys_info")
     public DistSystemData getTapeSystemData(HelloMessage helloMessage) throws Exception {
         Thread.sleep(1000); // simulated delay
 
@@ -62,6 +62,6 @@ public class TapeSystemDataController {
         distSystemData.setBw(random.nextDouble());
         distSystemData.setHelloMessage("定时任务");
 
-        template.convertAndSend("/device/tapeSystemInfo", distSystemData);
+        template.convertAndSend("/device/tape_sys_info", distSystemData);
     }
 }

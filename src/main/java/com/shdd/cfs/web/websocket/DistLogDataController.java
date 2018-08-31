@@ -31,8 +31,8 @@ public class DistLogDataController {
      * @return
      */
     @ApiOperation(value = "获取分布式存储系统告警详细信息", notes = "获取分布式存储系统告警详细信息")
-    @MessageMapping("/distWarningLog")
-    @SendTo("/log/distWarningLog")
+    @MessageMapping("/dist_warning_log")
+    @SendTo("/log/dist_warning_log")
     public JournalInfo GetLogData() {
         JournalInfo journalInfo = new JournalInfo();
 
@@ -52,6 +52,6 @@ public class DistLogDataController {
         journalInfo.setTime("TimeStamp xxx");
         journalInfo.setContent("This is a test warning log from disk.");
 
-        template.convertAndSend("/log/distWarningLog", journalInfo);
+        template.convertAndSend("/log/dist_warning_log", journalInfo);
     }
 }

@@ -31,8 +31,8 @@ public class TapeLogDataController {
      * @return
      */
     @ApiOperation(value = "获取磁带库存储系统告警详细信息", notes = "获取磁带库存储系统告警详细信息")
-    @MessageMapping("/tapeWarningLog")
-    @SendTo("/log/tapeWarningLog")
+    @MessageMapping("/tape_warning_log")
+    @SendTo("/log/tape_warning_log")
     public JournalInfo GetTapeLogData() {
         JournalInfo journalInfo = new JournalInfo();
 
@@ -52,6 +52,6 @@ public class TapeLogDataController {
         journalInfo.setTime("TimeStamp xxx");
         journalInfo.setContent("This is a test warning log from disk.");
 
-        template.convertAndSend("/log/tapeWarningLog", journalInfo);
+        template.convertAndSend("/log/tape_warning_log", journalInfo);
     }
 }

@@ -38,8 +38,8 @@ public class CDSystemDataController {
      * @throws Exception
      */
     @ApiOperation(value = "获取光盘库存储cpu/内存/带宽使用情况")
-    @MessageMapping("/cddiskSystemInfo")
-    @SendTo("/device/cddiskSystemInfo")
+    @MessageMapping("/cddisk_sys_info")
+    @SendTo("/device/cddisk_sys_info")
     public DistSystemData getCddiskSystemData(HelloMessage helloMessage) throws Exception {
         Thread.sleep(1000); // simulated delay
 
@@ -63,6 +63,6 @@ public class CDSystemDataController {
         distSystemData.setBw(random.nextDouble());
         distSystemData.setHelloMessage("定时任务");
 
-        template.convertAndSend("/device/cddiskSystemInfo", distSystemData);
+        template.convertAndSend("/device/cddisk_sys_info", distSystemData);
     }
 }
