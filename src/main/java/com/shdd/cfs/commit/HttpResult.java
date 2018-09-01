@@ -5,7 +5,6 @@ import java.io.Serializable;
 import lombok.Data;
 import lombok.ToString;
 
-
 /**
  * 请求的返回结果
  * 
@@ -15,7 +14,6 @@ import lombok.ToString;
 @Data
 @ToString
 public class HttpResult implements Serializable{
-
     /**
      * 
      */
@@ -28,7 +26,6 @@ public class HttpResult implements Serializable{
     
     // * 响应码（一定是 200，如果出现其他的，说明服务器有问题了）
     // private int statusCode;
-    
     /**
      * 返回值 / 错误信息
      */

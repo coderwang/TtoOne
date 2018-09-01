@@ -57,7 +57,6 @@ public class HttpClientOperate implements BeanFactoryAware {
 
     /**
      * 封装 get 请求
-     * 
      * @param uri
      * @param params
      * @return
@@ -76,7 +75,6 @@ public class HttpClientOperate implements BeanFactoryAware {
                 uriBuilder.setParameter(key, params.get(key));
             }
         }
-        
         // 创建http GET请求
         HttpGet httpGet = new HttpGet();
         httpGet.setConfig(requestConfig);// 设置请求参数
@@ -112,7 +110,6 @@ public class HttpClientOperate implements BeanFactoryAware {
             }
         }
     }
-
     /**
      * 封装 post 请求
      * 
@@ -224,8 +221,4 @@ public class HttpClientOperate implements BeanFactoryAware {
             }
         }        
     }
-
-    
-
-
 }

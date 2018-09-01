@@ -1,19 +1,14 @@
 package com.shdd.cfs.commit.iamp;
-
 import java.util.HashMap;
 import java.util.Map;
-
 import javax.annotation.Resource;
-
 import com.shdd.cfs.commit.HttpClientOperate;
 import com.shdd.cfs.commit.HttpResult;
 
 public class IampRequest {
-
     /**
      * iamp5.x 版本中，支持使用的 API 接口名称<br/>
      * 参考依据：iamp_5.x_developer_reference_manual.docx
-     * 
      * @author zhel <br/>
      * 2018年8月13日
      */
@@ -39,45 +34,32 @@ public class IampRequest {
         create_gdoc("/create_gdoc.websvc",                                        "4.7 创建案卷组"),
         inquiry_production_struct("/inquiry_production_struct.websvc",          "5.1 查询生产区结构"),
         logon("/logon.websvc",                                                     "6.1 登录授权");
-    
         private final String path;
-    
         private IampApiEnum(String path, String name) {
             this.path = path;
         }
-        
         public String getPath() {
             return uri + path;
         }
     }
-
-
     @Resource
     private HttpClientOperate httpClientOperate;
-    private static String uri;    // http://127.0.0.1/xxx
-    
+    private static String uri;
     public IampRequest(String uri) {
         IampRequest.uri = uri;
     }
-    
-    
-    
-
     public HttpResult logon(String username, String password) {
         Map<String, String> param = new HashMap<>();
         param.put("username", username);
         param.put("password", password);
-
         HttpResult result = httpClientOperate.doGet(IampApiEnum.logon.getPath(), param);
         System.out.println(result);
         return result;
     }
-
     public HttpResult inquiry_task_items(String id, String session_key) {
         Map<String, String> param = new HashMap<>();
         param.put("id", id);
         param.put("session_key", session_key);
-        
         HttpResult result = httpClientOperate.doGet(IampApiEnum.inquiry_task_status.getPath(), param);
         System.out.println(result);
         return result;
