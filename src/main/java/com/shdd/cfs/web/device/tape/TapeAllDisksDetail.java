@@ -48,14 +48,14 @@ public class TapeAllDisksDetail {
 
     public JSONObject TapeSystemNodeInfo(int page_num, int count) throws MalformedURLException, DocumentException {
 
-        //从指定URL获取xml数据，并进行解析
-        XmlFromURL xmlFromURL = new XmlFromURL();
-        Document document = xmlFromURL.GetXmlDocument("http://www.w3school.com.cn/example/xmle/note.xml");
-
-        //TODO 确认xml字段，并进行解析
-        xmlFromURL.GetStringsFromXml(document, "to");
-        xmlFromURL.GetStringsFromXml(document, "from");
-        xmlFromURL.GetStringsFromXml(document, "heading");
+        ////从指定URL获取xml数据，并进行解析
+        //XmlFromURL xmlFromURL = new XmlFromURL();
+        //Document document = xmlFromURL.GetXmlDocument("http://www.w3school.com.cn/example/xmle/note.xml");
+//
+        ////TODO 确认xml字段，并进行解析
+        //xmlFromURL.GetStringsFromXml(document, "to");
+        //xmlFromURL.GetStringsFromXml(document, "from");
+        //xmlFromURL.GetStringsFromXml(document, "heading");
 
         JSONObject Jarrary = new JSONObject();
         TapeNodeDetail[] tapenode = new TapeNodeDetail[6];
