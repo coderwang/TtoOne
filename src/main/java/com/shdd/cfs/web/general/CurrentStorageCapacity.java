@@ -10,6 +10,7 @@ import com.shdd.cfs.dto.dashboard.CurrentDistributedCapacityDetail;
 import com.shdd.cfs.dto.dashboard.CurrentOpticalCapacityDetail;
 import com.shdd.cfs.dto.dashboard.CurrentTapeCapacityDetail;
 import com.shdd.cfs.dto.dashboard.DistributeCapacityStruct;
+import com.shdd.cfs.utils.json.DistributeUrlHandle;
 import com.shdd.cfs.utils.json.GetJsonMessage;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -32,11 +33,14 @@ public class CurrentStorageCapacity {
 
     public JSONObject SendCurrentCapacity(String SetValue) {
         log.info("SetValue", SetValue);
+        //光盘库节点容量获取对象
         JSONObject getopticalcapacity = new JSONObject();
-        String capacity = "{\"protoname\":\"nodeconnect\"}"; //获取光盘库容量, 节点状态
-        getopticalcapacity = GetJsonMessage.GetJsonStr("192.168.100.199", 8000, capacity);//获取光盘库节点返回报文
+        //获取光盘库容量, 节点状态
+        String capacity = "{\"protoname\":\"nodeconnect\"}";
+        //获取光盘库节点返回报文
+        getopticalcapacity = GetJsonMessage.GetJsonStr("192.168.100.199", 8000, capacity);
+        //定义Json发送对象
         DistributeCapacityStruct currentDisVal = new DistributeCapacityStruct();
-        CurrentDistributedCapacityDetail[] disValData = new CurrentDistributedCapacityDetail[1];
         CurrentTapeCapacityDetail currenttapeVal = new CurrentTapeCapacityDetail();
         CurrentOpticalCapacityDetail currentOptVal = new CurrentOpticalCapacityDetail();
         //给磁带库当前容量赋值
@@ -48,13 +52,17 @@ public class CurrentStorageCapacity {
         currentOptVal.setDevType("cdstorage");
         currentOptVal.setUsedCapacity(Double.parseDouble(getopticalcapacity.getString(("usedinfo"))));
         //给分布式容量赋值
+
+        //获取分布式单个存储池信息
+        JSONObject poolinfo = DistributeUrlHandle.Poolinfo();
+        CurrentDistributedCapacityDetail[] disValData = new CurrentDistributedCapacityDetail[1];
         disValData[0] = new CurrentDistributedCapacityDetail();
-        disValData[0].setCapacity(20.34);
-        disValData[0].setPoolName("xx");
-        disValData[0].setUsedCapacity(15.4);
+        disValData[0].setCapacity(23.4);
+        disValData[0].setPoolName("123");
+        disValData[0].setUsedCapacity(43.1);
+        //组织返回JSON数据对象
         currentDisVal.setDevType("distributed");
         currentDisVal.setData(disValData);
-        //组织返回JSON数据对象
         JSONObject jobject = new JSONObject();
         JSONArray devices = new JSONArray();
         devices.add(currentDisVal);

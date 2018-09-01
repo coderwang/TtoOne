@@ -1,3 +1,15 @@
 #端口
 server:
-  port: 8090
+  port: 8091
+
+http:
+  pool:
+    maxTotal: 20
+    defaultMaxPerRoute: 10
+  request:
+    connectionRequestTimeout: 500
+    connectTimeout: 5000
+    socketTimeout: 30000
+    staleConnectionCheckEnabled: true
+    uri:
+      iamp: http://192.168.1.27:8080/iamp
