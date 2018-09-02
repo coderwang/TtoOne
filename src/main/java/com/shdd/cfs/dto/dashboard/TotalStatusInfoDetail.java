@@ -6,6 +6,7 @@
  */
 package com.shdd.cfs.dto.dashboard;
 
+import com.shdd.cfs.utils.xml.iamp.IampRequest;
 import lombok.Data;
 
 /**
@@ -15,27 +16,27 @@ import lombok.Data;
 @Data
 public class TotalStatusInfoDetail {
 	/**
-	 * 今日总任务
+	 * 分布式总容量
 	 */
-	private Integer task;
+	private Double distcapacity;
 	/**
-	 * 运行中任务
+	 * 分布式可用容量
 	 */
-	private Integer running;
+	private Double distfree;
 	/**
-	 * 已完成任务个数
+	 * 磁带库总磁带数
 	 */
-	private Integer completed;
+	private Integer tapecapacity;
 	/**
-	 * 新增条目
+	 * 磁带库可用磁带数
 	 */
-	private Integer added;
+	private Integer tapefree;
 	/**
-	 * 存储池总使用容量 磁带库+分布式+光盘库
+	 * 光盘库总光盘数
 	 */
-	private Double capacity;
+	private Integer cdcapacity;
 	/**
-	 * 警告个数
+	 * 光盘库可用光盘数
 	 */
-	private Integer warning;
+	private Integer cdfree;
 }

@@ -44,12 +44,12 @@ public class ThreeinOneSummary {
 		TotalCapacityInfoDto capacityStatusInfo = new TotalCapacityInfoDto();
 		TotalStatusInfoDetail[] allCapacityInfo = new TotalStatusInfoDetail[1];
 		allCapacityInfo[0] = new TotalStatusInfoDetail();
-		allCapacityInfo[0].setTask(1);
-		allCapacityInfo[0].setRunning(1);
-		allCapacityInfo[0].setCompleted(1);
-		allCapacityInfo[0].setAdded(1);
-		allCapacityInfo[0].setCapacity(optUserCapacity + disUseCapacity);
-		allCapacityInfo[0].setWarning(1);
+		allCapacityInfo[0].setDistcapacity(23.1);
+		allCapacityInfo[0].setDistfree(12.3);
+		allCapacityInfo[0].setTapecapacity(1);
+		allCapacityInfo[0].setTapefree(1);
+		allCapacityInfo[0].setCdcapacity(1);
+		allCapacityInfo[0].setCdfree(25);
 		capacityStatusInfo.setData(allCapacityInfo);
 		//返回给JSON报文
 		return capacityStatusInfo;
