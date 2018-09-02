@@ -1,7 +1,7 @@
 package com.shdd.cfs.web;
 
-import com.shdd.cfs.commit.HttpResult;
-import com.shdd.cfs.commit.iamp.IampRequest;
+import com.shdd.cfs.utils.xml.iamp.HttpResult;
+import com.shdd.cfs.utils.xml.iamp.IampRequest;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.DocumentHelper;

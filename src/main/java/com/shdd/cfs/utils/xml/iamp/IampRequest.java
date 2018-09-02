@@ -1,9 +1,8 @@
-package com.shdd.cfs.commit.iamp;
+package com.shdd.cfs.utils.xml.iamp;
 import java.util.HashMap;
 import java.util.Map;
 import javax.annotation.Resource;
-import com.shdd.cfs.commit.HttpClientOperate;
-import com.shdd.cfs.commit.HttpResult;
+import com.shdd.cfs.utils.xml.HttpClientOperate;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.DocumentHelper;

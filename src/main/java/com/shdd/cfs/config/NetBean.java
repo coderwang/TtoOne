@@ -1,6 +1,6 @@
 package com.shdd.cfs.config;
 
-import com.shdd.cfs.commit.iamp.IampRequest;
+import com.shdd.cfs.utils.xml.iamp.IampRequest;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
