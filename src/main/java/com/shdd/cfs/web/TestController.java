@@ -18,7 +18,7 @@ public class TestController {
 		HttpResult logon = iampRequest.logon("shuju", "69MOQca0Hv6NsOJH");
 		String teString = logon.getContent();
 		String session = iampRequest.SessionKey();
-		iampRequest.inquiry_tape_lists(session);
+		iampRequest.all_of_tape_status(session);
 		return teString;
 	}
 }

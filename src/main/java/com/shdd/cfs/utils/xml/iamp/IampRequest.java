@@ -114,17 +114,14 @@ public class IampRequest {
     public String all_of_tape_status(String session_key) throws DocumentException {
         String tapestatus = "";
         HttpResult tape_lists = inquiry_tape_lists(session_key);
-        System.out.println(tape_lists);
         String result = tape_lists.getContent();
-        //System.out.println(result);
         Document document = DocumentHelper.parseText(result);
-        Element rootElm = document.getRootElement();
-        //System.out.println(rootElm);
-        List nodes = rootElm.elements("tape/capacity/status");
-        for (Iterator it = nodes.iterator(); it.hasNext();) {
-            Element elm = (Element) it.next();
-            System.out.println("gg_test:" + elm.getStringValue());
-        }
+//        for (Iterator it = nodes.iterator(); it.hasNext();) {
+//            Element elm = (Element) it.next();
+//            System.out.println("XXXXXXXXXXXXXXXXXXXXXXXXXXXx");
+//            System.out.println(elm.getStringValue());
+//            System.out.println("XXXXXXXXXXXXXXXXXXXXXXXXXXXx");
+// }
         return tapestatus;
     }
 }
