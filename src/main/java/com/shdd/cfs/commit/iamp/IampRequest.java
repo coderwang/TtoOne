@@ -4,6 +4,9 @@ import java.util.Map;
 import javax.annotation.Resource;
 import com.shdd.cfs.commit.HttpClientOperate;
 import com.shdd.cfs.commit.HttpResult;
+import org.dom4j.Document;
+import org.dom4j.DocumentException;
+import org.dom4j.DocumentHelper;
 
 public class IampRequest {
     /**
@@ -55,6 +58,17 @@ public class IampRequest {
         HttpResult result = httpClientOperate.doGet(IampApiEnum.logon.getPath(), param);
         System.out.println(result);
         return result;
+    }
+    public String SessionKey() throws DocumentException {
+        String sessonkey = "";
+        HttpResult loginfo = logon("shuju","69MOQca0Hv6NsOJH");
+        if (!loginfo.isFlag()) {
+            return "wrong";
+        }
+        String teString = loginfo.getContent();
+        Document document = DocumentHelper.parseText(teString);
+        sessonkey = document.selectSingleNode("/xml/session/key").getText();
+        return sessonkey;
     }
     public HttpResult inquiry_task_items(String id, String session_key) {
         Map<String, String> param = new HashMap<>();
