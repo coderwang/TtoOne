@@ -16,14 +16,9 @@ public class TestController {
 	@GetMapping("/hello")
 	public String hello() throws DocumentException, org.dom4j.DocumentException {
 		HttpResult logon = iampRequest.logon("shuju", "69MOQca0Hv6NsOJH");
-		if (!logon.isFlag()) {
-			return "wrong";
-		}
 		String teString = logon.getContent();
-		Document document2 = DocumentHelper.parseText(teString);
-		System.out.println(document2.selectSingleNode("/xml/session/key").getText());
-		System.out.println(document2.selectSingleNode("/xml/session/expired").getText());
-		System.out.println("gg" + iampRequest.SessionKey());
+		String session = iampRequest.SessionKey();
+		iampRequest.inquiry_tape_lists(session);
 		return teString;
 	}
 }

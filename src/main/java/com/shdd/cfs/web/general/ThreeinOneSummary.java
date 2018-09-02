@@ -10,9 +10,11 @@ import com.shdd.cfs.dto.dashboard.TotalCapacityInfoDto;
 import com.shdd.cfs.dto.dashboard.TotalStatusInfoDetail;
 import com.shdd.cfs.utils.json.DistributeUrlHandle;
 import com.shdd.cfs.utils.json.GetJsonMessage;
+import com.shdd.cfs.utils.xml.iamp.IampRequest;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import net.sf.json.JSONObject;
+import org.dom4j.DocumentException;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -27,7 +29,7 @@ public class ThreeinOneSummary {
 	@GetMapping(value = "api/dashboard/capacitystatus")
 	@ApiOperation(value = "发送总容量信息", notes = "获取三合一系统的概要信息，包含总任务、运行任务、完成任务、新增任务、总容量、总告警")
 
-	public TotalCapacityInfoDto sendTotalCapacityStatusInfo(String TotalInfo) {
+	public TotalCapacityInfoDto sendTotalCapacityStatusInfo(String TotalInfo) throws DocumentException {
 		log.info(TotalInfo);
 		//定义获取光盘库容量信息的对象
 		JSONObject getnodecapacity = new JSONObject();
@@ -40,6 +42,10 @@ public class ThreeinOneSummary {
 		JSONObject disjsoncapacity = DistributeUrlHandle.ClusterInfo();
 		//获取分布式存储集群总的使用容量
 		Double disUseCapacity = Double.parseDouble(disjsoncapacity.getString("storage_used"));
+		//获取磁带库总磁带个数
+		IampRequest iampRequest = null;
+		String sessonKey = iampRequest.SessionKey();
+
 		//组织发送给UI的报文
 		TotalCapacityInfoDto capacityStatusInfo = new TotalCapacityInfoDto();
 		TotalStatusInfoDetail[] allCapacityInfo = new TotalStatusInfoDetail[1];

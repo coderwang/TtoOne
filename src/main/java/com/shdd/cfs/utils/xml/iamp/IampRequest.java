@@ -1,11 +1,14 @@
 package com.shdd.cfs.utils.xml.iamp;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import javax.annotation.Resource;
 import com.shdd.cfs.utils.xml.HttpClientOperate;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.DocumentHelper;
+import org.dom4j.Element;
 
 public class IampRequest {
     /**
@@ -50,14 +53,23 @@ public class IampRequest {
     public IampRequest(String uri) {
         IampRequest.uri = uri;
     }
+    /**
+     * @param username  磁带库 数据管理员用户名
+     * @param password   磁带库 数据管理员webskey
+     * @return  数据请求结果字符窜
+     */
     public HttpResult logon(String username, String password) {
         Map<String, String> param = new HashMap<>();
         param.put("username", username);
         param.put("password", password);
         HttpResult result = httpClientOperate.doGet(IampApiEnum.logon.getPath(), param);
-        System.out.println(result);
         return result;
     }
+
+    /**
+     *通过用户名获取访问秘钥
+      * @return 获取到的访问秘钥
+     */
     public String SessionKey() throws DocumentException {
         String sessonkey = "";
         HttpResult loginfo = logon("shuju","69MOQca0Hv6NsOJH");
@@ -69,13 +81,50 @@ public class IampRequest {
         sessonkey = document.selectSingleNode("/xml/session/key").getText();
         return sessonkey;
     }
+
+    /**
+     *
+     * @param id
+     * @param session_key
+     * @return
+     */
     public HttpResult inquiry_task_items(String id, String session_key) {
         Map<String, String> param = new HashMap<>();
         param.put("id", id);
         param.put("session_key", session_key);
         HttpResult result = httpClientOperate.doGet(IampApiEnum.inquiry_task_status.getPath(), param);
-        System.out.println(result);
         return result;
     }
-    
+    /**
+     *向磁带库后台请求所有磁带信息
+     * @param session_key 访问秘钥
+     * @return  所有磁带信息
+     */
+    public HttpResult inquiry_tape_lists(String session_key){
+        Map<String,String> param = new HashMap<>();
+        param.put("session_key",session_key);
+        HttpResult result = httpClientOperate.doGet(IampApiEnum.inquiry_tape_lists.getPath(),param);
+        return result;
+    }
+    /**
+     * 分析磁带库后台返回的所有磁带信息 （解析字段：【tape/capacity/status】 1空白 2未满 3已满）
+     * @param session_key 访问秘钥
+     * @return
+     */
+    public String all_of_tape_status(String session_key) throws DocumentException {
+        String tapestatus = "";
+        HttpResult tape_lists = inquiry_tape_lists(session_key);
+        System.out.println(tape_lists);
+        String result = tape_lists.getContent();
+        //System.out.println(result);
+        Document document = DocumentHelper.parseText(result);
+        Element rootElm = document.getRootElement();
+        //System.out.println(rootElm);
+        List nodes = rootElm.elements("tape/capacity/status");
+        for (Iterator it = nodes.iterator(); it.hasNext();) {
+            Element elm = (Element) it.next();
+            System.out.println("gg_test:" + elm.getStringValue());
+        }
+        return tapestatus;
+    }
 }
