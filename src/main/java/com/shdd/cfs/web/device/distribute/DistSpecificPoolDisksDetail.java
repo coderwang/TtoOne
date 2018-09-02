@@ -38,56 +38,56 @@ public class DistSpecificPoolDisksDetail {
 
     public JSONObject DistributeStorageInfo(int poolid, int page_num, int count) {
         JSONObject jarrary = new JSONObject();
-        HostNodeInfoDetail[] arrdtail = new HostNodeInfoDetail[6];
+        HostNodeInfoDetail[] arrayDiskInfo = new HostNodeInfoDetail[6];
 
-        arrdtail[0] = new HostNodeInfoDetail();
-        arrdtail[1] = new HostNodeInfoDetail();
-        arrdtail[2] = new HostNodeInfoDetail();
-        arrdtail[3] = new HostNodeInfoDetail();
-        arrdtail[4] = new HostNodeInfoDetail();
-        arrdtail[5] = new HostNodeInfoDetail();
+        arrayDiskInfo[0] = new HostNodeInfoDetail();
+        arrayDiskInfo[1] = new HostNodeInfoDetail();
+        arrayDiskInfo[2] = new HostNodeInfoDetail();
+        arrayDiskInfo[3] = new HostNodeInfoDetail();
+        arrayDiskInfo[4] = new HostNodeInfoDetail();
+        arrayDiskInfo[5] = new HostNodeInfoDetail();
 
-        arrdtail[0].setId(1);
-        arrdtail[0].setCapacity(50.0);
-        arrdtail[0].setHostname("Node199");
-        arrdtail[0].setName("xx");
-        arrdtail[0].setUsed(67.99);
-        arrdtail[0].setStatus(1);
+        arrayDiskInfo[0].setId(1);
+        arrayDiskInfo[0].setCapacity(50.0);
+        arrayDiskInfo[0].setHostname("Node199");
+        arrayDiskInfo[0].setName("xx");
+        arrayDiskInfo[0].setUsed(67.99);
+        arrayDiskInfo[0].setStatus(1);
 
-        arrdtail[1].setId(2);
-        arrdtail[1].setCapacity(51.0);
-        arrdtail[1].setHostname("Node201");
-        arrdtail[1].setName("xx");
-        arrdtail[1].setUsed(69.99);
-        arrdtail[1].setStatus(0);
+        arrayDiskInfo[1].setId(2);
+        arrayDiskInfo[1].setCapacity(51.0);
+        arrayDiskInfo[1].setHostname("Node201");
+        arrayDiskInfo[1].setName("xx");
+        arrayDiskInfo[1].setUsed(69.99);
+        arrayDiskInfo[1].setStatus(0);
 
-        arrdtail[2].setId(3);
-        arrdtail[2].setCapacity(51.0);
-        arrdtail[2].setHostname("Node201");
-        arrdtail[2].setName("xx");
-        arrdtail[2].setUsed(69.99);
-        arrdtail[2].setStatus(0);
+        arrayDiskInfo[2].setId(3);
+        arrayDiskInfo[2].setCapacity(51.0);
+        arrayDiskInfo[2].setHostname("Node201");
+        arrayDiskInfo[2].setName("xx");
+        arrayDiskInfo[2].setUsed(69.99);
+        arrayDiskInfo[2].setStatus(0);
 
-        arrdtail[3].setId(4);
-        arrdtail[3].setCapacity(51.0);
-        arrdtail[3].setHostname("Node201");
-        arrdtail[3].setName("xx");
-        arrdtail[3].setUsed(69.99);
-        arrdtail[3].setStatus(0);
+        arrayDiskInfo[3].setId(4);
+        arrayDiskInfo[3].setCapacity(51.0);
+        arrayDiskInfo[3].setHostname("Node201");
+        arrayDiskInfo[3].setName("xx");
+        arrayDiskInfo[3].setUsed(69.99);
+        arrayDiskInfo[3].setStatus(0);
 
-        arrdtail[4].setId(5);
-        arrdtail[4].setCapacity(51.0);
-        arrdtail[4].setHostname("Node201");
-        arrdtail[4].setName("xx");
-        arrdtail[4].setUsed(69.99);
-        arrdtail[4].setStatus(0);
+        arrayDiskInfo[4].setId(5);
+        arrayDiskInfo[4].setCapacity(51.0);
+        arrayDiskInfo[4].setHostname("Node201");
+        arrayDiskInfo[4].setName("xx");
+        arrayDiskInfo[4].setUsed(69.99);
+        arrayDiskInfo[4].setStatus(0);
 
-        arrdtail[5].setId(6);
-        arrdtail[5].setCapacity(51.0);
-        arrdtail[5].setHostname("Node201");
-        arrdtail[5].setName("xx");
-        arrdtail[5].setUsed(69.99);
-        arrdtail[5].setStatus(0);
+        arrayDiskInfo[5].setId(6);
+        arrayDiskInfo[5].setCapacity(51.0);
+        arrayDiskInfo[5].setHostname("Node201");
+        arrayDiskInfo[5].setName("xx");
+        arrayDiskInfo[5].setUsed(69.99);
+        arrayDiskInfo[5].setStatus(0);
 
         //计算总页数
         int totalPage = 0;
@@ -97,7 +97,7 @@ public class DistSpecificPoolDisksDetail {
         System.out.println(totalPage);
 
         jarrary.accumulate("totalPage", totalPage);
-        jarrary.accumulate("disk", arrdtail);
+        jarrary.accumulate("disk", arrayDiskInfo);
         return jarrary;
     }
 }

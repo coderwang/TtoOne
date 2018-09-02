@@ -47,6 +47,9 @@ public class XmlFromURL {
      */
     public void GetStringsFromXml(Document document, String key) {
         Element rootElement = document.getRootElement();
-        log.info(rootElement.element(key).getData().toString());
+
+        log.info(document.elementByID("food").element(key).getData().toString());;
+        //log.info(rootElement.element(key).getData().toString());
     }
+
 }
