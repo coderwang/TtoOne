@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
+
 @RestController
 public class TestController {
 	@Autowired
@@ -18,7 +20,9 @@ public class TestController {
 		HttpResult logon = iampRequest.logon("shuju", "69MOQca0Hv6NsOJH");
 		String teString = logon.getContent();
 		String session = iampRequest.SessionKey();
-		iampRequest.all_of_tape_status(session);
+		ArrayList<Integer> arrayList = iampRequest.all_of_tape_status(session);
+		for (int i = 0 ; i < arrayList.size(); i++)
+			System.out.println(arrayList.get(i));
 		return teString;
 	}
 }

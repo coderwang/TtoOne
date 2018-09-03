@@ -1,7 +1,7 @@
 package com.shdd.cfs.utils.xml.iamp;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 import javax.annotation.Resource;
 import com.shdd.cfs.utils.xml.HttpClientOperate;
@@ -109,19 +109,27 @@ public class IampRequest {
     /**
      * 分析磁带库后台返回的所有磁带信息 （解析字段：【tape/capacity/status】 1空白 2未满 3已满）
      * @param session_key 访问秘钥
-     * @return
+     * @return 单个磁带库所有磁带的状态信息
      */
-    public String all_of_tape_status(String session_key) throws DocumentException {
-        String tapestatus = "";
+    public ArrayList<Integer> all_of_tape_status(String session_key) throws DocumentException {
+        ArrayList<Integer> arrayList = new ArrayList<Integer>();
         HttpResult tape_lists = inquiry_tape_lists(session_key);
         String result = tape_lists.getContent();
         Document document = DocumentHelper.parseText(result);
-//        for (Iterator it = nodes.iterator(); it.hasNext();) {
-//            Element elm = (Element) it.next();
-//            System.out.println("XXXXXXXXXXXXXXXXXXXXXXXXXXXx");
-//            System.out.println(elm.getStringValue());
-//            System.out.println("XXXXXXXXXXXXXXXXXXXXXXXXXXXx");
-// }
-        return tapestatus;
+        Element root = document.getRootElement();
+        // 遍历root节点下的所有子节点
+        for (Iterator itemGroup = root.elementIterator(); itemGroup.hasNext(); ) {
+            // 得到root节点下所有子节点
+            Element tape_group = (Element) itemGroup.next();
+            // 遍历遍历root子节点下的所有子节点
+            for (Iterator itemCapacity = tape_group.elementIterator(); itemCapacity.hasNext(); ) {
+                Element capacity = (Element) itemCapacity.next();
+                //获取所有磁带属性值【tape/capacity/status】 参数值：1空白 2未满 3已满
+                if (capacity.getName().equals("capacity")) {
+                	arrayList.add(Integer.parseInt(capacity.attributeValue("status")));
+                }
+            }
+        }
+        return arrayList;
     }
 }

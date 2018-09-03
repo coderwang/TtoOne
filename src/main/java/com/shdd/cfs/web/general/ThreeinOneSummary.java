@@ -15,8 +15,11 @@ import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import net.sf.json.JSONObject;
 import org.dom4j.DocumentException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.ArrayList;
 
 @RestController
 @Slf4j
@@ -26,6 +29,8 @@ public class ThreeinOneSummary {
 	 * @param TotalInfo
 	 * @return
 	 */
+	@Autowired
+	IampRequest iampRequest;
 	@GetMapping(value = "api/dashboard/capacitystatus")
 	@ApiOperation(value = "发送总容量信息", notes = "获取三合一系统的概要信息，包含总任务、运行任务、完成任务、新增任务、总容量、总告警")
 
@@ -36,24 +41,30 @@ public class ThreeinOneSummary {
 		//获取光盘库容量, 节点状态
 		String nodecapacity = "{\"protoname\":\"nodeconnect\"}";
 		//获取光盘库节点容量信息
-		getnodecapacity = GetJsonMessage.GetJsonStr("192.168.100.199", 8000, nodecapacity);
-		Double optUserCapacity = Double.parseDouble(getnodecapacity.getString(("usedinfo")));
+//		getnodecapacity = GetJsonMessage.GetJsonStr("192.168.100.199", 8000, nodecapacity);
+//		Double optUserCapacity = Double.parseDouble(getnodecapacity.getString(("usedinfo")));
 		//获取分布式集群信息
-		JSONObject disjsoncapacity = DistributeUrlHandle.ClusterInfo();
+//		JSONObject disjsoncapacity = DistributeUrlHandle.ClusterInfo();
 		//获取分布式存储集群总的使用容量
-		Double disUseCapacity = Double.parseDouble(disjsoncapacity.getString("storage_used"));
+//		Double disUseCapacity = Double.parseDouble(disjsoncapacity.getString("storage_used"));
 		//获取磁带库总磁带个数
-		IampRequest iampRequest = null;
 		String sessonKey = iampRequest.SessionKey();
-
+		ArrayList<Integer> alltapelist = iampRequest.all_of_tape_status(sessonKey);
+		Integer alltapesize  = 	alltapelist.size();
+		int fulltape = 0;
+		for(Integer list: alltapelist){
+			if (list == 1){
+				fulltape = fulltape + 1;
+			}  //空白磁带
+		}
 		//组织发送给UI的报文
 		TotalCapacityInfoDto capacityStatusInfo = new TotalCapacityInfoDto();
 		TotalStatusInfoDetail[] allCapacityInfo = new TotalStatusInfoDetail[1];
 		allCapacityInfo[0] = new TotalStatusInfoDetail();
 		allCapacityInfo[0].setDistcapacity(23.1);
 		allCapacityInfo[0].setDistfree(12.3);
-		allCapacityInfo[0].setTapecapacity(1);
-		allCapacityInfo[0].setTapefree(1);
+		allCapacityInfo[0].setTapecapacity(alltapesize);
+		allCapacityInfo[0].setTapefree(fulltape);
 		allCapacityInfo[0].setCdcapacity(1);
 		allCapacityInfo[0].setCdfree(25);
 		capacityStatusInfo.setData(allCapacityInfo);
