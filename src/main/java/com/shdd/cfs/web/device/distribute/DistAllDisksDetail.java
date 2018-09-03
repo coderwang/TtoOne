@@ -60,6 +60,9 @@ public class DistAllDisksDetail {
         //下级系统中所有device数量
         int deviceCount;
 
+        //页码处理
+        int page_count = 0;
+
         deviceCount = deviceArray.size();
         ArrayList diskDetailInfoList = new ArrayList();
 
@@ -88,16 +91,23 @@ public class DistAllDisksDetail {
                 for (int k = 0; k < diskCount; k++) {
                     //从disk数组中获取disk信息
                     diskObject = disksArray.getJSONObject(k);
+
+                    if (diskObject.getString("system_disk") == "true") {
+                        allDiskCount -= 1;
+                        continue;
+                    }
+
+                    //翻页
+                    if ((i + 1) * (j + 1) * (k + 1) <= page_num * count) {
+                        continue;
+                    }
+
                     DiskDetailInfo diskDetailInfo = new DiskDetailInfo();
 
                     //处理从下级系统获取到的数据
                     diskDetailInfo.setId(Integer.parseInt(diskObject.getString("disk_id")));
                     diskDetailInfo.setHostname(hostName);
                     diskDetailInfo.setName(diskObject.getString("disk_name"));
-
-                    if (diskObject.getString("system_disk") == "true") {
-                        continue;
-                    }
 
                     diskDetailInfo.setCapacity(Double.parseDouble(diskObject.getString("total")));
                     diskDetailInfo.setUsed(Double.parseDouble(diskObject.getString("used")));
@@ -110,6 +120,10 @@ public class DistAllDisksDetail {
                     //将信息添加到hashMap
                     log.info("disk_id is " + diskObject.getString("disk_id"));
                     diskDetailInfoList.add(diskDetailInfo);
+                    page_count += 1;
+                    if (page_count == count) {
+                        break;
+                    }
                 }
             }
         }
@@ -117,7 +131,7 @@ public class DistAllDisksDetail {
         //计算总页数
         int totalPage = 0;
         if (count != 0) {
-            totalPage = allDiskCount / count + 1;
+            totalPage = (allDiskCount % count != 0) ? ((allDiskCount / count) + 1) : (allDiskCount / count);
         }
 
         //数据打包发送至UI页面前端

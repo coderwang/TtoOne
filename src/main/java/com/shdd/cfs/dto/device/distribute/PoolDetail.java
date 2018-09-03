@@ -5,8 +5,8 @@ import lombok.Data;
 @Data
 public class PoolDetail {
     private String name;
-    private Integer capacity;
-    private Integer used;
-    private Integer free;
+    private String capacity;
+    private String used;
+    private String free;
     private Integer status;
 }
