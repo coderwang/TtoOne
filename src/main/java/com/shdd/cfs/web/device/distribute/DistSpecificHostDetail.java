@@ -7,7 +7,7 @@
 package com.shdd.cfs.web.device.distribute;
 
 import com.shdd.cfs.dto.device.distribute.HostDetailInfo;
-import com.shdd.cfs.utils.json.DistributeUrlHandle;
+import com.shdd.cfs.utils.json.HttpRequest;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
@@ -16,6 +16,8 @@ import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.ArrayList;
 
 @RestController
 @Slf4j
@@ -28,34 +30,82 @@ public class DistSpecificHostDetail {
      * @return
      */
     @GetMapping(value = "api/device/distribute/host")
-    @ApiOperation(value = "获取分布式存储系统主机概况" , notes = "获取分布式存储系统指定服务器节点的详细信息")
+    @ApiOperation(value = "获取分布式存储系统主机概况", notes = "获取分布式存储系统指定服务器节点的详细信息")
     @ApiImplicitParams({
             @ApiImplicitParam(paramType = "query", dataType = "String",
                     name = "deviceId", value = "指定分布式存储系统服务器节点ID", required = true)
     })
 
-    public JSONObject GetHostfDistribute(String value) {
-        //向分布式厂家发送获取单个主机的信息的请求
+    public JSONObject GetHostfDistribute(String value, int deviceId) {
 
-        //获取分布式集群中单个主机信息
-        String baseurl = "";
-        JSONObject hostinfo = DistributeUrlHandle.Nodeinfo();
-        String hostname = hostinfo.getString("host_name");
-        JSONArray cpucount = hostinfo.getJSONArray("cpus");
-        JSONArray memaryinfo = hostinfo.getJSONArray("memorys");
-        JSONArray diskinfo = hostinfo.getJSONArray("disks");
-        //发送单个主机的详细情况
+        //访问下级分布式系统接口api/hosts/host_id
+        HttpRequest httpRequest = new HttpRequest();
+
+        String result = httpRequest.sendGet("http://192.168.1.32:8000/api/hosts/" + deviceId, " ");
+        JSONObject hostObject = JSONObject.fromObject(result);
+
+        HostDetailInfo hostDetailInfo = new HostDetailInfo();
+
+        ArrayList hostList = new ArrayList();
+
+        //host节点对象信息
+        JSONArray hostArray;
+        int hostCount = 0;
+
+        //cpu对象信息
+        JSONArray cpuArray;
+        JSONObject cpuObject;
+        int cpuCount = 0;
+        String cpuType = null;
+
+        //mem对象信息
+        JSONArray memArray;
+        JSONObject memObject;
+        int memCount = 0;
+        Double memTotal = 0.0;
+
+        //disk磁盘信息
+        JSONArray diskArray;
+        int diskCount;
+
+        //host主机名信息
+        hostDetailInfo.setName(hostObject.getString("host_name"));
+
+        //cpu信息
+        cpuArray = hostObject.getJSONArray("cpus");
+        cpuCount = cpuArray.size();
+        for (int j = 0; j < cpuCount; j++) {
+            cpuObject = cpuArray.getJSONObject(j);
+
+            //获取cpu类型
+            cpuType = cpuObject.getString("model_name");
+        }
+        hostDetailInfo.setCpucount(cpuCount);
+        hostDetailInfo.setCpu_type(cpuType);
+
+        //内存信息
+        memArray = hostObject.getJSONArray("memorys");
+        memCount = memArray.size();
+        for (int j = 0; j < memCount; j++) {
+            memObject = memArray.getJSONObject(j);
+
+            memTotal += Double.parseDouble(memObject.getString("total"));
+        }
+        hostDetailInfo.setMem_capacity(memTotal);
+
+        //disk磁盘信息
+        diskArray = hostObject.getJSONArray("disks");
+        diskCount = diskArray.size();
+        hostDetailInfo.setDisk_count(diskCount);
+
+        //将处理后的数据添加到链表中
+        hostList.add(hostDetailInfo);
+
+
+        //数据打包发送单个主机的详细情况
         JSONObject hostInfo = new JSONObject();
-        HostDetailInfo[] arrdetail = new HostDetailInfo[1];
-        arrdetail[0] = new HostDetailInfo();
-        arrdetail[0].setName(hostname);
-        arrdetail[0].setCpu_type("phytium");
-        arrdetail[0].setCpucount(cpucount.size());
-        arrdetail[0].setMem_capacity((Double) memaryinfo.getJSONObject(0).get("total"));
-        arrdetail[0].setDisk_count(diskinfo.size());
-        arrdetail[0].setStatus(1);
 
-        hostInfo.accumulate("host", arrdetail);
+        hostInfo.accumulate("host", hostList);
         return hostInfo;
     }
 }
