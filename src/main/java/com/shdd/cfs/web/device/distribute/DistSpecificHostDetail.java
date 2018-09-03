@@ -6,9 +6,8 @@
  */
 package com.shdd.cfs.web.device.distribute;
 
-import com.shdd.cfs.dto.device.distribute.HostInfoDetail;
+import com.shdd.cfs.dto.device.distribute.HostDetailInfo;
 import com.shdd.cfs.utils.json.DistributeUrlHandle;
-import com.shdd.cfs.utils.json.GetJsonMessage;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
@@ -47,13 +46,13 @@ public class DistSpecificHostDetail {
         JSONArray diskinfo = hostinfo.getJSONArray("disks");
         //发送单个主机的详细情况
         JSONObject hostInfo = new JSONObject();
-        HostInfoDetail[] arrdetail = new HostInfoDetail[1];
-        arrdetail[0] = new HostInfoDetail();
+        HostDetailInfo[] arrdetail = new HostDetailInfo[1];
+        arrdetail[0] = new HostDetailInfo();
         arrdetail[0].setName(hostname);
-        arrdetail[0].setCpuType("phytium");
-        arrdetail[0].setCpuCount(cpucount.size());
-        arrdetail[0].setMemCapacity((Double) memaryinfo.getJSONObject(0).get("total"));
-        arrdetail[0].setHardDiskCount(diskinfo.size());
+        arrdetail[0].setCpu_type("phytium");
+        arrdetail[0].setCpucount(cpucount.size());
+        arrdetail[0].setMem_capacity((Double) memaryinfo.getJSONObject(0).get("total"));
+        arrdetail[0].setDisk_count(diskinfo.size());
         arrdetail[0].setStatus(1);
 
         hostInfo.accumulate("host", arrdetail);

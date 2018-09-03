@@ -6,7 +6,7 @@
  */
 package com.shdd.cfs.web.device.cdstorage;
 
-import com.shdd.cfs.dto.device.distribute.NodeInfoDetail;
+import com.shdd.cfs.dto.device.distribute.DiskDetailInfo;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
@@ -37,9 +37,9 @@ public class CDAllDisksDetail {
     })
     public JSONObject GetCDAllDisksDetailInfo(int page_num, int count) {
         JSONObject jarrary = new JSONObject();
-        NodeInfoDetail[] arrdtail = new NodeInfoDetail[6];
+        DiskDetailInfo[] arrdtail = new DiskDetailInfo[6];
 
-        arrdtail[0] = new NodeInfoDetail();
+        arrdtail[0] = new DiskDetailInfo();
         arrdtail[0].setId(1);
         arrdtail[0].setCapacity(50.0);
         arrdtail[0].setHostname("Node199");
@@ -47,7 +47,7 @@ public class CDAllDisksDetail {
         arrdtail[0].setUsed(67.99);
         arrdtail[0].setStatus(1);
 
-        arrdtail[1] = new NodeInfoDetail();
+        arrdtail[1] = new DiskDetailInfo();
         arrdtail[1].setId(2);
         arrdtail[1].setCapacity(50.0);
         arrdtail[1].setHostname("Node199");
@@ -55,7 +55,7 @@ public class CDAllDisksDetail {
         arrdtail[1].setUsed(67.99);
         arrdtail[1].setStatus(1);
 
-        arrdtail[2] = new NodeInfoDetail();
+        arrdtail[2] = new DiskDetailInfo();
         arrdtail[2].setId(3);
         arrdtail[2].setCapacity(50.0);
         arrdtail[2].setHostname("Node199");
@@ -63,7 +63,7 @@ public class CDAllDisksDetail {
         arrdtail[2].setUsed(67.99);
         arrdtail[2].setStatus(1);
 
-        arrdtail[3] = new NodeInfoDetail();
+        arrdtail[3] = new DiskDetailInfo();
         arrdtail[3].setId(4);
         arrdtail[3].setCapacity(50.0);
         arrdtail[3].setHostname("Node199");
@@ -71,7 +71,7 @@ public class CDAllDisksDetail {
         arrdtail[3].setUsed(67.99);
         arrdtail[3].setStatus(1);
 
-        arrdtail[4] = new NodeInfoDetail();
+        arrdtail[4] = new DiskDetailInfo();
         arrdtail[4].setId(5);
         arrdtail[4].setCapacity(50.0);
         arrdtail[4].setHostname("Node199");
@@ -79,7 +79,7 @@ public class CDAllDisksDetail {
         arrdtail[4].setUsed(67.99);
         arrdtail[4].setStatus(1);
 
-        arrdtail[5] = new NodeInfoDetail();
+        arrdtail[5] = new DiskDetailInfo();
         arrdtail[5].setId(6);
         arrdtail[5].setCapacity(50.0);
         arrdtail[5].setHostname("Node199");
