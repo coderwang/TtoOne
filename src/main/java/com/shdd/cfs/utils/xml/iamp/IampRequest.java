@@ -65,7 +65,6 @@ public class IampRequest {
         HttpResult result = httpClientOperate.doGet(IampApiEnum.logon.getPath(), param);
         return result;
     }
-
     /**
      *通过用户名获取访问秘钥
       * @return 获取到的访问秘钥
@@ -81,7 +80,6 @@ public class IampRequest {
         sessonkey = document.selectSingleNode("/xml/session/key").getText();
         return sessonkey;
     }
-
     /**
      *
      * @param id
