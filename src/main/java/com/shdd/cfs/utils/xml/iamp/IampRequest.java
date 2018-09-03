@@ -30,6 +30,7 @@ public class IampRequest {
         recycle_gtape_tape("/recycle_gtape_tape.websvc",                        "3.6 磁带组回收磁带"),
         assign_tape("/assign_tape.websvc",                                       "3.7 给磁带组分配磁带"),
         set_tape_place("/set_tape_place.websvc",                                 "3.8 磁带出入库"),
+        inquiry_gtape_lists("/inquiry_gtape_lists.websvc",                       "3.9 查询磁带组列表"),
         create_gtape("/create_gtape.websvc",                                     "3.10 创建磁带组"),
         inquiry_tape_doc_lists("/inquiry_tape_doc_lists.websvc",                "3.11 查询磁带中的案卷列表"),
         inquiry_doc_status("/inquiry_doc_status.websvc",                         "4.1 查询案卷状态"),
@@ -129,5 +130,85 @@ public class IampRequest {
             }
         }
         return arrayList;
+    }
+    /**
+     *向磁带库后台请求所有磁带组信息
+     * @param session_key 访问秘钥
+     * @return  所有磁带组信息
+     */
+    public HttpResult inquiry_gtape_lists(String session_key){
+        Map<String,String> param = new HashMap<>();
+        param.put("session_key",session_key);
+        HttpResult result = httpClientOperate.doGet(IampApiEnum.inquiry_gtape_lists.getPath(),param);
+        return result;
+    }
+    /**
+     * 分析磁带库后台返回的所有磁带组信息
+     * @param session_key 访问秘钥
+     * @return 单个磁带库所有磁带组的状态信息
+     */
+    public ArrayList<Map<String, String>> all_of_gtape_status(String session_key) throws DocumentException {
+        String groupname = "";
+        String empty ="";
+        String full = "";
+        String other ="";
+        HttpResult tape_lists = inquiry_gtape_lists(session_key);
+        ArrayList<Map<String, String>> arrayList = new ArrayList<>();
+        String result = tape_lists.getContent();
+        Document document = DocumentHelper.parseText(result);
+        Element root = document.getRootElement();
+        // 遍历root节点下的所有子节点
+        ArrayList<Map<String, String>> arrayList1 = arrayList;
+        for (Iterator itemGroup = root.elementIterator(); itemGroup.hasNext(); ) {
+            // 得到root节点下所有子节点
+            Element tape_group = (Element) itemGroup.next();
+            groupname = tape_group.attributeValue("name");
+            // 遍历遍历root子节点下的所有子节点
+            for (Iterator itemCapacity = tape_group.elementIterator(); itemCapacity.hasNext(); ) {
+                Element tapes = (Element) itemCapacity.next();
+                //遍历磁盘组内磁盘信息
+                for (Iterator itemtapes = tapes.elementIterator(); itemtapes.hasNext(); ) {
+                    Element capacity = (Element) itemtapes.next();
+                    for (Iterator itemtapestatus = capacity.elementIterator(); itemtapestatus.hasNext(); ) {
+                        Element tapestatus = (Element) itemtapestatus.next();
+                        if (tapestatus.getName().equals("empty")) {
+                            empty = tapestatus.getText();
+                        }
+                        if (tapestatus.getName().equals("other")) {
+                            other = tapestatus.getText();
+                        }
+                        if (tapestatus.getName().equals("full")) {
+                            full = tapestatus.getText();
+                        }
+                    }
+                }
+            }
+            Map<String,String> gtapeMap = new HashMap<>();
+            gtapeMap.put("group",groupname);
+            gtapeMap.put("empty",empty);
+            gtapeMap.put("other",other);
+            gtapeMap.put("full",full);
+            arrayList1.add(gtapeMap);
+        }
+
+        return arrayList;
+    }
+    /**
+     * 获取光盘组名称，磁带组中磁带总个数，磁带组中空白磁带个数
+     */
+    public ArrayList<Map<String,String>> tape_group_info(String session_key) throws DocumentException {
+        ArrayList<Map<String, String>> tapeNameNum = new ArrayList<>();
+        ArrayList<Map<String, String>> listTape = all_of_gtape_status(session_key);
+        for (Map<String,String> list: listTape){
+            Integer alltapeNum = Integer.valueOf(list.get("empty")) + Integer.valueOf(list.get("other"))+ Integer.valueOf(list.get("full"));
+            Integer emptytapeNum = Integer.parseInt(list.get("empty"));
+            String tapeName = list.get("group");
+            Map <String,String>tapeInfo = new HashMap();
+            tapeInfo.put("groupname",tapeName);
+            tapeInfo.put("alltapenum",alltapeNum.toString());
+            tapeInfo.put("emptytapenum",emptytapeNum.toString());
+            tapeNameNum.add(tapeInfo);
+        }
+        return tapeNameNum;
     }
 }

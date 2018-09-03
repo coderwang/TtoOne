@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 @RestController
 public class TestController {
@@ -20,9 +21,12 @@ public class TestController {
 		HttpResult logon = iampRequest.logon("shuju", "69MOQca0Hv6NsOJH");
 		String teString = logon.getContent();
 		String session = iampRequest.SessionKey();
-		ArrayList<Integer> arrayList = iampRequest.all_of_tape_status(session);
-		for (int i = 0 ; i < arrayList.size(); i++)
-			System.out.println(arrayList.get(i));
+		ArrayList<Map<String,String>> group = iampRequest.tape_group_info(session);
+		for(Map<String,String> list : group){
+			System.out.println(list.get("groupname"));
+			System.out.println(list.get("alltapenum"));
+			System.out.println(list.get("emptytapenum"));
+		}
 		return teString;
 	}
 }
