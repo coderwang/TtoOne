@@ -184,7 +184,12 @@ public class IampRequest {
         }
         return capacityoftotalused;
     }
-
+    /**
+     * 根据磁带id获取磁带是否在线
+     * @param tape_lists  磁带库后台返回的所有磁带信息
+     * @param tapeid  磁带组ID
+     * @return 磁带是否在线
+     */
     public int tape_online_info(HttpResult tape_lists, String tapeid) throws DocumentException {
         String result = tape_lists.getContent();
         Document document = DocumentHelper.parseText(result);
@@ -232,6 +237,7 @@ public class IampRequest {
         String empty ="";
         String full = "";
         String other ="";
+        String groupid="";
         ArrayList<Map<String, String>> arrayList = new ArrayList<>();
         String result = tape_lists.getContent();
         Document document = DocumentHelper.parseText(result);
@@ -242,6 +248,7 @@ public class IampRequest {
             // 得到root节点下所有子节点
             Element tape_group = (Element) itemGroup.next();
             groupname = tape_group.attributeValue("name");
+            groupid = tape_group.attributeValue("id");
             // 遍历遍历root子节点下的所有子节点
             for (Iterator itemCapacity = tape_group.elementIterator(); itemCapacity.hasNext(); ) {
                 Element tapes = (Element) itemCapacity.next();
@@ -263,6 +270,7 @@ public class IampRequest {
                 }
             }
             Map<String,String> gtapeMap = new HashMap<>();
+            gtapeMap.put("id",groupid);
             gtapeMap.put("group",groupname);
             gtapeMap.put("empty",empty);
             gtapeMap.put("other",other);
@@ -283,6 +291,7 @@ public class IampRequest {
             Integer emptytapeNum = Integer.parseInt(list.get("empty"));
             String tapeName = list.get("group");
             Map <String,String>tapeInfo = new HashMap();
+            tapeInfo.put("id",list.get("id"));
             tapeInfo.put("groupname",tapeName);
             tapeInfo.put("alltapenum",alltapeNum.toString());
             tapeInfo.put("emptytapenum",emptytapeNum.toString());
@@ -290,4 +299,5 @@ public class IampRequest {
         }
         return tapeNameNum;
     }
+
 }

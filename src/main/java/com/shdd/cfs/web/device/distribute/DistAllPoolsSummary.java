@@ -32,9 +32,9 @@ public class DistAllPoolsSummary {
 
         jarrary[0] = new PoolGeneralOverviewDetail();
         jarrary[1] = new PoolGeneralOverviewDetail();
-        jarrary[0].setId(1);
+        jarrary[0].setId("1");
         jarrary[0].setName("长期保存库");
-        jarrary[1].setId(2);
+        jarrary[1].setId("1");
         jarrary[1].setName("长期保存库2");
 
         storagePool.accumulate("poolCount", "3");
