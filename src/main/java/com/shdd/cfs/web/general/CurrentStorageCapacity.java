@@ -109,6 +109,7 @@ public class CurrentStorageCapacity {
             result = httpRequest.sendGet("http://192.168.1.32:8000/api/volumes/" + volumeID + "/storage", " ");
             volumeStorageObject = JSONObject.fromObject(result);
 
+            //TODO 容量数据存入数据库
             distPoolStorageCapacity.setCapacity(volumeStorageObject.getString("size"));
             distPoolStorageCapacity.setPoolName(volumeStorageObject.getString("vol_name"));
             distPoolStorageCapacity.setUsedCapacity(volumeStorageObject.getString("used"));
@@ -148,6 +149,7 @@ public class CurrentStorageCapacity {
         //磁带库使用容量大小
         Double useTapeCapacity = (alltapesize - fulltape) * singleTapeCapacity;
 
+        //TODO 容量数据存入数据库
         //给磁带库当前容量赋值
         tapeCurStorageCapacity.setCapacity(allTapeCapacity);
         tapeCurStorageCapacity.setUsedCapacity(useTapeCapacity);
@@ -172,6 +174,7 @@ public class CurrentStorageCapacity {
         Double allOptCapacity = Double.parseDouble(getopticalcapacity.getString("totalinfo"));
         Double useOptCapacity = Double.parseDouble(getopticalcapacity.getString("usedinfo"));
 
+        //TODO 容量数据存入数据库
         //给光盘库当前容量赋值
         cddiskCurStorageCapacity.setCapacity(allOptCapacity);
         cddiskCurStorageCapacity.setDevType("cdstorage");
