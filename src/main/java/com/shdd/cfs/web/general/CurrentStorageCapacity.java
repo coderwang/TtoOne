@@ -109,9 +109,9 @@ public class CurrentStorageCapacity {
             result = httpRequest.sendGet("http://192.168.1.32:8000/api/volumes/" + volumeID + "/storage", " ");
             volumeStorageObject = JSONObject.fromObject(result);
 
-            distPoolStorageCapacity.setCapacity(Double.parseDouble(volumeStorageObject.getString("size")));
+            distPoolStorageCapacity.setCapacity(volumeStorageObject.getString("size"));
             distPoolStorageCapacity.setPoolName(volumeStorageObject.getString("vol_name"));
-            distPoolStorageCapacity.setUsedCapacity(Double.parseDouble(volumeStorageObject.getString("used")));
+            distPoolStorageCapacity.setUsedCapacity(volumeStorageObject.getString("used"));
 
             poolList.add(distPoolStorageCapacity);
 
