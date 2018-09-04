@@ -7,8 +7,11 @@
 package com.shdd.cfs.web.websocket;
 
 import com.shdd.cfs.dto.message.DistSystemData;
+import com.shdd.cfs.utils.json.HttpRequest;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
@@ -39,11 +42,29 @@ public class DistColonySystemDataController {
     public DistSystemData getDistColonySystemData() throws InterruptedException {
         Thread.sleep(1000); // simulated delay
 
+        //访问下级分布式系统接口api/monitor/clusters/cpu/10/a/获取cpu信息
+        HttpRequest httpRequest = new HttpRequest();
+
+        String result = httpRequest.sendGet("http://192.168.1.32:8000/api/monitor/clusters/cpu/10/a/", " ");
+        JSONObject cpuObject = JSONObject.fromObject(result);
+        JSONArray cpuArray = cpuObject.getJSONArray("cpu");
+
+        //访问下级分布式系统接口api/monitor/clusters/mem/10/a/获取mem信息
+        result = httpRequest.sendGet("http://192.168.1.32:8000/api/monitor/clusters/mem/10/a/", " ");
+        JSONObject memObject = JSONObject.fromObject(result);
+        JSONArray memArray = memObject.getJSONArray("mem");
+
+        //访问下级分布式系统接口api/monitor/clusters/bandwidth/10/a/获取bandwidth信息
+        result = httpRequest.sendGet("http://192.168.1.32:8000/api/monitor/clusters/bandwidth/10/a/", " ");
+        JSONObject bwObject = JSONObject.fromObject(result);
+        JSONArray bwArray = bwObject.getJSONArray("bandwidth_write");
+
         //此处需求CPU，内存，带宽的平均值
         DistSystemData distSystemData = new DistSystemData();
-        distSystemData.setCpu(95.3);
-        distSystemData.setRam(23.45);
-        distSystemData.setBw(78.2);
+
+        distSystemData.setCpu(Double.parseDouble(cpuArray.getJSONObject(0).getString("value")));
+        distSystemData.setRam(Double.parseDouble(memArray.getJSONObject(0).getString("value")));
+        distSystemData.setBw(Double.parseDouble(bwArray.getJSONObject(0).getString("value")));
 
         return distSystemData;
     }

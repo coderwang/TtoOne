@@ -6,12 +6,16 @@
  */
 package com.shdd.cfs.web.device.distribute;
 
-import com.shdd.cfs.dto.device.distribute.SystemClusterInfoDetail;
+import com.shdd.cfs.dto.device.distribute.HostDetailInfo;
+import com.shdd.cfs.utils.json.HttpRequest;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
+import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.ArrayList;
 
 @RestController
 @Slf4j
@@ -27,21 +31,97 @@ public class DistAllHostsSummary {
 
     public JSONObject GetInfoOfDistribute(String value) {
 
+        //访问下级分布式系统接口api/nodes/
+        HttpRequest httpRequest = new HttpRequest();
+
+        String result = httpRequest.sendGet("http://192.168.1.32:8000/api/nodes", " ");
+        JSONArray nodesArray = JSONArray.fromObject(result);
+
+        //所有节点数目
+        int nodesCount = nodesArray.size();
+        //node节点对象信息
+        JSONObject nodeObject;
+        ArrayList hostList = new ArrayList();
+
+        //host节点对象信息
+        JSONObject hostObject;
+        JSONArray hostArray;
+        int hostCount = 0;
+
+        //cpu对象信息
+        JSONArray cpuArray;
+        JSONObject cpuObject;
+        int cpuCount = 0;
+        String cpuType = null;
+
+        //mem对象信息
+        JSONArray memArray;
+        JSONObject memObject;
+        int memCount = 0;
+        Double memTotal = 0.0;
+
+        //disk磁盘信息
+        JSONArray diskArray;
+        int diskCount;
+
+        for (int i = 0; i < nodesCount; i++) {
+            //根据node_id通信获取到的node详细信息
+            nodeObject = nodesArray.getJSONObject(i);
+            HostDetailInfo hostDetailInfo = new HostDetailInfo();
+
+            //node_id，host_id
+            hostDetailInfo.setNode_id(Integer.parseInt(nodeObject.getString("node_id")));
+            hostDetailInfo.setHost_id(Integer.parseInt(nodeObject.getString("host_id")));
+            //处理node节点状态信息
+            if (nodeObject.getString("node_state") == "Connected") {
+                hostDetailInfo.setStatus(1);
+            } else {
+                hostDetailInfo.setStatus(0);
+            }
+
+            //根据host_id通信获取详细信息，api/hosts/host_id
+            result = httpRequest.sendGet("http://192.168.1.32:8000/api/hosts/" + nodeObject.getString("host_id"), " ");
+            //处理根据host_id获取到的host详细信息
+            hostObject = JSONObject.fromObject(result);
+            //host主机名信息
+            hostDetailInfo.setName(hostObject.getString("host_name"));
+
+            //cpu信息
+            cpuArray = hostObject.getJSONArray("cpus");
+            cpuCount = cpuArray.size();
+            for (int j = 0; j < cpuCount; j++) {
+                cpuObject = cpuArray.getJSONObject(j);
+
+                //获取cpu类型
+                cpuType = cpuObject.getString("model_name");
+            }
+            hostDetailInfo.setCpucount(cpuCount);
+            hostDetailInfo.setCpu_type(cpuType);
+
+            //内存信息
+            memArray = hostObject.getJSONArray("memorys");
+            memCount = memArray.size();
+            for (int j = 0; j < memCount; j++) {
+                memObject = memArray.getJSONObject(j);
+
+                memTotal += Double.parseDouble(memObject.getString("total"));
+            }
+            hostDetailInfo.setMem_capacity(memTotal);
+
+            //disk磁盘信息
+            diskArray = hostObject.getJSONArray("disks");
+            diskCount = diskArray.size();
+            hostDetailInfo.setDisk_count(diskCount);
+
+            //将处理后的数据添加到链表中
+            hostList.add(hostDetailInfo);
+        }
+
+        //数据打包处理
         JSONObject distributeStorageInfo = new JSONObject();
-        SystemClusterInfoDetail[] arrdetail = new SystemClusterInfoDetail[2];
-        arrdetail[0] = new SystemClusterInfoDetail();
-        arrdetail[1] = new SystemClusterInfoDetail();
-        arrdetail[0].setId(1);
-        arrdetail[0].setName("xx");
-        arrdetail[0].setStatus(1);
-        arrdetail[1].setId(2);
-        arrdetail[1].setName("xxx");
-        arrdetail[1].setStatus(1);
 
-        distributeStorageInfo.accumulate("colonyCount", 3);
-
-        distributeStorageInfo.accumulate("status", 1);
-        distributeStorageInfo.accumulate("colony", arrdetail);
+        distributeStorageInfo.accumulate("colonyCount", nodesCount);
+        distributeStorageInfo.accumulate("colony", hostList);
         return distributeStorageInfo;
     }
 }
