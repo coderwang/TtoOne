@@ -7,6 +7,7 @@
 package com.shdd.cfs.web.device.tape;
 
 import com.shdd.cfs.dto.device.tape.TapeLibraryStorageSystemStoresDetail;
+import com.shdd.cfs.utils.xml.iamp.HttpResult;
 import com.shdd.cfs.utils.xml.iamp.IampRequest;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -46,8 +47,9 @@ public class TapeSpecificPoolDetail {
         String tapeName =  "";
         //获取session_key
         String session = iampRequest.SessionKey();
+        HttpResult glist = iampRequest.inquiry_gtape_lists(session);
         //获取磁带组磁带情况
-        ArrayList<Map<String,String>> group = iampRequest.tape_group_info(session);
+        ArrayList<Map<String,String>> group = iampRequest.tape_group_info(glist);
         //给磁带组赋值
         for(Map<String,String> list : group){
             if (poolid.equals(list.get("groupname"))){

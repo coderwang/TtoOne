@@ -12,6 +12,7 @@ import com.shdd.cfs.dto.dashboard.CurrentTapeCapacityDetail;
 import com.shdd.cfs.dto.dashboard.DistributeCapacityStruct;
 import com.shdd.cfs.utils.json.DistributeUrlHandle;
 import com.shdd.cfs.utils.json.GetJsonMessage;
+import com.shdd.cfs.utils.xml.iamp.HttpResult;
 import com.shdd.cfs.utils.xml.iamp.IampRequest;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -50,7 +51,8 @@ public class CurrentStorageCapacity {
 //          Double useOptCapacity = Double.parseDouble(getopticalcapacity.getString("usedinfo"));
 		//获取磁带库容量信息
         String sessonKey = iampRequest.SessionKey();
-        ArrayList<Integer> alltapelist = iampRequest.all_of_tape_status(sessonKey);
+        HttpResult tape_lists = iampRequest.inquiry_tape_lists(sessonKey);
+        ArrayList<Integer> alltapelist = iampRequest.all_of_tape_status(tape_lists);
         Integer alltapesize  = 	alltapelist.size();
         Double singleTapeCapacity  = 2.5;
         int fulltape = 0;

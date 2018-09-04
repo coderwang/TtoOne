@@ -7,6 +7,7 @@
 package com.shdd.cfs.web.device.tape;
 
 import com.shdd.cfs.dto.device.optical.OpticalSystemInfoDetail;
+import com.shdd.cfs.utils.xml.iamp.HttpResult;
 import com.shdd.cfs.utils.xml.iamp.IampRequest;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -43,7 +44,8 @@ public class TapeAllHostsSummary {
         	System.out.println("磁带库不在线");
         }
         else {
-            ArrayList<Integer> alltapelist = iampRequest.all_of_tape_status(sessonKey);
+            HttpResult tape_lists = iampRequest.inquiry_tape_lists(sessonKey);
+            ArrayList<Integer> alltapelist = iampRequest.all_of_tape_status(tape_lists);
             alltapesize = alltapelist.size();
             tapeStatus = 1;
             cpucount = 1;//待定

@@ -106,13 +106,12 @@ public class IampRequest {
         return result;
     }
     /**
-     * 分析磁带库后台返回的所有磁带信息 （解析字段：【tape/capacity/status】 1空白 2未满 3已满）
-     * @param session_key 访问秘钥
+     * 分析磁带库后台返回的所有磁带容量信息 （解析字段：【tape/capacity/status】 1空白 2未满 3已满）
+     * @param tape_lists 请求所有磁带xml结果
      * @return 单个磁带库所有磁带的状态信息
      */
-    public ArrayList<Integer> all_of_tape_status(String session_key) throws DocumentException {
+    public ArrayList<Integer> all_of_tape_status(HttpResult tape_lists) throws DocumentException {
         ArrayList<Integer> arrayList = new ArrayList<Integer>();
-        HttpResult tape_lists = inquiry_tape_lists(session_key);
         String result = tape_lists.getContent();
         Document document = DocumentHelper.parseText(result);
         Element root = document.getRootElement();
@@ -144,15 +143,14 @@ public class IampRequest {
     }
     /**
      * 分析磁带库后台返回的所有磁带组信息
-     * @param session_key 访问秘钥
-     * @return 单个磁带库所有磁带组的状态信息
+     * @param  tape_lists 请求的磁带组信息
+     * @return 单个磁带库所有磁带组的磁带信息
      */
-    public ArrayList<Map<String, String>> all_of_gtape_status(String session_key) throws DocumentException {
+    public ArrayList<Map<String, String>> all_of_gtape_status(HttpResult tape_lists) throws DocumentException {
         String groupname = "";
         String empty ="";
         String full = "";
         String other ="";
-        HttpResult tape_lists = inquiry_gtape_lists(session_key);
         ArrayList<Map<String, String>> arrayList = new ArrayList<>();
         String result = tape_lists.getContent();
         Document document = DocumentHelper.parseText(result);
@@ -194,11 +192,11 @@ public class IampRequest {
         return arrayList;
     }
     /**
-     * 获取光盘组名称，磁带组中磁带总个数，磁带组中空白磁带个数
+     * 获取磁带组名称，磁带组中磁带总个数，磁带组中空白磁带个数
      */
-    public ArrayList<Map<String,String>> tape_group_info(String session_key) throws DocumentException {
+    public ArrayList<Map<String,String>> tape_group_info(HttpResult gtape_list) throws DocumentException {
         ArrayList<Map<String, String>> tapeNameNum = new ArrayList<>();
-        ArrayList<Map<String, String>> listTape = all_of_gtape_status(session_key);
+        ArrayList<Map<String, String>> listTape = all_of_gtape_status(gtape_list);
         for (Map<String,String> list: listTape){
             Integer alltapeNum = Integer.valueOf(list.get("empty")) + Integer.valueOf(list.get("other"))+ Integer.valueOf(list.get("full"));
             Integer emptytapeNum = Integer.parseInt(list.get("empty"));

@@ -10,6 +10,7 @@ import com.shdd.cfs.dto.dashboard.TotalCapacityInfoDto;
 import com.shdd.cfs.dto.dashboard.TotalStatusInfoDetail;
 import com.shdd.cfs.utils.json.DistributeUrlHandle;
 import com.shdd.cfs.utils.json.GetJsonMessage;
+import com.shdd.cfs.utils.xml.iamp.HttpResult;
 import com.shdd.cfs.utils.xml.iamp.IampRequest;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -49,7 +50,8 @@ public class ThreeinOneSummary {
 //		Double disUseCapacity = Double.parseDouble(disjsoncapacity.getString("storage_used"));
 		//获取磁带库总磁带个数
 		String sessonKey = iampRequest.SessionKey();
-		ArrayList<Integer> alltapelist = iampRequest.all_of_tape_status(sessonKey);
+		HttpResult tape_lists = iampRequest.inquiry_tape_lists(sessonKey);
+		ArrayList<Integer> alltapelist = iampRequest.all_of_tape_status(tape_lists);
 		Integer alltapesize  = 	alltapelist.size();
 		int fulltape = 0;
 		for(Integer list: alltapelist){

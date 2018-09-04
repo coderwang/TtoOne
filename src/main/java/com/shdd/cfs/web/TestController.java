@@ -21,7 +21,8 @@ public class TestController {
 		HttpResult logon = iampRequest.logon("shuju", "69MOQca0Hv6NsOJH");
 		String teString = logon.getContent();
 		String session = iampRequest.SessionKey();
-		ArrayList<Map<String,String>> group = iampRequest.tape_group_info(session);
+		HttpResult glist = iampRequest.inquiry_gtape_lists(session);
+		ArrayList<Map<String,String>> group = iampRequest.tape_group_info(glist);
 		for(Map<String,String> list : group){
 			System.out.println(list.get("groupname"));
 			System.out.println(list.get("alltapenum"));

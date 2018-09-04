@@ -7,26 +7,16 @@
 package com.shdd.cfs.web.device.tape;
 
 import com.shdd.cfs.dto.device.tape.TapeNodeDetail;
-import com.shdd.cfs.utils.xml.XmlFromURL;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
-import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
-import org.dom4j.Document;
 import org.dom4j.DocumentException;
-import org.dom4j.Element;
-import org.dom4j.io.SAXReader;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.List;
 
 @RestController
 @Slf4j
@@ -34,7 +24,7 @@ public class TapeAllDisksDetail {
     /**
      * 获取磁带库存储系统节点详细概况
      *
-     * @param value
+     * @param count
      * @return
      */
     @GetMapping(value = "api/dashboard/tape/disks")
@@ -48,15 +38,7 @@ public class TapeAllDisksDetail {
 
     public JSONObject TapeSystemNodeInfo(int page_num, int count) throws MalformedURLException, DocumentException {
 
-        ////从指定URL获取xml数据，并进行解析
-        //XmlFromURL xmlFromURL = new XmlFromURL();
-        //Document document = xmlFromURL.GetXmlDocument("http://www.w3school.com.cn/example/xmle/note.xml");
-//
-        ////TODO 确认xml字段，并进行解析
-        //xmlFromURL.GetStringsFromXml(document, "to");
-        //xmlFromURL.GetStringsFromXml(document, "from");
-        //xmlFromURL.GetStringsFromXml(document, "heading");
-
+        //发送Json报文
         JSONObject Jarrary = new JSONObject();
         TapeNodeDetail[] tapenode = new TapeNodeDetail[6];
 
