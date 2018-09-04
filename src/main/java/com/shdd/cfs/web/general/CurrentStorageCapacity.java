@@ -11,6 +11,7 @@ import com.shdd.cfs.dto.dashboard.DistCurStorageCapacity;
 import com.shdd.cfs.dto.dashboard.DistPoolStorageCapacity;
 import com.shdd.cfs.dto.dashboard.TapeCurStorageCapacity;
 import com.shdd.cfs.utils.json.GetJsonMessage;
+import com.shdd.cfs.utils.json.HttpRequest;
 import com.shdd.cfs.utils.xml.iamp.HttpResult;
 import com.shdd.cfs.utils.xml.iamp.IampRequest;
 import io.swagger.annotations.ApiOperation;
@@ -70,14 +71,52 @@ public class CurrentStorageCapacity {
      * @author wangpeng 20180904
      */
     private DistCurStorageCapacity GetDistCurStorageCapacity() {
+        //{
+        //    "devType":"distributed",    //分布式
+        //        "data":[{                            //分布式存储需返回各个存储池内										   存使用情况
+        //                    "poolName":"xx",        //存储池名称
+        //                    "capacity":20.34,        //存储池总容量
+        //                    "usedCapacity":15.4,    //存储池已使用容量
+        //                },
+        //                {
+        //                    ...
+        //                }
+        //        ]
+        //}
+
         DistCurStorageCapacity distCurStorageCapacity = new DistCurStorageCapacity();
+
+        //访问下级分布式系统接口api/volumes
+        HttpRequest httpRequest = new HttpRequest();
+
+        String result = httpRequest.sendGet("http://192.168.1.32:8000/api/volumes", " ");
+        JSONArray volumeArray = JSONArray.fromObject(result);
 
         ArrayList poolList = new ArrayList();
         DistPoolStorageCapacity distPoolStorageCapacity = new DistPoolStorageCapacity();
-        distPoolStorageCapacity.setCapacity(23.4);
-        distPoolStorageCapacity.setPoolName("123");
-        distPoolStorageCapacity.setUsedCapacity(34.1);
-        poolList.add(distPoolStorageCapacity);
+
+        JSONObject volumeObject;
+        int volumeCount = volumeArray.size();
+        String volumeID;
+
+        JSONObject volumeStorageObject;
+
+        for (int i = 0; i < volumeCount; i++) {
+            volumeObject = volumeArray.getJSONObject(i);
+
+            volumeID = volumeObject.getString("vol_id");
+
+            result = httpRequest.sendGet("http://192.168.1.32:8000/api/volumes/" + volumeID + "/storage", " ");
+            volumeStorageObject = JSONObject.fromObject(result);
+
+            distPoolStorageCapacity.setCapacity(Double.parseDouble(volumeStorageObject.getString("size")));
+            distPoolStorageCapacity.setPoolName(volumeStorageObject.getString("vol_name"));
+            distPoolStorageCapacity.setUsedCapacity(Double.parseDouble(volumeStorageObject.getString("used")));
+
+            poolList.add(distPoolStorageCapacity);
+
+        }
+
         //组织返回JSON数据对象
         distCurStorageCapacity.setDevType("distributed");
         distCurStorageCapacity.setPoolList(poolList);
@@ -118,8 +157,8 @@ public class CurrentStorageCapacity {
     }
 
     /**
-     * @author jiafuzeng 20180904
      * @return
+     * @author jiafuzeng 20180904
      */
     private CDDiskCurStorageCapacity GetCDDiskCurStorageCapacity() {
         CDDiskCurStorageCapacity cddiskCurStorageCapacity = new CDDiskCurStorageCapacity();
