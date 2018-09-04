@@ -7,16 +7,22 @@
 package com.shdd.cfs.web.device.tape;
 
 import com.shdd.cfs.dto.device.tape.TapeNodeDetail;
+import com.shdd.cfs.utils.xml.iamp.HttpResult;
+import com.shdd.cfs.utils.xml.iamp.IampRequest;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
+import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.dom4j.DocumentException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.net.MalformedURLException;
+import java.util.ArrayList;
+import java.util.Map;
 
 @RestController
 @Slf4j
@@ -27,6 +33,8 @@ public class TapeAllDisksDetail {
      * @param count
      * @return
      */
+    @Autowired
+    IampRequest iampRequest;
     @GetMapping(value = "api/dashboard/tape/disks")
     @ApiOperation(value = "获取磁带库存储系统节点详细概况", notes = "获取磁带库存储系统中所有磁带的详细信息")
     @ApiImplicitParams({
@@ -37,64 +45,64 @@ public class TapeAllDisksDetail {
     })
 
     public JSONObject TapeSystemNodeInfo(int page_num, int count) throws MalformedURLException, DocumentException {
-
-        //发送Json报文
-        JSONObject Jarrary = new JSONObject();
-        TapeNodeDetail[] tapenode = new TapeNodeDetail[6];
-
-        tapenode[0] = new TapeNodeDetail();
-        tapenode[0].setId(1);
-        tapenode[0].setCapacity(80.0);
-        tapenode[0].setUsed(30.0);
-        tapenode[0].setName("xx");
-        tapenode[0].setStatus(1);
-
-        tapenode[1] = new TapeNodeDetail();
-        tapenode[1].setId(2);
-        tapenode[1].setCapacity(80.0);
-        tapenode[1].setUsed(30.0);
-        tapenode[1].setName("xx");
-        tapenode[1].setStatus(1);
-
-        tapenode[2] = new TapeNodeDetail();
-        tapenode[2].setId(3);
-        tapenode[2].setCapacity(80.0);
-        tapenode[2].setUsed(30.0);
-        tapenode[2].setName("xx");
-        tapenode[2].setStatus(1);
-
-        tapenode[3] = new TapeNodeDetail();
-        tapenode[3].setId(4);
-        tapenode[3].setCapacity(80.0);
-        tapenode[3].setUsed(30.0);
-        tapenode[3].setName("xx");
-        tapenode[3].setStatus(1);
-
-        tapenode[4] = new TapeNodeDetail();
-        tapenode[4].setId(5);
-        tapenode[4].setCapacity(80.0);
-        tapenode[4].setUsed(30.0);
-        tapenode[4].setName("xx");
-        tapenode[4].setStatus(1);
-
-        tapenode[5] = new TapeNodeDetail();
-        tapenode[5].setId(6);
-        tapenode[5].setCapacity(80.0);
-        tapenode[5].setUsed(30.0);
-        tapenode[5].setName("xx");
-        tapenode[5].setStatus(1);
-
+        String sessonKey = iampRequest.SessionKey();
+        HttpResult tape_lists = iampRequest.inquiry_tape_lists(sessonKey);
+        ArrayList<String> arrayList = iampRequest.get_tapes_id(tape_lists);
+       // 发送Json报文
+        JSONObject Joject = new JSONObject();
+        JSONArray  jarray = new JSONArray();
         //计算总页数
-        int totalPage = 0;
-        if (count != 0) {
-            totalPage = 6 / count + 1;
+        int tapenum = arrayList.size(); //磁带总个数
+        int totalPage = tapenum%count==0?tapenum/count:tapenum/count+1;
+        int id = 0; //表示第几个磁带
+        if(page_num <= totalPage)
+        {
+            ArrayList<TapeNodeDetail> tapearrary = new ArrayList<>();
+            for(String list :arrayList){
+            	id++;
+                Map<String, String> capacity = iampRequest.get_tape_capacityinfo(tape_lists, list);
+                TapeNodeDetail tape = new TapeNodeDetail();
+                tape.setId(id);
+                tape.setCapacity(Double.parseDouble(capacity.get("total")));
+                tape.setUsed(Double.parseDouble(capacity.get("total")) - Double.parseDouble(capacity.get("remaining")));
+                tape.setName(list);
+                tape.setStatus(iampRequest.tape_online_info(tape_lists, list));
+                tapearrary.add(tape);
+            }
+            if(tapenum % count == 0) {// 磁带个数正好可以按照页数显示时
+                int num = (page_num - 1) *count;
+                int whilenum = num + count;
+                for (int i = num ; i < whilenum; i++) {
+                    jarray.add(tapearrary.get(num));
+                }
+            }else {// 当磁带个数不能整页显示时
+            	int rem = tapenum % count; //取余数
+            	int mod = tapenum / count; //取模
+				if(mod == 0){
+                   for( int i = 0 ; i < count - 1 ; i++){
+                      jarray.add(tapearrary.get(i));
+                   }
+                }else {
+					   if (page_num <= mod){
+                           int initnum = (page_num-1) * count;
+                           for(int i = initnum; i< count; i++){
+                               jarray.add(tapearrary.get(i));
+                           }
+                       }else{
+					            int initnum = (page_num - 1) * count;
+                                int remnum = initnum + rem;
+                                for(int i = initnum; i < remnum; i++){
+                                jarray.add(tapearrary.get(i));
+                            }
+					   }
+                }
+            }
+        }else {
+            System.out.println("请求的页码不存在！");
         }
-        System.out.println(totalPage);
-
-        Jarrary.accumulate("totalPage", totalPage);
-
-        Jarrary.accumulate("disk", tapenode);
-        return Jarrary;
+        Joject.accumulate("totalPage", totalPage);
+        Joject.accumulate("disk", jarray);
+        return Joject;
     }
 }
 

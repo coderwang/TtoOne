@@ -130,6 +130,87 @@ public class IampRequest {
         }
         return arrayList;
     }
+
+    /**
+     * 获取所有磁带组ID
+     * @param tape_lists 后台返回的磁带列表
+     * @return  磁带组ID数组
+     */
+    public ArrayList<String> get_tapes_id(HttpResult tape_lists) throws DocumentException {
+        ArrayList<String> arrayList = new ArrayList<String>();
+        String result = tape_lists.getContent();
+        Document document = DocumentHelper.parseText(result);
+        Element root = document.getRootElement();
+        // 遍历root节点下的所有子节点
+        for (Iterator itemGroup = root.elementIterator(); itemGroup.hasNext(); ) {
+            // 得到磁带组ID
+            Element tape_group = (Element) itemGroup.next();
+            String tape_id = tape_group.attributeValue("id");
+            arrayList.add(tape_id);
+        }
+        return arrayList;
+    }
+    /**
+     * 根据磁带id获取磁带总容量和剩余容量信息
+     * @param tape_lists 后台返回的磁带列表
+     * @param tapeid 单个磁带的id
+     * @return 单个磁带id对应的磁带总容量和剩余容量
+     */
+    public Map<String, String> get_tape_capacityinfo(HttpResult tape_lists, String tapeid) throws DocumentException {
+        String result = tape_lists.getContent();
+        Document document = DocumentHelper.parseText(result);
+        Element root = document.getRootElement();
+        Map<String,String> capacityoftotalused = new HashMap<>();
+        // 遍历root节点下的所有子节点
+        for (Iterator itemGroup = root.elementIterator(); itemGroup.hasNext(); ) {
+            // 得到磁带组ID
+            Element tape_group = (Element) itemGroup.next();
+            String tape_id = tape_group.attributeValue("id");
+            if (tape_id.equals(tapeid)){
+                for (Iterator itemCapacity = tape_group.elementIterator(); itemCapacity.hasNext(); ) {
+                    Element capacity = (Element) itemCapacity.next();
+                    //获取所有磁带属性值【tape/capacity/total,remaining】
+                    for(Iterator capacityinfo = capacity.elementIterator(); capacityinfo.hasNext();){
+                        Element tapecapacity = (Element) capacityinfo.next();
+                        if(tapecapacity.getName().equals("total")){
+                           capacityoftotalused.put("total",tapecapacity.getText());
+                        }
+                        if(tapecapacity.getName().equals("remaining")){
+                            capacityoftotalused.put("remaining",tapecapacity.getText());
+                        }
+                    }
+                }
+            }
+        }
+        return capacityoftotalused;
+    }
+
+    public int tape_online_info(HttpResult tape_lists, String tapeid) throws DocumentException {
+        String result = tape_lists.getContent();
+        Document document = DocumentHelper.parseText(result);
+        Element root = document.getRootElement();
+        String onlinestr = "";
+        // 遍历root节点下的所有子节点
+        for (Iterator itemGroup = root.elementIterator(); itemGroup.hasNext(); ) {
+            // 得到磁带组ID
+            Element tape_group = (Element) itemGroup.next();
+            String tape_id = tape_group.attributeValue("id");
+            if (tape_id.equals(tapeid)){
+                for (Iterator itemCapacity = tape_group.elementIterator(); itemCapacity.hasNext(); ) {
+                    Element capacity = (Element) itemCapacity.next();
+                    //获取所有磁带属性值【tape/capacity/total,remaining】
+                    if(capacity.getName().equals("place")) {
+                        onlinestr = capacity.getText();
+                    }
+                }
+            }
+        }
+        if(onlinestr.equals("1")){
+            return 1;
+        }else {
+            return 0;
+        }
+    }
     /**
      *向磁带库后台请求所有磁带组信息
      * @param session_key 访问秘钥
