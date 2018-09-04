@@ -7,13 +7,17 @@
 package com.shdd.cfs.web.device.distribute;
 
 import com.shdd.cfs.dto.device.distribute.HostNodeInfoDetail;
+import com.shdd.cfs.utils.json.HttpRequest;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
+import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.ArrayList;
 
 @RestController
 @Slf4j
@@ -22,7 +26,9 @@ public class DistSpecificPoolDisksDetail {
     /**
      * 主机信息状态下获取分布式存储系统节点详细概况
      *
-     * @param value
+     * @param poolid
+     * @param page_num
+     * @param count
      * @return
      */
     @GetMapping(value = "api/dashboard/distribute/pool/disks")
@@ -37,67 +43,71 @@ public class DistSpecificPoolDisksDetail {
     })
 
     public JSONObject DistributeStorageInfo(int poolid, int page_num, int count) {
+
+        //"disk": [{
+        //            "id": 1,
+        //            "name": "xx",
+        //            "hostName": "xx", //所属主机名
+        //            "used": 20,
+        //            "capacity": 50,
+        //            "status": 1||0    //1在线 0离线
+        //}
+        //]
+
+        //访问下级分布式系统接口api/volumes/{volume_id}
+        HttpRequest httpRequest = new HttpRequest();
+
+        String result = httpRequest.sendGet("http://192.168.1.32:8000/api/volumes/" + poolid, " ");
+        JSONObject volumeObject = JSONObject.fromObject(result);
+
+        //brick详细信息
+        JSONArray bricksArray = volumeObject.getJSONArray("bricks");
+        JSONObject brickObject;
+        int brickCount = bricksArray.size();
+
+        //页码处理
+        int page_count = 0;
+
+        //数据处理
+        HostNodeInfoDetail diskDetail = new HostNodeInfoDetail();
+        ArrayList diskList = new ArrayList();
+
+        for (int i = 0; i < brickCount; i++) {
+
+            //翻页
+            if ((i + 1) <= (page_num - 1) * count) {
+                continue;
+            }
+
+            brickObject = bricksArray.getJSONObject(i);
+
+            //diskDetail.setId(Integer.parseInt(brickObject.getString("disk_id")));
+            diskDetail.setName(brickObject.getString("disk_name"));
+            //diskDetail.setHostname();
+            diskDetail.setUsed(Double.parseDouble(brickObject.getString("used")));
+            diskDetail.setCapacity(Double.parseDouble(brickObject.getString("total")));
+            //diskDetail.setStatus();
+
+            //
+            diskList.add(diskDetail);
+            page_count += 1;
+            if (page_count == count) {
+                break;
+            }
+
+        }
+
+        //数据打包
         JSONObject jarrary = new JSONObject();
-        HostNodeInfoDetail[] arrayDiskInfo = new HostNodeInfoDetail[6];
-
-        arrayDiskInfo[0] = new HostNodeInfoDetail();
-        arrayDiskInfo[1] = new HostNodeInfoDetail();
-        arrayDiskInfo[2] = new HostNodeInfoDetail();
-        arrayDiskInfo[3] = new HostNodeInfoDetail();
-        arrayDiskInfo[4] = new HostNodeInfoDetail();
-        arrayDiskInfo[5] = new HostNodeInfoDetail();
-
-        arrayDiskInfo[0].setId(1);
-        arrayDiskInfo[0].setCapacity(50.0);
-        arrayDiskInfo[0].setHostname("Node199");
-        arrayDiskInfo[0].setName("xx");
-        arrayDiskInfo[0].setUsed(67.99);
-        arrayDiskInfo[0].setStatus(1);
-
-        arrayDiskInfo[1].setId(2);
-        arrayDiskInfo[1].setCapacity(51.0);
-        arrayDiskInfo[1].setHostname("Node201");
-        arrayDiskInfo[1].setName("xx");
-        arrayDiskInfo[1].setUsed(69.99);
-        arrayDiskInfo[1].setStatus(0);
-
-        arrayDiskInfo[2].setId(3);
-        arrayDiskInfo[2].setCapacity(51.0);
-        arrayDiskInfo[2].setHostname("Node201");
-        arrayDiskInfo[2].setName("xx");
-        arrayDiskInfo[2].setUsed(69.99);
-        arrayDiskInfo[2].setStatus(0);
-
-        arrayDiskInfo[3].setId(4);
-        arrayDiskInfo[3].setCapacity(51.0);
-        arrayDiskInfo[3].setHostname("Node201");
-        arrayDiskInfo[3].setName("xx");
-        arrayDiskInfo[3].setUsed(69.99);
-        arrayDiskInfo[3].setStatus(0);
-
-        arrayDiskInfo[4].setId(5);
-        arrayDiskInfo[4].setCapacity(51.0);
-        arrayDiskInfo[4].setHostname("Node201");
-        arrayDiskInfo[4].setName("xx");
-        arrayDiskInfo[4].setUsed(69.99);
-        arrayDiskInfo[4].setStatus(0);
-
-        arrayDiskInfo[5].setId(6);
-        arrayDiskInfo[5].setCapacity(51.0);
-        arrayDiskInfo[5].setHostname("Node201");
-        arrayDiskInfo[5].setName("xx");
-        arrayDiskInfo[5].setUsed(69.99);
-        arrayDiskInfo[5].setStatus(0);
 
         //计算总页数
         int totalPage = 0;
         if (count != 0) {
-            totalPage = 6 / count + 1;
+            totalPage = (brickCount % count != 0) ? ((brickCount / count) + 1) : (brickCount / count);
         }
-        System.out.println(totalPage);
 
         jarrary.accumulate("totalPage", totalPage);
-        jarrary.accumulate("disk", arrayDiskInfo);
+        jarrary.accumulate("disk", diskList);
         return jarrary;
     }
 }
