@@ -13,7 +13,7 @@ package com.shdd.cfs.dto.dashboard;
 import lombok.Data;
 
 @Data
-public class CurrentDistributedCapacityDetail {
+public class DistPoolStorageCapacity {
     /**
      * 单个分布式集群名称
      */
