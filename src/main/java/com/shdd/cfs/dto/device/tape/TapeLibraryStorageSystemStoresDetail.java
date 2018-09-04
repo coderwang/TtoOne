@@ -8,5 +8,4 @@ public class TapeLibraryStorageSystemStoresDetail {
     private Double capacity;
     private Double used;
     private Double free;
-    private Integer status;
 }

@@ -1,4 +1,4 @@
-package com.shdd.cfs.commit;
+package com.shdd.cfs.utils.xml;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import com.shdd.cfs.utils.xml.iamp.HttpResult;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.config.RequestConfig;

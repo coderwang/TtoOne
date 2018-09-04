@@ -7,11 +7,17 @@
 package com.shdd.cfs.web.device.tape;
 
 import com.shdd.cfs.dto.device.optical.OpticalSystemInfoDetail;
+import com.shdd.cfs.utils.xml.iamp.HttpResult;
+import com.shdd.cfs.utils.xml.iamp.IampRequest;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import net.sf.json.JSONObject;
+import org.dom4j.DocumentException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.ArrayList;
 
 @RestController
 @Slf4j
@@ -22,20 +28,40 @@ public class TapeAllHostsSummary {
      * @param val
      * @return
      */
+    @Autowired
+    IampRequest iampRequest;
     @GetMapping(value = "api/dashboard/tape/hosts")
     @ApiOperation(value = "获取磁带库存储系统概况", notes = "获取磁带库存储系统中所有服务器节点的概要信息")
-
-    public JSONObject TapeLibraryInfo(String val) {
+    public JSONObject TapeLibraryInfo(String val) throws DocumentException {
+        //获取磁带库磁带总个数
+        Integer alltapesize =0;
+        Integer tapeStatus = 0;
+        Integer  cpucount =  0;
+        String cputype = "设备离线";
+        Double memcapacity = 0.0;
+        String sessonKey = iampRequest.SessionKey();
+        if (sessonKey.equals("wrong")){// 获取sessonKey失败
+        	System.out.println("磁带库不在线");
+        }
+        else {
+            HttpResult tape_lists = iampRequest.inquiry_tape_lists(sessonKey);
+            ArrayList<Integer> alltapelist = iampRequest.all_of_tape_status(tape_lists);
+            alltapesize = alltapelist.size();
+            tapeStatus = 1;
+            cpucount = 1;//待定
+            cputype = "phytion"; //待定
+            memcapacity = 34.5;//待定
+        }
+        //发送JSON协议
         JSONObject Jarrary = new JSONObject();
         OpticalSystemInfoDetail[] tapearrary = new OpticalSystemInfoDetail[1];
         tapearrary[0] = new OpticalSystemInfoDetail();
-        tapearrary[0].setCpuCount(2);
-        tapearrary[0].setCpuType("phytium");
-        tapearrary[0].setHardDiskCount(7);
-        tapearrary[0].setMemCapacity(342.2);
-        tapearrary[0].setName("node111");
-        tapearrary[0].setStatus(1);
-
+        tapearrary[0].setCpuCount(cpucount);
+        tapearrary[0].setCpuType(cputype);
+        tapearrary[0].setHardDiskCount(alltapesize);
+        tapearrary[0].setMemCapacity(memcapacity);
+        tapearrary[0].setName("磁带库");//配置
+        tapearrary[0].setStatus(tapeStatus);
         Jarrary.accumulate("tape", tapearrary);
         return Jarrary;
     }

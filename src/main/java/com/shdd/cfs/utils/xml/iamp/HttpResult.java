@@ -1,4 +1,4 @@
-package com.shdd.cfs.commit;
+package com.shdd.cfs.utils.xml.iamp;
 
 import java.io.Serializable;
 
