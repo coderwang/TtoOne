@@ -98,7 +98,7 @@ public class DistAllDisksDetail {
                     }
 
                     //翻页
-                    if ((i + 1) * (j + 1) * (k + 1) <= page_num * count) {
+                    if ((i + 1) * (j + 1) * (k + 1) <= (page_num - 1) * count) {
                         continue;
                     }
 
