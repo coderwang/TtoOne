@@ -22,11 +22,7 @@ public class TestController {
 		String teString = logon.getContent();
 		String session = iampRequest.SessionKey();
 		HttpResult tapelist = iampRequest.inquiry_tape_lists(session);
-		ArrayList<String> arrayList = iampRequest.get_tapes_id(tapelist);
-		for(String list :arrayList){
-			System.out.println(list);
-		}
-		System.out.println(iampRequest.tape_online_info(tapelist, "000790G"));
+		System.out.println(iampRequest.get_group_id(tapelist, "000790G"));
 //		HttpResult glist = iampRequest.inquiry_gtape_lists(session);
 //		ArrayList<Map<String,String>> group = iampRequest.tape_group_info(glist);
 //		for(Map<String,String> list : group){

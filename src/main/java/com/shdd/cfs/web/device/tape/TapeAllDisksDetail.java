@@ -7,6 +7,7 @@
 package com.shdd.cfs.web.device.tape;
 
 import com.shdd.cfs.dto.device.tape.TapeNodeDetail;
+import com.shdd.cfs.utils.page.PageOpt;
 import com.shdd.cfs.utils.xml.iamp.HttpResult;
 import com.shdd.cfs.utils.xml.iamp.IampRequest;
 import io.swagger.annotations.ApiImplicitParam;
@@ -48,60 +49,28 @@ public class TapeAllDisksDetail {
         String sessonKey = iampRequest.SessionKey();
         HttpResult tape_lists = iampRequest.inquiry_tape_lists(sessonKey);
         ArrayList<String> arrayList = iampRequest.get_tapes_id(tape_lists);
-       // 发送Json报文
+        // 发送Json报文
         JSONObject Joject = new JSONObject();
-        JSONArray  jarray = new JSONArray();
         //计算总页数
-        int tapenum = arrayList.size(); //磁带总个数
-        int totalPage = tapenum%count==0?tapenum/count:tapenum/count+1;
         int id = 0; //表示第几个磁带
-        if(page_num <= totalPage)
-        {
-            ArrayList<TapeNodeDetail> tapearrary = new ArrayList<>();
-            for(String list :arrayList){
-            	id++;
-                Map<String, String> capacity = iampRequest.get_tape_capacityinfo(tape_lists, list);
-                TapeNodeDetail tape = new TapeNodeDetail();
-                tape.setId(id);
-                tape.setCapacity(Double.parseDouble(capacity.get("total")));
-                tape.setUsed(Double.parseDouble(capacity.get("total")) - Double.parseDouble(capacity.get("remaining")));
-                tape.setName(list);
-                tape.setStatus(iampRequest.tape_online_info(tape_lists, list));
-                tapearrary.add(tape);
-            }
-            if(tapenum % count == 0) {// 磁带个数正好可以按照页数显示时
-                int num = (page_num - 1) *count;
-                int whilenum = num + count;
-                for (int i = num ; i < whilenum; i++) {
-                    jarray.add(tapearrary.get(num));
-                }
-            }else {// 当磁带个数不能整页显示时
-            	int rem = tapenum % count; //取余数
-            	int mod = tapenum / count; //取模
-				if(mod == 0){
-                   for( int i = 0 ; i < count - 1 ; i++){
-                      jarray.add(tapearrary.get(i));
-                   }
-                }else {
-					   if (page_num <= mod){
-                           int initnum = (page_num-1) * count;
-                           for(int i = initnum; i< count; i++){
-                               jarray.add(tapearrary.get(i));
-                           }
-                       }else{
-					            int initnum = (page_num - 1) * count;
-                                int remnum = initnum + rem;
-                                for(int i = initnum; i < remnum; i++){
-                                jarray.add(tapearrary.get(i));
-                            }
-					   }
-                }
-            }
-        }else {
-            System.out.println("请求的页码不存在！");
+        ArrayList<TapeNodeDetail> tapearrary = new ArrayList<>();
+        for(String list :arrayList){
+            id++;
+            Map<String, String> capacity = iampRequest.get_tape_capacityinfo(tape_lists, list);
+            TapeNodeDetail tape = new TapeNodeDetail();
+            tape.setId(id);
+            tape.setCapacity(Double.parseDouble(capacity.get("total")));
+            tape.setUsed(Double.parseDouble(capacity.get("total")) - Double.parseDouble(capacity.get("remaining")));
+            tape.setName(list);
+            tape.setStatus(iampRequest.tape_online_info(tape_lists, list));
+            tapearrary.add(tape);
         }
+        int tapenum = tapearrary.size(); //磁带总个数
+        int totalPage = tapenum%count==0?tapenum/count:tapenum/count+1;
+        //分页发送
+        JSONArray Jarray = PageOpt.PagingLogicProcessing(page_num,totalPage,count,tapenum,tapearrary);
         Joject.accumulate("totalPage", totalPage);
-        Joject.accumulate("disk", jarray);
+        Joject.accumulate("disk", Jarray);
         return Joject;
     }
 }

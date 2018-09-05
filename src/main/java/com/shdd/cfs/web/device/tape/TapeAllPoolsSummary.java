@@ -58,12 +58,10 @@ public class TapeAllPoolsSummary {
                 pool.setFree(freecapacity);
                 pools.add(pool);
         }
-
         //发送JSON报文
         for(PoolGeneralOverviewDetail list :pools){
             jarrary.add(list);
         }
-
         storagePool.accumulate("poolCount", pools.size());
         storagePool.accumulate("poolName", jarrary);
         return storagePool;

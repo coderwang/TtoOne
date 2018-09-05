@@ -150,6 +150,29 @@ public class IampRequest {
         }
         return arrayList;
     }
+
+    /**
+     * 根据磁带id获取磁带所在磁带组id
+     * @param tape_lists 磁带库返回的磁带列表
+     * @param tapeid  磁带id
+     * @return 磁带组id
+     */
+    public String get_group_id(HttpResult tape_lists,String tapeid) throws DocumentException {
+        String result = tape_lists.getContent();
+        Document document = DocumentHelper.parseText(result);
+        Element root = document.getRootElement();
+        String groupId = "";
+        // 遍历root节点下的所有子节点
+        for (Iterator itemGroup = root.elementIterator(); itemGroup.hasNext(); ) {
+            Element tape_group = (Element) itemGroup.next();
+            String tape_id = tape_group.attributeValue("id");
+            if(tape_id.equals(tapeid)){
+               groupId = tape_group.attributeValue("group");
+            }
+        }
+        return groupId;
+    }
+
     /**
      * 根据磁带id获取磁带总容量和剩余容量信息
      * @param tape_lists 后台返回的磁带列表

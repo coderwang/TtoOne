@@ -7,13 +7,24 @@
 package com.shdd.cfs.web.device.tape;
 
 import com.shdd.cfs.dto.device.distribute.HostNodeInfoDetail;
+import com.shdd.cfs.dto.device.distribute.PoolGeneralOverviewDetail;
+import com.shdd.cfs.dto.device.tape.TapeNodeDetail;
+import com.shdd.cfs.utils.page.PageOpt;
+import com.shdd.cfs.utils.xml.iamp.HttpResult;
+import com.shdd.cfs.utils.xml.iamp.IampRequest;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
+import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
+import org.dom4j.DocumentException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.ArrayList;
+import java.util.Map;
 
 @RestController
 @Slf4j
@@ -28,6 +39,8 @@ public class TapeSpecificPoolDisksDetail {
      * @param count
      * @return
      */
+    @Autowired
+    IampRequest iampRequest;
     @GetMapping(value = "api/dashboard/tape/pool/disks")
     @ApiOperation(value = "主机信息状态下获取分布式存储系统节点详细概况", notes = "分布式系统指定存储池中的磁盘详细信息")
     @ApiImplicitParams({
@@ -38,72 +51,36 @@ public class TapeSpecificPoolDisksDetail {
             @ApiImplicitParam(paramType = "query", dataType = "String",
                     name = "count", value = "每页所含最大条目数", required = true)
     })
-
-    public JSONObject GetTapeSpecificPoolDisksDetailInfo(int poolid, int page_num, int count) {
-        JSONObject jarrary = new JSONObject();
-        HostNodeInfoDetail[] arrdtail = new HostNodeInfoDetail[6];
-
-        arrdtail[0] = new HostNodeInfoDetail();
-        arrdtail[1] = new HostNodeInfoDetail();
-        arrdtail[2] = new HostNodeInfoDetail();
-        arrdtail[3] = new HostNodeInfoDetail();
-        arrdtail[4] = new HostNodeInfoDetail();
-        arrdtail[5] = new HostNodeInfoDetail();
-
-        arrdtail[0].setId(1);
-        arrdtail[0].setCapacity(50.0);
-        arrdtail[0].setHostname("Node199");
-        arrdtail[0].setName("xx");
-        arrdtail[0].setUsed(67.99);
-        arrdtail[0].setStatus(1);
-
-        arrdtail[1].setId(2);
-        arrdtail[1].setCapacity(51.0);
-        arrdtail[1].setHostname("Node201");
-        arrdtail[1].setName("xx");
-        arrdtail[1].setUsed(69.99);
-        arrdtail[1].setStatus(0);
-
-        arrdtail[2].setId(3);
-        arrdtail[2].setCapacity(51.0);
-        arrdtail[2].setHostname("Node201");
-        arrdtail[2].setName("xx");
-        arrdtail[2].setUsed(69.99);
-        arrdtail[2].setStatus(0);
-
-        arrdtail[3].setId(4);
-        arrdtail[3].setCapacity(51.0);
-        arrdtail[3].setHostname("Node201");
-        arrdtail[3].setName("xx");
-        arrdtail[3].setUsed(69.99);
-        arrdtail[3].setStatus(0);
-
-        arrdtail[4].setId(5);
-        arrdtail[4].setCapacity(51.0);
-        arrdtail[4].setHostname("Node201");
-        arrdtail[4].setName("xx");
-        arrdtail[4].setUsed(69.99);
-        arrdtail[4].setStatus(0);
-
-        arrdtail[5].setId(6);
-        arrdtail[5].setCapacity(51.0);
-        arrdtail[5].setHostname("Node201");
-        arrdtail[5].setName("xx");
-        arrdtail[5].setUsed(69.99);
-        arrdtail[5].setStatus(0);
-
-
-        //计算总页数
-        int totalPage = 0;
-        if (count != 0) {
-            totalPage = 6 / count + 1;
+    public JSONObject GetTapeSpecificPoolDisksDetailInfo(String poolid, int page_num, int count) throws DocumentException {
+        JSONObject Jobject = new JSONObject();
+        HostNodeInfoDetail arrdtail = new HostNodeInfoDetail();
+        String sessonKey = iampRequest.SessionKey();
+        HttpResult tape_lists = iampRequest.inquiry_tape_lists(sessonKey);
+        ArrayList<String> arrayList = iampRequest.get_tapes_id(tape_lists);
+        int id = 0; //表示第几个磁带
+        ArrayList<HostNodeInfoDetail> tapearrary = new ArrayList<>();
+        for(String list :arrayList){
+            String groupId = iampRequest.get_group_id(tape_lists,list);
+            if(groupId.equals(poolid)){
+                id++;
+                Map<String, String> capacity = iampRequest.get_tape_capacityinfo(tape_lists, list);
+                HostNodeInfoDetail tape = new HostNodeInfoDetail();
+                tape.setId(id);
+                tape.setCapacity(Double.parseDouble(capacity.get("total")));
+                tape.setUsed(Double.parseDouble(capacity.get("total")) - Double.parseDouble(capacity.get("remaining")));
+                tape.setName(list);
+                tape.setStatus(iampRequest.tape_online_info(tape_lists, list));
+                tapearrary.add(tape);
+            }
         }
-        System.out.println(totalPage);
-
-        jarrary.accumulate("totalPage", totalPage);
-
-        jarrary.accumulate("disk", arrdtail);
-        return jarrary;
+        int tapenum = tapearrary.size(); //磁带总个数
+        int totalPage = tapenum%count==0?tapenum/count:tapenum/count+1;
+        //处理分页显示
+        JSONArray Jarray = PageOpt.PagingLogicProcessing(page_num,totalPage,count,tapenum,tapearrary);
+        //计算总页数
+        Jobject.accumulate("totalPage", totalPage);
+        Jobject.accumulate("disk", Jarray);
+        return Jobject;
     }
 }
 
