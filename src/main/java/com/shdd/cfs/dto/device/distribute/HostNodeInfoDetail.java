@@ -6,7 +6,6 @@ import lombok.Data;
 public class HostNodeInfoDetail {
     private Integer id;
     private String name;
-    private String hostname;
     private Double used;
     private Double capacity;
     private Integer status;

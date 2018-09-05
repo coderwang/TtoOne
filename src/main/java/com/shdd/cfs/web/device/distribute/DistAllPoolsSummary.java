@@ -47,7 +47,7 @@ public class DistAllPoolsSummary {
             PoolGeneralOverviewDetail volumeInfo = new PoolGeneralOverviewDetail();
 
             volumeInfo.setName(volumeOject.getString("vol_name"));
-            volumeInfo.setId(Integer.parseInt(volumeOject.getString("vol_id")));
+            volumeInfo.setId(volumeOject.getString("vol_id"));
 
             volumeList.add(volumeInfo);
         }
@@ -57,6 +57,7 @@ public class DistAllPoolsSummary {
 
         storagePool.accumulate("poolCount", volumeCount);
         storagePool.accumulate("poolName", volumeList);
+
         return storagePool;
     }
 }

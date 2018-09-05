@@ -5,5 +5,8 @@ import lombok.Data;
 @Data
 public class PoolGeneralOverviewDetail {
     private String name;
-    private Integer id;
+    private String  id;
+    private Double capacity;
+    private Double used;
+    private Double free;
 }

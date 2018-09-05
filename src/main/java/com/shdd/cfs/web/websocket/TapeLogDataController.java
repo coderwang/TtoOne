@@ -7,14 +7,20 @@
 package com.shdd.cfs.web.websocket;
 
 import com.shdd.cfs.dto.log.JournalInfo;
+import com.shdd.cfs.utils.xml.iamp.HttpResult;
+import com.shdd.cfs.utils.xml.iamp.IampRequest;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
+import org.dom4j.DocumentException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Controller;
+
+import java.util.ArrayList;
+import java.util.Map;
 
 /**
  * @author: wangpeng
@@ -30,6 +36,8 @@ public class TapeLogDataController {
     /**
      * @return
      */
+    @Autowired
+    private IampRequest iampRequest;
     @ApiOperation(value = "获取磁带库存储系统告警详细信息", notes = "获取磁带库存储系统告警详细信息")
     @MessageMapping("/tape_warning_log")
     @SendTo("/log/tape_warning_log")
@@ -44,14 +52,23 @@ public class TapeLogDataController {
     }
 
     @Scheduled(cron = "0/2 * * * * ? ")//每两秒触发
-    public void publishUpdates() {
+    public void publishUpdates() throws DocumentException {
         JournalInfo journalInfo = new JournalInfo();
 
         //向下级系统通信，并获取指定数据信息，进行数据填充
-        journalInfo.setType("disk");
-        journalInfo.setTime("TimeStamp xxx");
-        journalInfo.setContent("This is a test warning log from disk.");
-
+        String session = iampRequest.SessionKey();
+        HttpResult massagelist = iampRequest.inquiry_task_lists(session);
+        ArrayList<String> arrayList = iampRequest.get_tapes_id(massagelist);
+        for(String list: arrayList){
+            Map<String,String> time = iampRequest.task_time(massagelist,list);
+            String message = iampRequest.task_message(massagelist,list);
+            journalInfo.setType("tape");
+            journalInfo.setTime(time.get("create").toString());
+            journalInfo.setContent(message);
+        }
+//        journalInfo.setType("tape");
+//        journalInfo.setTime("TimeStamp xxx");
+//        journalInfo.setContent("This is a test warning log from disk.");
         template.convertAndSend("/log/tape_warning_log", journalInfo);
     }
 }

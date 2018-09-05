@@ -22,7 +22,7 @@ public class DistSpecificPoolDisksDetail {
     /**
      * 主机信息状态下获取分布式存储系统节点详细概况
      *
-     * @param value
+     * @param
      * @return
      */
     @GetMapping(value = "api/dashboard/distribute/pool/disks")
@@ -49,45 +49,45 @@ public class DistSpecificPoolDisksDetail {
 
         arrayDiskInfo[0].setId(1);
         arrayDiskInfo[0].setCapacity(50.0);
-        arrayDiskInfo[0].setHostname("Node199");
+       // arrayDiskInfo[0].setHostname("Node199");
         arrayDiskInfo[0].setName("xx");
         arrayDiskInfo[0].setUsed(67.99);
-        arrayDiskInfo[0].setStatus(1);
+       // arrayDiskInfo[0].setStatus(1);
 
         arrayDiskInfo[1].setId(2);
         arrayDiskInfo[1].setCapacity(51.0);
-        arrayDiskInfo[1].setHostname("Node201");
+        //arrayDiskInfo[1].setHostname("Node201");
         arrayDiskInfo[1].setName("xx");
         arrayDiskInfo[1].setUsed(69.99);
-        arrayDiskInfo[1].setStatus(0);
+        //arrayDiskInfo[1].setStatus(0);
 
         arrayDiskInfo[2].setId(3);
         arrayDiskInfo[2].setCapacity(51.0);
-        arrayDiskInfo[2].setHostname("Node201");
+        //arrayDiskInfo[2].setHostname("Node201");
         arrayDiskInfo[2].setName("xx");
         arrayDiskInfo[2].setUsed(69.99);
-        arrayDiskInfo[2].setStatus(0);
+        //arrayDiskInfo[2].setStatus(0);
 
         arrayDiskInfo[3].setId(4);
         arrayDiskInfo[3].setCapacity(51.0);
-        arrayDiskInfo[3].setHostname("Node201");
+        //arrayDiskInfo[3].setHostname("Node201");
         arrayDiskInfo[3].setName("xx");
         arrayDiskInfo[3].setUsed(69.99);
-        arrayDiskInfo[3].setStatus(0);
+        //arrayDiskInfo[3].setStatus(0);
 
         arrayDiskInfo[4].setId(5);
         arrayDiskInfo[4].setCapacity(51.0);
-        arrayDiskInfo[4].setHostname("Node201");
+        //arrayDiskInfo[4].setHostname("Node201");
         arrayDiskInfo[4].setName("xx");
         arrayDiskInfo[4].setUsed(69.99);
-        arrayDiskInfo[4].setStatus(0);
+        //arrayDiskInfo[4].setStatus(0);
 
         arrayDiskInfo[5].setId(6);
         arrayDiskInfo[5].setCapacity(51.0);
-        arrayDiskInfo[5].setHostname("Node201");
+//        arrayDiskInfo[5].setHostname("Node201");
         arrayDiskInfo[5].setName("xx");
         arrayDiskInfo[5].setUsed(69.99);
-        arrayDiskInfo[5].setStatus(0);
+//        arrayDiskInfo[5].setStatus(0);
 
         //计算总页数
         int totalPage = 0;
