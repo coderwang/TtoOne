@@ -20,6 +20,7 @@ public class IampRequest {
     private enum IampApiEnum {
         inquiry_task_status("/inquiry_task_status.websvc",                      "2.1 查询任务状态"),
         inquiry_task_items("/inquiry_task_items.websvc",                        "2.2 查询任务清单"),
+        inquiry_task_lists("/inquiry_task_lists.websvc",                         "2.3查询任务列表"),
         create_task("/create_task.websvc",                                       "2.4 创建任务"),
         control_task("/control_task.websvc",                                     "2.5 任务控制"),
         inquiry_tape_status("/inquiry_tape_status.websvc",                      "3.1 查询磁带状态"),
@@ -323,4 +324,94 @@ public class IampRequest {
         return tapeNameNum;
     }
 
+    /**
+     *向磁带库后台请求所有任务信息
+     * @param session_key 访问秘钥
+     * @return  任务信息列表
+     */
+    public HttpResult inquiry_task_lists(String session_key){
+        Map<String,String> param = new HashMap<>();
+        param.put("session_key",session_key);
+        HttpResult result = httpClientOperate.doGet(IampApiEnum.inquiry_task_lists.getPath(),param);
+        return result;
+    }
+    /**
+     *  获取所有任务日志
+     * @param messagelist 磁带库后台返回的任务列表
+     * @return 所有操作日志
+     * @throws DocumentException
+     */
+    public String task_message(HttpResult messagelist,String taskid) throws DocumentException {
+        String result = messagelist.getContent();
+        Document document = DocumentHelper.parseText(result);
+        Element root = document.getRootElement();
+        String messages = null;
+        for (Iterator itemGroup = root.elementIterator(); itemGroup.hasNext(); ) {
+            // 得到root节点下所有子节点
+            Element tape_group = (Element) itemGroup.next();
+            // 遍历遍历root子节点下的所有子节点
+            if(tape_group.attributeValue("id").equals(taskid)){
+                for (Iterator itemCapacity = tape_group.elementIterator(); itemCapacity.hasNext(); ) {
+                    Element tapes = (Element) itemCapacity.next();
+                    if (tapes.getName().equals("remark")) {
+                        messages=tapes.getText();
+                    }
+                }
+            }
+        }
+        return messages;
+    }
+    /**
+     * 获取所有任务ID
+     * @param takelist 磁带库后台返回的任务列表
+     * @return  所有任务ID
+     */
+    public ArrayList<String> take_id(HttpResult takelist) throws DocumentException {
+        String result = takelist.getContent();
+        ArrayList<String> arrayList = new ArrayList<>();
+        Document document = DocumentHelper.parseText(result);
+        Element root = document.getRootElement();
+        for (Iterator itemtakeid = root.elementIterator(); itemtakeid.hasNext(); ) {
+            Element takeid = (Element) itemtakeid.next();
+            if(takeid.getName().equals("task")){
+                arrayList.add(takeid.attributeValue("id"));
+            }
+        }
+        return  arrayList;
+    }
+    /**
+     *  根据任务ID获取任务时间
+     * @param messagelist 磁带库后台返回的任务列表
+     * @return 任务创建时间和结束时间
+     */
+    public Map<String, String> task_time(HttpResult messagelist, String taskid) throws DocumentException {
+        String result = messagelist.getContent();
+        Document document = DocumentHelper.parseText(result);
+        Element root = document.getRootElement();
+        Map<String,String> timeMap= new HashMap<>();
+        String createtime = null;
+        String cpmpletedtime = null;
+        for (Iterator itemGroup = root.elementIterator(); itemGroup.hasNext(); ) {
+            // 得到root节点下所有子节点
+            Element tape_group = (Element) itemGroup.next();
+            // 遍历遍历root子节点下的所有子节点
+            if(tape_group.attributeValue("id").equals(taskid)){
+                for (Iterator itemCapacity = tape_group.elementIterator(); itemCapacity.hasNext(); ) {
+                    Element tapes = (Element) itemCapacity.next();
+                    for (Iterator itemtime = tapes.elementIterator(); itemtime.hasNext(); ) {
+                        Element time = (Element) itemtime.next();
+                        if(time.getName().equals("created")){
+                            createtime = time.getText();
+                        }
+                        if(time.getName().equals("created")){
+                            cpmpletedtime = time.getText();
+                        }
+                    }
+                }
+            }
+        }
+        timeMap.put("create",createtime);
+        timeMap.put("cpmplete",cpmpletedtime);
+        return timeMap;
+    }
 }
