@@ -8,14 +8,18 @@ package com.shdd.cfs.web.websocket;
 
 import com.shdd.cfs.dto.message.DistSystemData;
 import com.shdd.cfs.dto.message.HelloMessage;
+import com.shdd.cfs.utils.storage.Store;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 
 import java.util.Random;
 
@@ -28,21 +32,36 @@ import java.util.Random;
 public class DistSystemDataController {
 
     @Autowired
+    private Store store;
+
+    @Autowired
     private SimpMessagingTemplate template;
 
     /**
      * 获取分布式存储主机cpu/内存/带宽使用情况
      *
-     * @param helloMessage
+     * @param key
      * @return
      * @throws Exception
      */
     @ApiOperation(value = "获取分布式存储主机cpu/内存/带宽使用情况")
 
-    @MessageMapping("/hello")
+    //@MessageMapping("/hello")
+    @PostMapping("dist_sys_data/{deviceid}")
     @SendTo("/device/dist_sys_data")
-    public DistSystemData getDistSystemData(HelloMessage helloMessage) throws Exception {
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType = "path", dataType = "string",
+                    name = "key", value = "存储的键", required = true),
+            @ApiImplicitParam(paramType = "form", dataType = "string",
+                    name = "value", value = "存储的值", required = true)
+    })
+    public DistSystemData getDistSystemData(@PathVariable String key, String value) throws Exception {
         Thread.sleep(1000); // simulated delay
+
+        log.info("d is " + key);
+        log.info("e is " + value);
+
+        HelloMessage helloMessage = new HelloMessage();
 
         DistSystemData distSystemData = new DistSystemData();
         distSystemData.setCpu(95.3);
