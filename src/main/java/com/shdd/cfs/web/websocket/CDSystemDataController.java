@@ -8,6 +8,7 @@ package com.shdd.cfs.web.websocket;
 
 import com.shdd.cfs.dto.message.DistSystemData;
 import com.shdd.cfs.dto.message.HelloMessage;
+import com.shdd.cfs.utils.json.OpticalJsonHandle;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,9 +45,9 @@ public class CDSystemDataController {
         Thread.sleep(1000); // simulated delay
 
         DistSystemData distSystemData = new DistSystemData();
-        distSystemData.setCpu(95.3);
-        distSystemData.setRam(23.45);
-        distSystemData.setBw(78.2);
+        distSystemData.setCpu(OpticalJsonHandle.cdLibCpumonitor());
+        distSystemData.setRam(OpticalJsonHandle.cdLibRammonitor());
+        distSystemData.setBw(OpticalJsonHandle.cdLibnetmonitor());
 
         return distSystemData;
     }

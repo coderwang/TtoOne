@@ -11,6 +11,8 @@ import com.shdd.cfs.utils.xml.iamp.HttpResult;
 import com.shdd.cfs.utils.xml.iamp.IampRequest;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
 import org.dom4j.DocumentException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.MessageMapping;
@@ -41,14 +43,23 @@ public class TapeLogDataController {
     @ApiOperation(value = "获取磁带库存储系统告警详细信息", notes = "获取磁带库存储系统告警详细信息")
     @MessageMapping("/tape_warning_log")
     @SendTo("/log/tape_warning_log")
-    public JournalInfo GetTapeLogData() {
-        JournalInfo journalInfo = new JournalInfo();
-
-        journalInfo.setType("tape");
-        journalInfo.setTime("TimeStamp xxx");
-        journalInfo.setContent("This is a test warning log from tape.");
-
-        return journalInfo;
+    public JSONObject GetTapeLogData() throws DocumentException {
+        JSONObject tapeWebsocketLog = new JSONObject();
+        JSONArray Jarry = new JSONArray();
+        String session = iampRequest.SessionKey();
+        HttpResult massagelist = iampRequest.inquiry_task_lists(session);
+        ArrayList<String> arrayList = iampRequest.get_tapes_id(massagelist);
+        for(String list: arrayList){
+            JournalInfo journalInfo = new JournalInfo();
+            Map<String,String> time = iampRequest.task_time(massagelist,list);
+            String message = iampRequest.task_message(massagelist,list);
+            journalInfo.setType("tape");
+            journalInfo.setTime(time.get("create"));
+            journalInfo.setContent(message);
+            Jarry.add(journalInfo);
+        }
+        tapeWebsocketLog.accumulate("journal",Jarry);
+        return tapeWebsocketLog;
     }
 
     @Scheduled(cron = "0/2 * * * * ? ")//每两秒触发
@@ -56,19 +67,9 @@ public class TapeLogDataController {
         JournalInfo journalInfo = new JournalInfo();
 
         //向下级系统通信，并获取指定数据信息，进行数据填充
-        String session = iampRequest.SessionKey();
-        HttpResult massagelist = iampRequest.inquiry_task_lists(session);
-        ArrayList<String> arrayList = iampRequest.get_tapes_id(massagelist);
-        for(String list: arrayList){
-            Map<String,String> time = iampRequest.task_time(massagelist,list);
-            String message = iampRequest.task_message(massagelist,list);
             journalInfo.setType("tape");
-            journalInfo.setTime(time.get("create").toString());
-            journalInfo.setContent(message);
-        }
-//        journalInfo.setType("tape");
-//        journalInfo.setTime("TimeStamp xxx");
-//        journalInfo.setContent("This is a test warning log from disk.");
+            journalInfo.setTime("TimeStamp xxx");
+            journalInfo.setContent("This is a test warning log from tape.");
         template.convertAndSend("/log/tape_warning_log", journalInfo);
     }
 }
