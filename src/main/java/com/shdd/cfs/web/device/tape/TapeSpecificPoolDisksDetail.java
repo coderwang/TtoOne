@@ -7,14 +7,12 @@
 package com.shdd.cfs.web.device.tape;
 
 import com.shdd.cfs.dto.device.distribute.HostNodeInfoDetail;
-import com.shdd.cfs.utils.page.PageOpt;
 import com.shdd.cfs.utils.xml.iamp.HttpResult;
 import com.shdd.cfs.utils.xml.iamp.IampRequest;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
-import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.dom4j.DocumentException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,35 +58,47 @@ public class TapeSpecificPoolDisksDetail {
         //指定磁带组中的所有磁带
         ArrayList<HostNodeInfoDetail> poolTapesList = new ArrayList<>();
         //自定义磁带ID
-        int id = 0;
+
+        //翻页
+        int i = 0;
+        int page_count = 0;
 
         for (String tapeID : tapesIdList) {
             String groupId = iampRequest.get_group_id(allTapesList, tapeID);
             //匹配目标磁带组
             if (groupId.equals(poolid)) {
-                id++;
                 Map<String, String> capacity = iampRequest.get_tape_capacityinfo(allTapesList, tapeID);
+
+                //翻页
+                i++;
+                if ((i + 1) <= (page_num - 1) * count) {
+                    continue;
+                }
+
                 HostNodeInfoDetail tape = new HostNodeInfoDetail();
 
-                tape.setId(id);
+                tape.setId(tapeID);
                 tape.setCapacity(Double.parseDouble(capacity.get("total")));
                 tape.setUsed(Double.parseDouble(capacity.get("total")) - Double.parseDouble(capacity.get("remaining")));
                 tape.setName(tapeID);
                 tape.setStatus(iampRequest.tape_online_info(allTapesList, tapeID));
 
                 poolTapesList.add(tape);
+                page_count += 1;
+                if (page_count == count) {
+                    break;
+                }
             }
         }
         //指定磁带组中磁带总个数
         int tapesCount = poolTapesList.size();
         int totalPage = tapesCount % count == 0 ? tapesCount / count : tapesCount / count + 1;
-        //处理分页显示
-        JSONArray Jarray = PageOpt.PagingLogicProcessing(page_num, totalPage, count, tapesCount, poolTapesList);
-        //计算总页数
+
+        //数据打包
         JSONObject RstObject = new JSONObject();
 
         RstObject.accumulate("totalPage", totalPage);
-        RstObject.accumulate("disk", Jarray);
+        RstObject.accumulate("disk", poolTapesList);
         return RstObject;
     }
 }

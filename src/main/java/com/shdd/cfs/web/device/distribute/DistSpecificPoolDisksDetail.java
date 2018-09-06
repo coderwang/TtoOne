@@ -66,6 +66,7 @@ public class DistSpecificPoolDisksDetail {
             if ((i + 1) <= (page_num - 1) * count) {
                 continue;
             }
+
             DiskDetailInfo diskDetailInfo = new DiskDetailInfo();
 
             diskDetailInfo.setName(brickObject.getString("disk_name"));
