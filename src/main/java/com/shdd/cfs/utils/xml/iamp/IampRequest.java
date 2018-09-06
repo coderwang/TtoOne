@@ -434,7 +434,7 @@ public class IampRequest {
                         if (time.getName().equals("created")) {
                             createtime = time.getText();
                         }
-                        if (time.getName().equals("created")) {
+                        if (time.getName().equals("cpmplete")) {
                             cpmpletedtime = time.getText();
                         }
                     }
