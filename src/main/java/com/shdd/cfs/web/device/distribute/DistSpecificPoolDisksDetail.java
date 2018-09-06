@@ -54,7 +54,6 @@ public class DistSpecificPoolDisksDetail {
         int brickCount = brickArray.size();
 
         //打包数据结构
-        DiskDetailInfo diskDetailInfo = new DiskDetailInfo();
         ArrayList diskList = new ArrayList();
 
         //页码处理
@@ -67,6 +66,7 @@ public class DistSpecificPoolDisksDetail {
             if ((i + 1) <= (page_num - 1) * count) {
                 continue;
             }
+            DiskDetailInfo diskDetailInfo = new DiskDetailInfo();
 
             diskDetailInfo.setName(brickObject.getString("disk_name"));
             diskDetailInfo.setHostname(brickObject.getString("host_name"));
