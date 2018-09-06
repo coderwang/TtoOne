@@ -9,6 +9,7 @@ package com.shdd.cfs.web.general;
 import com.shdd.cfs.dto.dashboard.TotalCapacityInfoDto;
 import com.shdd.cfs.dto.dashboard.TotalStatusInfoDetail;
 import com.shdd.cfs.utils.json.HttpRequest;
+import com.shdd.cfs.utils.json.OpticalJsonHandle;
 import com.shdd.cfs.utils.xml.iamp.HttpResult;
 import com.shdd.cfs.utils.xml.iamp.IampRequest;
 import io.swagger.annotations.ApiOperation;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 @RestController
 @Slf4j
@@ -35,6 +37,7 @@ public class ThreeinOneSummary {
 	@ApiOperation(value = "发送总容量信息", notes = "获取三合一系统的概要信息，包含总任务、运行任务、完成任务、新增任务、总容量、总告警")
 
 	public TotalCapacityInfoDto sendTotalCapacityStatusInfo(String TotalInfo) throws DocumentException {
+
 		//data:{
 		//			"distcapacity": 1,      //分布式总容量
 		//			"distfree": 1,       	//分布式可用容量
@@ -43,23 +46,22 @@ public class ThreeinOneSummary {
 		//			"cdcapacity": 1，       //光盘库总光盘数
 		//			"cdfree": 1     		//光盘库可用光盘数
 		//}
-		TotalCapacityInfoDto capacityStatusInfo = new TotalCapacityInfoDto();
-		TotalStatusInfoDetail allCapacityInfo = new TotalStatusInfoDetail();
+		TotalStatusInfoDetail allDistCapacityInfo = new TotalStatusInfoDetail();
 
-		//光盘库存储系统
-		//定义获取光盘库容量信息的对象
-		JSONObject getnodecapacity = new JSONObject();
-		//获取光盘库容量, 节点状态
-		String nodecapacity = "{\"protoname\":\"nodeconnect\"}";
-		//获取光盘库节点容量信息
-//		getnodecapacity = GetJsonMessage.GetJsonStr("192.168.100.199", 8000, nodecapacity);
-//		Double optUserCapacity = Double.parseDouble(getnodecapacity.getString(("usedinfo")));
+
+
+		log.info(TotalInfo);
+		//获取光盘库在线信息
+		Map<String, Integer> cdOline = OpticalJsonHandle.OnlineCdInfo();
+		Integer totalCdOline = cdOline.get("totalOlineCard");
+		Integer freeCdOline = cdOline.get("freeOlineCard");
+
 		//获取分布式集群信息
 //		JSONObject disjsoncapacity = DistributeUrlHandle.ClusterInfo();
 		//获取分布式存储集群总的使用容量
 //		Double disUseCapacity = Double.parseDouble(disjsoncapacity.getString("storage_used"));
-		allCapacityInfo.setCdcapacity(1);
-		allCapacityInfo.setCdfree(25);
+		allDistCapacityInfo.setCdcapacity(1);
+		allDistCapacityInfo.setCdfree(25);
 
 		//磁带库存储系统
 		//获取磁带库总磁带个数
@@ -74,8 +76,9 @@ public class ThreeinOneSummary {
 			}  //空白磁带
 		}
 		//组织发送给UI的报文
-		allCapacityInfo.setTapecapacity(alltapesize);
-		allCapacityInfo.setTapefree(fulltape);
+
+		allDistCapacityInfo.setTapecapacity(alltapesize);
+		allDistCapacityInfo.setTapefree(fulltape);
 
 		//分布式存储系统
 		//访问下级分布式系统接口api/monitor/clusters/storage/
@@ -84,10 +87,21 @@ public class ThreeinOneSummary {
 		String result = httpRequest.sendGet("http://192.168.1.32:8000/api/monitor/clusters/storage/", " ");
 		JSONObject distStorageObject = JSONObject.fromObject(result);
 
-		allCapacityInfo.setDistcapacity(distStorageObject.getString("storage_total"));
-		allCapacityInfo.setDistfree(distStorageObject.getString("storage_free"));
+		allDistCapacityInfo.setDistcapacity(distStorageObject.getString("storage_total"));
+		allDistCapacityInfo.setDistfree(distStorageObject.getString("storage_free"));
 
-		capacityStatusInfo.setData(allCapacityInfo);
+
+		TotalCapacityInfoDto capacityStatusInfo = new TotalCapacityInfoDto();
+		TotalStatusInfoDetail[] allCDCapacityInfo = new TotalStatusInfoDetail[1];
+		allCDCapacityInfo[0] = new TotalStatusInfoDetail();
+		allCDCapacityInfo[0].setDistcapacity("23.1");
+		allCDCapacityInfo[0].setDistfree("12.3");
+		allCDCapacityInfo[0].setTapecapacity(alltapesize);
+		allCDCapacityInfo[0].setTapefree(fulltape);
+		allCDCapacityInfo[0].setCdcapacity(totalCdOline);
+		allCDCapacityInfo[0].setCdfree(freeCdOline);
+
+		capacityStatusInfo.setData(allCDCapacityInfo);
 		//返回给JSON报文
 		return capacityStatusInfo;
 	}

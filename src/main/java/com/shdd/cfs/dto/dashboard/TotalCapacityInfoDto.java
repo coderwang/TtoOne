@@ -17,5 +17,5 @@ public class TotalCapacityInfoDto {
     /**
      * 系统整体容量状况
      */
-    TotalStatusInfoDetail data;
+    TotalStatusInfoDetail[] data;
 }

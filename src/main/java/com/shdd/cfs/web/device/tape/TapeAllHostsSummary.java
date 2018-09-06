@@ -64,7 +64,6 @@ public class TapeAllHostsSummary {
             hostInfo.setHardDiskCount(alltapesize);
             hostInfo.setMemCapacity(memcapacity);
             hostInfo.setName("磁带库");//配置
-            hostInfo.setStatus(tapeStatus);
 
             hostList.add(hostInfo);
         }
@@ -72,6 +71,7 @@ public class TapeAllHostsSummary {
         JSONObject Jarrary = new JSONObject();
 
         Jarrary.accumulate("tape", hostList);
+
         return Jarrary;
     }
 }

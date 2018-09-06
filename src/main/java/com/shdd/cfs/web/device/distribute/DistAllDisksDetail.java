@@ -106,7 +106,6 @@ public class DistAllDisksDetail {
 
                     //处理从下级系统获取到的数据
                     diskDetailInfo.setId(Integer.parseInt(diskObject.getString("disk_id")));
-                    diskDetailInfo.setHostname(hostName);
                     diskDetailInfo.setName(diskObject.getString("disk_name"));
 
                     diskDetailInfo.setCapacity(diskObject.getString("total"));

@@ -7,11 +7,16 @@
 package com.shdd.cfs.web.device.cdstorage;
 
 import com.shdd.cfs.dto.device.distribute.PoolGeneralOverviewDetail;
+import com.shdd.cfs.utils.json.OpticalJsonHandle;
+import com.shdd.cfs.utils.page.PageOpt;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
+import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.ArrayList;
 
 @RestController
 @Slf4j
@@ -27,18 +32,19 @@ public class CDAllPoolsSummary {
     @ApiOperation(value = "获取光盘库存储系统中所有存储池的详细信息", notes = "获取光盘库存储系统中所有光盘匣的详细信息")
     public JSONObject GetCDAllPoolsSummaryInfo() {
         JSONObject storagePool = new JSONObject();
-        PoolGeneralOverviewDetail[] jarrary = new PoolGeneralOverviewDetail[2];
-
-        jarrary[0] = new PoolGeneralOverviewDetail();
-        jarrary[1] = new PoolGeneralOverviewDetail();
-        jarrary[0].setId("1");
-        jarrary[0].setName("长期保存库");
-        jarrary[1].setId("1");
-        jarrary[1].setName("长期保存库2");
-
-        storagePool.accumulate("poolCount", "3");
-        storagePool.accumulate("status", 1);
-        storagePool.accumulate("poolName", jarrary);
+        JSONArray boxList = OpticalJsonHandle.cdboxlist();
+        ArrayList<PoolGeneralOverviewDetail> boxsArray = new ArrayList<>();
+         for(int i = 0 ; i < boxList.size() ; i++ ){
+             PoolGeneralOverviewDetail boxs = new PoolGeneralOverviewDetail();
+             boxs.setId(boxList.getJSONObject(i).getString("cdboxid"));
+             boxs.setName(boxList.getJSONObject(i).getString("label"));
+             boxs.setCapacity(boxList.getJSONObject(i).getDouble("cdboxtotalcapacity"));
+             boxs.setUsed(boxList.getJSONObject(i).getDouble("cdboxusedcapacity"));
+             boxs.setFree(boxList.getJSONObject(i).getDouble("cdboxfreecapacity"));
+             boxsArray.add(boxs);
+         }
+        storagePool.accumulate("poolCount", boxList.size());
+        storagePool.accumulate("poollist", boxsArray);
         return storagePool;
     }
 }

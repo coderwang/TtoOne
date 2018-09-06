@@ -12,6 +12,7 @@ import com.shdd.cfs.dto.dashboard.DistPoolStorageCapacity;
 import com.shdd.cfs.dto.dashboard.TapeCurStorageCapacity;
 import com.shdd.cfs.utils.json.GetJsonMessage;
 import com.shdd.cfs.utils.json.HttpRequest;
+import com.shdd.cfs.utils.json.OpticalJsonHandle;
 import com.shdd.cfs.utils.xml.iamp.HttpResult;
 import com.shdd.cfs.utils.xml.iamp.IampRequest;
 import io.swagger.annotations.ApiOperation;
@@ -24,6 +25,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 @RestController
 @Slf4j
@@ -139,6 +141,7 @@ public class CurrentStorageCapacity {
         Integer alltapesize = alltapelist.size();
         Double singleTapeCapacity = 2.5;
         int fulltape = 0;
+
         for (Integer list : alltapelist) {
             if (list == 1) {
                 fulltape = fulltape + 1;
@@ -165,21 +168,19 @@ public class CurrentStorageCapacity {
     private CDDiskCurStorageCapacity GetCDDiskCurStorageCapacity() {
         CDDiskCurStorageCapacity cddiskCurStorageCapacity = new CDDiskCurStorageCapacity();
 
-        //光盘库节点容量获取对象
-        JSONObject getopticalcapacity;
         //获取光盘库容量, 节点状态
-        String capacity = "{\"protoname\":\"nodeconnect\"}";
-        //获取光盘库节点返回报文
-        getopticalcapacity = GetJsonMessage.GetJsonStr("192.168.100.199", 8000, capacity);
-        Double allOptCapacity = Double.parseDouble(getopticalcapacity.getString("totalinfo"));
-        Double useOptCapacity = Double.parseDouble(getopticalcapacity.getString("usedinfo"));
+        Map<String, Double> cdLibCapacity = OpticalJsonHandle.getCDLibCapacity();
+        Double cdTotalCapacity = cdLibCapacity.get("capacity");
+        Double cdUsedCapacity = cdLibCapacity.get("used");
 
         //TODO 容量数据存入数据库
         //给光盘库当前容量赋值
-        cddiskCurStorageCapacity.setCapacity(allOptCapacity);
+
+        cddiskCurStorageCapacity.setCapacity(cdTotalCapacity);
         cddiskCurStorageCapacity.setDevType("cdstorage");
-        cddiskCurStorageCapacity.setUsedCapacity(useOptCapacity);
+        cddiskCurStorageCapacity.setUsedCapacity(cdUsedCapacity);
 
         return cddiskCurStorageCapacity;
+
     }
 }

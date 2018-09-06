@@ -9,5 +9,4 @@ public class OpticalSystemInfoDetail {
     private Integer cpuCount;
     private Double memCapacity;
     private Integer hardDiskCount;
-    private Integer status;
 }
