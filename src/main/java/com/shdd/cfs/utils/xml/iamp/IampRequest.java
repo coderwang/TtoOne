@@ -24,6 +24,7 @@ public class IampRequest {
         inquiry_task_status("/inquiry_task_status.websvc", "2.1 查询任务状态"),
         inquiry_task_items("/inquiry_task_items.websvc", "2.2 查询任务清单"),
         inquiry_task_lists("/inquiry_task_lists.websvc", "2.3查询任务列表"),
+        inquiry_task_warn("/inquiry_task_lists.websvc?status=4", "2.3查询任务列表"),
         create_task("/create_task.websvc", "2.4 创建任务"),
         control_task("/control_task.websvc", "2.5 任务控制"),
         inquiry_tape_status("/inquiry_tape_status.websvc", "3.1 查询磁带状态"),
@@ -348,6 +349,34 @@ public class IampRequest {
         return tapeNameNum;
     }
 
+    /**
+     * 向磁带库请求是否发生任务告警
+     * @param session_key 访问秘钥
+     * @return 磁带库返回的任务告警信息
+     */
+    public HttpResult inquiry_task_warn(String session_key) {
+        Map<String, String> param = new HashMap<>();
+        param.put("session_key", session_key);
+        HttpResult result = httpClientOperate.doGet(IampApiEnum.inquiry_task_warn.getPath(), param);
+        return result;
+    }
+
+    public Integer get_task_warn(HttpResult warnmessage) throws DocumentException {
+        String result =warnmessage.getContent();
+        Document document = DocumentHelper.parseText(result);
+        Element root = document.getRootElement();
+       String warning = null;
+        for (Iterator itemInfo = root.elementIterator(); itemInfo.hasNext(); ) {
+            // 得到root节点下所有子节点
+            Element warn = (Element) itemInfo.next();
+            warning = warn.attributeValue("errno");
+        }
+        if(Integer.parseInt(warning) == 2101){
+            return 0;
+        }else{
+           return 1;
+        }
+    }
     /**
      * 向磁带库后台请求所有任务信息
      *

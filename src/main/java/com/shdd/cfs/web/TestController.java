@@ -19,21 +19,21 @@ public class TestController {
 	@Autowired
 	private IampRequest iampRequest;
 	@GetMapping("/hello")
-	public String hello() {
+	public String hello() throws DocumentException {
 		HttpResult logon = iampRequest.logon("shuju", "69MOQca0Hv6NsOJH");
 		String teString = logon.getContent();
-		ArrayList<JSONObject> card = OpticalJsonHandle.getAllCardInfo();
-		for(JSONObject list : card){
-			System.out.println(list);
-		}
-//		String session = iampRequest.SessionKey();
-//		HttpResult massagelist = iampRequest.inquiry_task_lists(session);
-//		ArrayList<String> arrayList = iampRequest.get_tapes_id(massagelist);
+//		ArrayList<JSONObject> card = OpticalJsonHandle.getAllCardInfo();
+//		for(JSONObject list : card){
+//			System.out.println(list);
+//		}
+		String session = iampRequest.SessionKey();
+		HttpResult massagelist = iampRequest.inquiry_task_warn(session);
+		Integer arrayList = iampRequest.get_task_warn(massagelist);
 //		for(String list: arrayList){
 //			iampRequest.task_time(massagelist,list);
 //			System.out.println(iampRequest.task_message(massagelist,list));
 //		}
-		OpticalJsonHandle.cdboxlist();
+//		OpticalJsonHandle.cdboxlist();
 		return teString;
 	}
 }
