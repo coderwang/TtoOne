@@ -13,7 +13,7 @@ package com.shdd.cfs.dto.dashboard;
 import lombok.Data;
 
 @Data
-public class CurrentDistributedCapacityDetail {
+public class DistPoolStorageCapacity {
     /**
      * 单个分布式集群名称
      */
@@ -21,9 +21,9 @@ public class CurrentDistributedCapacityDetail {
     /**
      * 单个分布式集群存储总容量
      */
-    private Double capacity;
+    private String capacity;
     /**
      * 单个分布式集群已使用容量
      */
-    private Double usedCapacity;
+    private String usedCapacity;
 }

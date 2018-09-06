@@ -6,7 +6,6 @@
  */
 package com.shdd.cfs.dto.dashboard;
 
-import com.shdd.cfs.utils.xml.iamp.IampRequest;
 import lombok.Data;
 
 /**
@@ -18,11 +17,11 @@ public class TotalStatusInfoDetail {
 	/**
 	 * 分布式总容量
 	 */
-	private Double distcapacity;
+	private String distcapacity;
 	/**
 	 * 分布式可用容量
 	 */
-	private Double distfree;
+	private String distfree;
 	/**
 	 * 磁带库总磁带数
 	 */

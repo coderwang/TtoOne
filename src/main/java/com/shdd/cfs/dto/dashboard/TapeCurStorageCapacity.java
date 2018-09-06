@@ -6,12 +6,25 @@
  */
 package com.shdd.cfs.dto.dashboard;
 
+/**
+ * @author: jfz
+ * @version: 1.0 2018/8/30
+ */
 import lombok.Data;
 
-@Data
-public class CurrentOpticalCapacityDetail {
-    private String devType;
-    private Double capacity;
-    private Double usedCapacity;
 
+@Data
+public class TapeCurStorageCapacity {
+    /**
+     * 磁带库设备方式
+     */
+    private String devType;
+    /**
+     * 磁带库总容量
+     */
+    private Double capacity;
+    /**
+     * 磁带库使用容量
+     */
+    private Double usedCapacity;
 }

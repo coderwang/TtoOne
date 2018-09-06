@@ -12,14 +12,16 @@ package com.shdd.cfs.dto.dashboard;
  */
 import lombok.Data;
 
+import java.util.ArrayList;
+
 @Data
-public class DistributeCapacityStruct {
+public class DistCurStorageCapacity {
     /**
      * 分布式设备类型
      */
     private String devType;
     /**
-     * 分布式存储返回各个存储池使用情况数组
+     * 分布式集群存储池列表
      */
-    private CurrentDistributedCapacityDetail[] data = new CurrentDistributedCapacityDetail[1];
+    ArrayList poolList;
 }

@@ -6,7 +6,7 @@
  */
 package com.shdd.cfs.web.device.distribute;
 
-import com.shdd.cfs.dto.device.distribute.DiskDetailInfo;
+import com.shdd.cfs.dto.device.distribute.HostNodeInfoDetail;
 import com.shdd.cfs.utils.json.HttpRequest;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -26,7 +26,13 @@ public class DistSpecificPoolDisksDetail {
     /**
      * 主机信息状态下获取分布式存储系统节点详细概况
      *
+<<<<<<< HEAD
      * @param
+=======
+     * @param poolid
+     * @param page_num
+     * @param count
+>>>>>>> feature/cfs_nexus_distribute_general
      * @return
      */
     @GetMapping(value = "api/dashboard/distribute/pool/disks")
@@ -42,41 +48,53 @@ public class DistSpecificPoolDisksDetail {
 
     public JSONObject DistributeStorageInfo(int poolid, int page_num, int count) {
 
-        //访问下级分布式系统接口api/volumes/volume_id/
+
+        //"disk": [{
+        //            "id": 1,
+        //            "name": "xx",
+        //            "hostName": "xx", //所属主机名
+        //            "used": 20,
+        //            "capacity": 50,
+        //            "status": 1||0    //1在线 0离线
+        //}
+        //]
+
+        //访问下级分布式系统接口api/volumes/{volume_id}
         HttpRequest httpRequest = new HttpRequest();
 
         String result = httpRequest.sendGet("http://192.168.1.32:8000/api/volumes/" + poolid, " ");
         JSONObject volumeObject = JSONObject.fromObject(result);
 
-        //
-        JSONArray brickArray = volumeObject.getJSONArray("bricks");
+        //brick详细信息
+        JSONArray bricksArray = volumeObject.getJSONArray("bricks");
         JSONObject brickObject;
-        int brickCount = brickArray.size();
-
-        //打包数据结构
-        ArrayList diskList = new ArrayList();
+        int brickCount = bricksArray.size();
 
         //页码处理
         int page_count = 0;
 
+        //数据处理
+        HostNodeInfoDetail diskDetail = new HostNodeInfoDetail();
+        ArrayList diskList = new ArrayList();
+
         for (int i = 0; i < brickCount; i++) {
-            brickObject = brickArray.getJSONObject(i);
 
             //翻页
             if ((i + 1) <= (page_num - 1) * count) {
                 continue;
             }
 
-            DiskDetailInfo diskDetailInfo = new DiskDetailInfo();
+            brickObject = bricksArray.getJSONObject(i);
 
-            diskDetailInfo.setName(brickObject.getString("disk_name"));
-            diskDetailInfo.setHostname(brickObject.getString("host_name"));
-            diskDetailInfo.setCapacity(brickObject.getString("total"));
-            diskDetailInfo.setUsed(brickObject.getString("used"));
-            diskDetailInfo.setStatus(Integer.parseInt(brickObject.getString("disk_state")));
-            diskDetailInfo.setId(Integer.parseInt(brickObject.getString("disk_id")));
+            //diskDetail.setId(Integer.parseInt(brickObject.getString("disk_id")));
+            diskDetail.setName(brickObject.getString("disk_name"));
+            //diskDetail.setHostname();
+            diskDetail.setUsed(Double.parseDouble(brickObject.getString("used")));
+            diskDetail.setCapacity(Double.parseDouble(brickObject.getString("total")));
+            //diskDetail.setStatus();
 
-            diskList.add(diskDetailInfo);
+            //
+            diskList.add(diskDetail);
             page_count += 1;
             if (page_count == count) {
                 break;
@@ -84,6 +102,7 @@ public class DistSpecificPoolDisksDetail {
 
         }
 
+        //数据打包
         JSONObject jarrary = new JSONObject();
 
         //计算总页数
