@@ -6,7 +6,6 @@ import lombok.Data;
 public class DiskDetailInfo {
     private Integer id;
     private String name;
-    private String hostname;
     private Double used;
     private Double capacity;
     private Integer status;

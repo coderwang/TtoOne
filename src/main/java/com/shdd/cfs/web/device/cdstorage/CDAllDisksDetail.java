@@ -7,13 +7,19 @@
 package com.shdd.cfs.web.device.cdstorage;
 
 import com.shdd.cfs.dto.device.distribute.DiskDetailInfo;
+import com.shdd.cfs.utils.json.OpticalJsonHandle;
+import com.shdd.cfs.utils.page.PageOpt;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.models.auth.In;
 import lombok.extern.slf4j.Slf4j;
+import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.ArrayList;
 
 @RestController
 @Slf4j
@@ -37,65 +43,27 @@ public class CDAllDisksDetail {
     })
     public JSONObject GetCDAllDisksDetailInfo(int page_num, int count) {
         JSONObject jarrary = new JSONObject();
-        DiskDetailInfo[] arrdtail = new DiskDetailInfo[6];
+        ArrayList<DiskDetailInfo> arrayList = new ArrayList<>();
+        ArrayList<JSONObject> cdlists = OpticalJsonHandle.getAllCardInfo();
+        for(JSONObject list : cdlists){
+            DiskDetailInfo arrdtail = new DiskDetailInfo();
+            arrdtail.setId(list.getInt("cdslotid"));
+            arrdtail.setName(list.getString("label"));
+            arrdtail.setCapacity(list.getDouble("cdinfo"));
+            arrdtail.setUsed(list.getDouble("cdinfo") - list.getDouble("leftinfo"));
+            if(list.getInt("cdslotstate") == 0) {//指盘槽内无盘
+               arrdtail.setStatus(0);
+            } else {
 
-        arrdtail[0] = new DiskDetailInfo();
-        arrdtail[0].setId(1);
-        arrdtail[0].setCapacity(50.0);
-        arrdtail[0].setHostname("Node199");
-        arrdtail[0].setName("xx");
-        arrdtail[0].setUsed(67.99);
-        arrdtail[0].setStatus(1);
-
-        arrdtail[1] = new DiskDetailInfo();
-        arrdtail[1].setId(2);
-        arrdtail[1].setCapacity(50.0);
-        arrdtail[1].setHostname("Node199");
-        arrdtail[1].setName("xx");
-        arrdtail[1].setUsed(67.99);
-        arrdtail[1].setStatus(1);
-
-        arrdtail[2] = new DiskDetailInfo();
-        arrdtail[2].setId(3);
-        arrdtail[2].setCapacity(50.0);
-        arrdtail[2].setHostname("Node199");
-        arrdtail[2].setName("xx");
-        arrdtail[2].setUsed(67.99);
-        arrdtail[2].setStatus(1);
-
-        arrdtail[3] = new DiskDetailInfo();
-        arrdtail[3].setId(4);
-        arrdtail[3].setCapacity(50.0);
-        arrdtail[3].setHostname("Node199");
-        arrdtail[3].setName("xx");
-        arrdtail[3].setUsed(67.99);
-        arrdtail[3].setStatus(1);
-
-        arrdtail[4] = new DiskDetailInfo();
-        arrdtail[4].setId(5);
-        arrdtail[4].setCapacity(50.0);
-        arrdtail[4].setHostname("Node199");
-        arrdtail[4].setName("xx");
-        arrdtail[4].setUsed(67.99);
-        arrdtail[4].setStatus(1);
-
-        arrdtail[5] = new DiskDetailInfo();
-        arrdtail[5].setId(6);
-        arrdtail[5].setCapacity(50.0);
-        arrdtail[5].setHostname("Node199");
-        arrdtail[5].setName("xx");
-        arrdtail[5].setUsed(67.99);
-        arrdtail[5].setStatus(1);
-
-        //计算总页数
-        int totalPage = 0;
-        if (count != 0) {
-            totalPage = 6 / count + 1;
+                arrdtail.setStatus(1);
+            }
+            arrayList.add(arrdtail);
         }
-        System.out.println(totalPage);
-
+        Integer cdNum = cdlists.size();
+        Integer totalPage = cdNum%count==0?cdNum/count:cdNum/count+1; //总页数
+        JSONArray jarray = PageOpt.PagingLogicProcessing(page_num,totalPage,count,cdNum,arrayList);
         jarrary.accumulate("totalPage", totalPage);
-        jarrary.accumulate("disk", arrdtail);
+        jarrary.accumulate("disk", jarray);
         return jarrary;
     }
 }

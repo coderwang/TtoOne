@@ -3,6 +3,7 @@ package com.shdd.cfs.utils.json;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -132,13 +133,32 @@ public class OpticalJsonHandle {
 	}
 
 	/**
-	 *
-	 * @return
+	 * 通过制定光盘匣ID获取光盘匣内所有光盘信息
+	 * @return 光盘匣ID内光盘属性
 	 */
 	public static JSONArray cdslotlist(String id ){
-		String cdslotlist = "{\"protoname\":\"cdslotlist\",\"cdboxid\":\"id\"}";
-		JSONObject cdslotlists = GetJsonMessage.GetJsonStr(ip,port,CdApiEnum.cdslotlist.getPath());
+		String cdslotlist = "{\"protoname\":\"cdslotlist\",\"cdboxid\":\"01\"}";
+		String protocol = cdslotlist.replace("01", id);
+		JSONObject cdslotlists = GetJsonMessage.GetJsonStr(ip,port,protocol);
 		JSONArray cdslotlistarray = cdslotlists.getJSONArray("dt");
 		return  cdslotlistarray;
+	}
+	/**
+	 * 将所有光盘槽属性塞入数组
+	 * @return 所有光盘槽属性
+	 */
+	public static ArrayList<JSONObject> getAllCardInfo(){
+		 JSONObject statsinfo = GetJsonMessage.GetJsonStr(ip,port,CdApiEnum.statsinfo.getPath());
+		 ArrayList<JSONObject> cdlists = new ArrayList<>();
+		 Integer boxnum = statsinfo.getInt("label01");
+		 for(int i = 1 ; i <= boxnum ; i++){
+		 	JSONArray box = cdslotlist(Integer.toString(i));
+		 	for(int j = 0 ; j < box.size(); j++){
+				Map<String,String> cardInfo = new HashMap<>();
+				JSONObject cdslot = (JSONObject) box.getJSONObject(j);
+				cdlists.add(cdslot);
+			}
+		 }
+		 return cdlists;
 	}
 }
