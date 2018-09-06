@@ -51,7 +51,7 @@ public class TapeAllPoolsSummary {
             Double usedCapacity = capacity - freecapacity;
 
             PoolGeneralOverviewDetail pool = new PoolGeneralOverviewDetail();
-            pool.setId(group.get("groupname"));
+            pool.setId(group.get("id"));
             pool.setName(group.get("groupname"));
             pool.setCapacity(capacity);
             pool.setUsed(usedCapacity);

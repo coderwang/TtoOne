@@ -1,6 +1,7 @@
 package com.shdd.cfs.utils.xml.iamp;
 
 import com.shdd.cfs.utils.xml.HttpClientOperate;
+import lombok.extern.slf4j.Slf4j;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.DocumentHelper;
@@ -11,7 +12,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
-
+@Slf4j
 public class IampRequest {
     /**
      * iamp5.x 版本中，支持使用的 API 接口名称<br/>
@@ -185,6 +186,7 @@ public class IampRequest {
             String tape_id = tape_group.attributeValue("id");
             if (tape_id.equals(tapeid)) {
                 groupId = tape_group.attributeValue("group");
+                break;
             }
         }
         return groupId;

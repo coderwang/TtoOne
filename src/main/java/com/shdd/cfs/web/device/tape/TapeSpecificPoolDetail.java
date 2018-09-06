@@ -54,7 +54,7 @@ public class TapeSpecificPoolDetail {
         ArrayList poolList = new ArrayList();
         //给磁带组赋值
         for (Map<String, String> group : groupsList) {
-            if (poolid.equals(group.get("groupname"))) {
+            if (poolid.equals(group.get("id"))) {
                 TapeLibraryStorageSystemStoresDetail poolInfoDetail = new TapeLibraryStorageSystemStoresDetail();
 
                 capacity = Double.parseDouble(group.get("alltapenum")) * 2.5;
