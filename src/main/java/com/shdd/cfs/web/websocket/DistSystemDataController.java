@@ -7,12 +7,14 @@
 package com.shdd.cfs.web.websocket;
 
 import com.shdd.cfs.dto.message.DistSystemData;
-import com.shdd.cfs.dto.message.HelloMessage;
+import com.shdd.cfs.utils.json.HttpRequest;
 import com.shdd.cfs.utils.storage.Store;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
@@ -40,7 +42,8 @@ public class DistSystemDataController {
     /**
      * 获取分布式存储主机cpu/内存/带宽使用情况
      *
-     * @param key
+     * @param deviceid
+     * @param value
      * @return
      * @throws Exception
      */
@@ -51,23 +54,81 @@ public class DistSystemDataController {
     @SendTo("/device/dist_sys_data")
     @ApiImplicitParams({
             @ApiImplicitParam(paramType = "path", dataType = "string",
-                    name = "key", value = "存储的键", required = true),
+                    name = "deviceid", value = "存储的键", required = true),
             @ApiImplicitParam(paramType = "form", dataType = "string",
                     name = "value", value = "存储的值", required = true)
     })
-    public DistSystemData getDistSystemData(@PathVariable String key, String value) throws Exception {
+    public DistSystemData getDistSystemData(@PathVariable String deviceid, String value) throws Exception {
         Thread.sleep(1000); // simulated delay
 
-        log.info("d is " + key);
-        log.info("e is " + value);
-
-        HelloMessage helloMessage = new HelloMessage();
-
         DistSystemData distSystemData = new DistSystemData();
-        distSystemData.setCpu(95.3);
-        distSystemData.setRam(23.45);
-        distSystemData.setBw(78.2);
-        distSystemData.setHelloMessage(helloMessage.getMessage());
+
+        //访问下级分布式系统接口api/hosts/host_id
+        //api/monitor/clusters/cpu/10/a/
+        HttpRequest httpRequest = new HttpRequest();
+
+        //获取cpu信息
+        String result = httpRequest.sendGet("http://192.168.1.32:8000/api/monitor/clusters/cpu/10/a/", " ");
+        JSONObject cpuInfoObject = JSONObject.fromObject(result);
+
+        //cpu信息
+        JSONArray cpusArray = cpuInfoObject.getJSONArray("cpu");
+        JSONObject cpuObject;
+        Double cpuValue = 0.0;
+        int cpuCount = cpusArray.size();
+
+        if (cpuValue > 0) {
+            for (int i = 0; i < cpuCount; i++) {
+                cpuObject = cpusArray.getJSONObject(i);
+
+                cpuValue += cpuObject.getDouble("value");
+            }
+
+            cpuValue /= cpuCount;
+        }
+        distSystemData.setCpu(cpuValue);
+
+        //获取mem信息
+        result = httpRequest.sendGet("http://192.168.1.32:8000/api/monitor/clusters/cpu/10/a/", " ");
+        JSONObject memInfoObject = JSONObject.fromObject(result);
+
+        //cpu信息
+        JSONArray memsArray = memInfoObject.getJSONArray("mem");
+        JSONObject memObject;
+        Double memValue = 0.0;
+        int memCount = memsArray.size();
+
+        if (cpuValue > 0) {
+            for (int i = 0; i < memCount; i++) {
+                memObject = memsArray.getJSONObject(i);
+
+                memValue += memObject.getDouble("value");
+            }
+
+            memValue /= memCount;
+        }
+        distSystemData.setRam(memValue);
+
+        //获取bandwidth信息
+        result = httpRequest.sendGet("http://192.168.1.32:8000/api/monitor/clusters/cpu/10/a/", " ");
+        JSONObject bandwidthInfoObject = JSONObject.fromObject(result);
+
+        //cpu信息
+        JSONArray bandwidthsArray = memInfoObject.getJSONArray("bandwidth_write");
+        JSONObject bandwidthObject;
+        Double bandwidthValue = 0.0;
+        int bandwidthCount = bandwidthsArray.size();
+
+        if (cpuValue > 0) {
+            for (int i = 0; i < bandwidthCount; i++) {
+                bandwidthObject = bandwidthsArray.getJSONObject(i);
+
+                bandwidthValue += bandwidthObject.getDouble("value");
+            }
+
+            bandwidthValue /= bandwidthCount;
+        }
+        distSystemData.setBw(bandwidthValue);
 
         return distSystemData;
     }

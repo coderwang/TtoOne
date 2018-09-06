@@ -38,6 +38,8 @@ public class DemoController {
                     name = "value", value = "存储的值", required = true)
     })
     public JSONObject setStorage(@PathVariable String key, String value) {
+        log.info("key is "+key);
+        log.info("volue is "+value);
         Boolean result = store.set("demoStore", key, value);
         JSONObject returnObj = new JSONObject();
         returnObj.accumulate("ok", result);
