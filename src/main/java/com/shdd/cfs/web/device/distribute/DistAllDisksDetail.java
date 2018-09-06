@@ -109,8 +109,8 @@ public class DistAllDisksDetail {
                     diskDetailInfo.setHostname(hostName);
                     diskDetailInfo.setName(diskObject.getString("disk_name"));
 
-                    diskDetailInfo.setCapacity(Double.parseDouble(diskObject.getString("total")));
-                    diskDetailInfo.setUsed(Double.parseDouble(diskObject.getString("used")));
+                    diskDetailInfo.setCapacity(diskObject.getString("total"));
+                    diskDetailInfo.setUsed(diskObject.getString("used"));
                     if (diskObject.getString("disk_state") == "true") {
                         diskDetailInfo.setStatus(1);
                     } else {

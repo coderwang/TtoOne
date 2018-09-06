@@ -7,7 +7,7 @@ public class DiskDetailInfo {
     private Integer id;
     private String name;
     private String hostname;
-    private Double used;
-    private Double capacity;
+    private String used;
+    private String capacity;
     private Integer status;
 }

@@ -41,50 +41,50 @@ public class CDAllDisksDetail {
 
         arrdtail[0] = new DiskDetailInfo();
         arrdtail[0].setId(1);
-        arrdtail[0].setCapacity(50.0);
+        arrdtail[0].setCapacity("50.0");
         arrdtail[0].setHostname("Node199");
         arrdtail[0].setName("xx");
-        arrdtail[0].setUsed(67.99);
+        arrdtail[0].setUsed("67.99");
         arrdtail[0].setStatus(1);
 
         arrdtail[1] = new DiskDetailInfo();
         arrdtail[1].setId(2);
-        arrdtail[1].setCapacity(50.0);
+        arrdtail[1].setCapacity("50.0");
         arrdtail[1].setHostname("Node199");
         arrdtail[1].setName("xx");
-        arrdtail[1].setUsed(67.99);
+        arrdtail[1].setUsed("67.99");
         arrdtail[1].setStatus(1);
 
         arrdtail[2] = new DiskDetailInfo();
         arrdtail[2].setId(3);
-        arrdtail[2].setCapacity(50.0);
+        arrdtail[2].setCapacity("50.0");
         arrdtail[2].setHostname("Node199");
         arrdtail[2].setName("xx");
-        arrdtail[2].setUsed(67.99);
+        arrdtail[2].setUsed("67.99");
         arrdtail[2].setStatus(1);
 
         arrdtail[3] = new DiskDetailInfo();
         arrdtail[3].setId(4);
-        arrdtail[3].setCapacity(50.0);
+        arrdtail[3].setCapacity("50.0");
         arrdtail[3].setHostname("Node199");
         arrdtail[3].setName("xx");
-        arrdtail[3].setUsed(67.99);
+        arrdtail[3].setUsed("67.99");
         arrdtail[3].setStatus(1);
 
         arrdtail[4] = new DiskDetailInfo();
         arrdtail[4].setId(5);
-        arrdtail[4].setCapacity(50.0);
+        arrdtail[4].setCapacity("50.0");
         arrdtail[4].setHostname("Node199");
         arrdtail[4].setName("xx");
-        arrdtail[4].setUsed(67.99);
+        arrdtail[4].setUsed("67.99");
         arrdtail[4].setStatus(1);
 
         arrdtail[5] = new DiskDetailInfo();
         arrdtail[5].setId(6);
-        arrdtail[5].setCapacity(50.0);
+        arrdtail[5].setCapacity("50.0");
         arrdtail[5].setHostname("Node199");
         arrdtail[5].setName("xx");
-        arrdtail[5].setUsed(67.99);
+        arrdtail[5].setUsed("67.99");
         arrdtail[5].setStatus(1);
 
         //计算总页数
