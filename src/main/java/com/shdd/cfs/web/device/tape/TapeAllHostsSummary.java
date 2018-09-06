@@ -30,39 +30,48 @@ public class TapeAllHostsSummary {
      */
     @Autowired
     IampRequest iampRequest;
+
     @GetMapping(value = "api/dashboard/tape/hosts")
     @ApiOperation(value = "获取磁带库存储系统概况", notes = "获取磁带库存储系统中所有服务器节点的概要信息")
     public JSONObject TapeLibraryInfo(String val) throws DocumentException {
         //获取磁带库磁带总个数
-        Integer alltapesize =0;
+        Integer alltapesize = 0;
         Integer tapeStatus = 0;
-        Integer  cpucount =  0;
-        String cputype = "设备离线";
+        Integer cpucount = 0;
+        String cputype = "pythium(mytest)";
         Double memcapacity = 0.0;
+
+        ArrayList hostList = new ArrayList();
+
+        //与下级磁带库通信获取会话信息
         String sessonKey = iampRequest.SessionKey();
-        if (sessonKey.equals("wrong")){// 获取sessonKey失败
-        	System.out.println("磁带库不在线");
-        }
-        else {
+        if (sessonKey.equals("wrong")) {// 获取sessonKey失败
+            System.out.println("磁带库不在线");
+        } else {
             HttpResult tape_lists = iampRequest.inquiry_tape_lists(sessonKey);
             ArrayList<Integer> alltapelist = iampRequest.all_of_tape_status(tape_lists);
+
+            OpticalSystemInfoDetail hostInfo = new OpticalSystemInfoDetail();
+
             alltapesize = alltapelist.size();
             tapeStatus = 1;
             cpucount = 1;//待定
-            cputype = "phytion"; //待定
+            cputype = "pythium(mytest)"; //待定
             memcapacity = 34.5;//待定
+
+            hostInfo.setCpuCount(cpucount);
+            hostInfo.setCpuType(cputype);
+            hostInfo.setHardDiskCount(alltapesize);
+            hostInfo.setMemCapacity(memcapacity);
+            hostInfo.setName("磁带库");//配置
+            hostInfo.setStatus(tapeStatus);
+
+            hostList.add(hostInfo);
         }
-        //发送JSON协议
+        //数据打包
         JSONObject Jarrary = new JSONObject();
-        OpticalSystemInfoDetail[] tapearrary = new OpticalSystemInfoDetail[1];
-        tapearrary[0] = new OpticalSystemInfoDetail();
-        tapearrary[0].setCpuCount(cpucount);
-        tapearrary[0].setCpuType(cputype);
-        tapearrary[0].setHardDiskCount(alltapesize);
-        tapearrary[0].setMemCapacity(memcapacity);
-        tapearrary[0].setName("磁带库");//配置
-        tapearrary[0].setStatus(tapeStatus);
-        Jarrary.accumulate("tape", tapearrary);
+
+        Jarrary.accumulate("tape", hostList);
         return Jarrary;
     }
 }
