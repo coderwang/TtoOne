@@ -57,7 +57,6 @@ public class TapeSpecificPoolDisksDetail {
         ArrayList<String> tapesIdList = iampRequest.get_tapes_id(allTapesList);
         //指定磁带组中的所有磁带
         ArrayList<HostNodeInfoDetail> poolTapesList = new ArrayList<>();
-        //自定义磁带ID
 
         //翻页
         int i = 0;
@@ -77,12 +76,14 @@ public class TapeSpecificPoolDisksDetail {
 
                 HostNodeInfoDetail tape = new HostNodeInfoDetail();
 
+                //处理从下级系统获取的数据
                 tape.setId(tapeID);
                 tape.setCapacity(Double.parseDouble(capacity.get("total")));
                 tape.setUsed(Double.parseDouble(capacity.get("total")) - Double.parseDouble(capacity.get("remaining")));
                 tape.setName(tapeID);
                 tape.setStatus(iampRequest.tape_online_info(allTapesList, tapeID));
 
+                //将符合条件的数据加入发送缓存
                 poolTapesList.add(tape);
                 page_count += 1;
                 if (page_count == count) {

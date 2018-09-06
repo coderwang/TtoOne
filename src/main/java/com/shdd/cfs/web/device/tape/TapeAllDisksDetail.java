@@ -36,6 +36,7 @@ public class TapeAllDisksDetail {
      */
     @Autowired
     IampRequest iampRequest;
+
     @GetMapping(value = "api/dashboard/tape/disks")
     @ApiOperation(value = "获取磁带库存储系统节点详细概况", notes = "获取磁带库存储系统中所有磁带的详细信息")
     @ApiImplicitParams({
@@ -46,32 +47,47 @@ public class TapeAllDisksDetail {
     })
 
     public JSONObject TapeSystemNodeInfo(int page_num, int count) throws MalformedURLException, DocumentException {
+        //从下级磁带库系统接口获取数据
         String sessonKey = iampRequest.SessionKey();
-        HttpResult tape_lists = iampRequest.inquiry_tape_lists(sessonKey);
-        ArrayList<String> arrayList = iampRequest.get_tapes_id(tape_lists);
-        // 发送Json报文
-        JSONObject Joject = new JSONObject();
-        //计算总页数
-        int id = 0; //表示第几个磁带
-        ArrayList<TapeNodeDetail> tapearrary = new ArrayList<>();
-        for(String list :arrayList){
-            id++;
-            Map<String, String> capacity = iampRequest.get_tape_capacityinfo(tape_lists, list);
+        //磁带库中所有磁带
+        HttpResult allTapesList = iampRequest.inquiry_tape_lists(sessonKey);
+        //磁带ID列表
+        ArrayList<String> tapesIdList = iampRequest.get_tapes_id(allTapesList);
+        //翻页
+        int i = 0;
+        int page_count = 0;
+
+        ArrayList<TapeNodeDetail> poolTapesList = new ArrayList<>();
+        for (String tapeID : tapesIdList) {
+            Map<String, String> capacity = iampRequest.get_tape_capacityinfo(allTapesList, tapeID);
+
+            //翻页
+            i++;
+            if ((i + 1) <= (page_num - 1) * count) {
+                continue;
+            }
+
             TapeNodeDetail tape = new TapeNodeDetail();
-            tape.setId(id);
+            tape.setId(tapeID);
             tape.setCapacity(Double.parseDouble(capacity.get("total")));
             tape.setUsed(Double.parseDouble(capacity.get("total")) - Double.parseDouble(capacity.get("remaining")));
-            tape.setName(list);
-            tape.setStatus(iampRequest.tape_online_info(tape_lists, list));
-            tapearrary.add(tape);
+            tape.setName(tapeID);
+            tape.setStatus(iampRequest.tape_online_info(allTapesList, tapeID));
+
+            poolTapesList.add(tape);
+            page_count += 1;
+            if (page_count == count) {
+                break;
+            }
         }
-        int tapenum = tapearrary.size(); //磁带总个数
-        int totalPage = tapenum%count==0?tapenum/count:tapenum/count+1;
-        //分页发送
-        JSONArray Jarray = PageOpt.PagingLogicProcessing(page_num,totalPage,count,tapenum,tapearrary);
-        Joject.accumulate("totalPage", totalPage);
-        Joject.accumulate("disk", Jarray);
-        return Joject;
+        int tapenum = poolTapesList.size(); //磁带总个数
+        int totalPage = tapenum % count == 0 ? tapenum / count : tapenum / count + 1;
+
+        //数据打包
+        JSONObject RstObject = new JSONObject();
+        RstObject.accumulate("totalPage", totalPage);
+        RstObject.accumulate("disk", poolTapesList);
+        return RstObject;
     }
 }
 

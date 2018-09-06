@@ -33,6 +33,7 @@ public class TapeSpecificPoolDetail {
      */
     @Autowired
     private IampRequest iampRequest;
+
     @GetMapping(value = "api/dashboard/tape/pool")
     @ApiOperation(value = "获取磁带库存储系统存储详细概况", notes = "获取磁带库存储系统中指定磁带组的详细信息")
     @ApiImplicitParams({
@@ -44,32 +45,38 @@ public class TapeSpecificPoolDetail {
         Double capacity = 0.0;
         Double freecapacity = 0.0;
         Double usedCapacity = 0.0;
-        String tapeName =  "";
         //获取session_key
         String session = iampRequest.SessionKey();
-        HttpResult glist = iampRequest.inquiry_gtape_lists(session);
-        //获取磁带组磁带情况
-        ArrayList<Map<String,String>> group = iampRequest.tape_group_info(glist);
+        //获取xml数据
+        HttpResult groupsXmlData = iampRequest.inquiry_gtape_lists(session);
+        //获取磁带组列表信息
+        ArrayList<Map<String, String>> groupsList = iampRequest.tape_group_info(groupsXmlData);
+        ArrayList poolList = new ArrayList();
         //给磁带组赋值
-        for(Map<String,String> list : group){
-            if (poolid.equals(list.get("groupname"))){
-        	   capacity = Integer.parseInt(list.get("alltapenum")) *2.5;
-        	   freecapacity = Integer.parseInt(list.get("emptytapenum"))*2.5;
-        	   usedCapacity = capacity - freecapacity;
-        	   tapeName = poolid;
-        	   break;
+        for (Map<String, String> group : groupsList) {
+            if (poolid.equals(group.get("groupname"))) {
+                TapeLibraryStorageSystemStoresDetail poolInfoDetail = new TapeLibraryStorageSystemStoresDetail();
+
+                capacity = Double.parseDouble(group.get("alltapenum")) * 2.5;
+                freecapacity = Double.parseDouble(group.get("emptytapenum")) * 2.5;
+                usedCapacity = capacity - freecapacity;
+
+                poolInfoDetail.setCapacity(capacity);
+                poolInfoDetail.setFree(freecapacity);
+                poolInfoDetail.setUsed(usedCapacity);
+                poolInfoDetail.setName("磁带长期保存库" + poolid);
+
+                poolList.add(poolInfoDetail);
+                break;
             } else {
                 System.out.println("未知的磁带组" + poolid);
             }
         }
+
+        //数据打包
         JSONObject Jarrary = new JSONObject();
-        TapeLibraryStorageSystemStoresDetail[] tapearrary = new TapeLibraryStorageSystemStoresDetail[1];
-        tapearrary[0] = new TapeLibraryStorageSystemStoresDetail();
-        tapearrary[0].setName(tapeName);
-        tapearrary[0].setCapacity(capacity);
-        tapearrary[0].setUsed(usedCapacity);
-        tapearrary[0].setFree(freecapacity);
-        Jarrary.accumulate("pool", tapearrary);
+
+        Jarrary.accumulate("pool", poolList);
         return Jarrary;
     }
 }
