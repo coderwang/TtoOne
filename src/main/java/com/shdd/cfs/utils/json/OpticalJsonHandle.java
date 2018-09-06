@@ -133,7 +133,7 @@ public class OpticalJsonHandle {
 	}
 
 	/**
-	 * 通过制定光盘匣ID获取光盘匣内所有光盘信息
+	 * 通过指定光盘匣ID获取光盘匣内所有光盘信息
 	 * @return 光盘匣ID内光盘属性
 	 */
 	public static JSONArray cdslotlist(String id ){

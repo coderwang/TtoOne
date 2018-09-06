@@ -8,13 +8,18 @@ package com.shdd.cfs.web.device.cdstorage;
 
 import com.shdd.cfs.dto.device.optical.OpticalNodeDetail;
 import com.shdd.cfs.utils.json.GetJsonMessage;
+import com.shdd.cfs.utils.json.OpticalJsonHandle;
+import com.shdd.cfs.utils.page.PageOpt;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
+import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.ArrayList;
 
 /**
  * @author: jafuzeng
@@ -43,40 +48,27 @@ public class CDSpecificPoolDisksDetail {
 
     public JSONObject TapeSystemNodeInfo(String value, int poolid, int page_num, int count) {
         //组织获取光盘库节点信息
-        JSONObject getjsoninfo = new JSONObject();
-        JSONObject getcapacity = new JSONObject();
-        GetJsonMessage jsoninfo = new GetJsonMessage();
-        String cmdstr = "{\"protoname\":\"basicinfo\",\"jukeid\":\"001\"}";// 获取光盘库型号
-        String capacity = "{\"protoname\":\"nodeconnect\"}"; //获取光盘库容量, 节点状态
-        getjsoninfo = GetJsonMessage.GetJsonStr("192.168.100.199", 8000, cmdstr);
-        getcapacity = GetJsonMessage.GetJsonStr("192.168.100.199", 8000, capacity);
-        System.out.println(getjsoninfo);
-        System.out.println(getcapacity);
-        //1.工作中 2.服务未启动 -98.创建中 3.硬盘报警 4.网络错误 -99.删除中
-        //光盘库1为工作中，1之外的状态认为是非工作状态
-        int valuestauts = Integer.parseInt(getcapacity.getString("nodestatus"));//
-        if (valuestauts != 1) {
-            valuestauts = 2;
-        }
-        //组织发送光盘库节点信息
         JSONObject Jarrary = new JSONObject();
-        OpticalNodeDetail[] tapenode = new OpticalNodeDetail[1];
-        tapenode[0] = new OpticalNodeDetail();
-        tapenode[0].setId(1);
-        tapenode[0].setCapacity(Double.parseDouble(getcapacity.getString("totalinfo")));
-        tapenode[0].setUsed(Double.parseDouble(getcapacity.getString(("usedinfo"))));
-        tapenode[0].setName(getjsoninfo.getString("label"));
-        tapenode[0].setStatus(valuestauts);
-
-        //计算总页数
-        int totalPage = 0;
-        if (count != 0) {
-            totalPage = 1 / count + 1;
+        JSONArray cdarray = OpticalJsonHandle.cdslotlist(String.valueOf(poolid));
+        ArrayList<OpticalNodeDetail> jarray = new ArrayList<>();
+        Integer cdNum = cdarray.size();//总光盘个数
+        Integer totalPage = cdNum%count==0?cdNum/count:cdNum/count+1; //总页数
+        for(int i = 0 ; i < cdNum ; i++){
+            OpticalNodeDetail tapenode = new OpticalNodeDetail();
+            tapenode.setId(cdarray.getJSONObject(i).getInt("cdslotid"));
+            tapenode.setName(cdarray.getJSONObject(i).getString("label"));
+            tapenode.setCapacity(cdarray.getJSONObject(i).getDouble("cdinfo"));
+            tapenode.setUsed(cdarray.getJSONObject(i).getDouble("cdinfo") - cdarray.getJSONObject(i).getDouble("leftinfo"));
+            if (cdarray.getJSONObject(i).getInt("cdslotstate") == 0){
+                tapenode.setStatus(0);
+            }else {
+                tapenode.setStatus(1);
+            }
+           jarray.add(tapenode);
         }
-        System.out.println(totalPage);
-
+        JSONArray array = PageOpt.PagingLogicProcessing(page_num, totalPage, count, cdNum, jarray);
         Jarrary.accumulate("totalPage", totalPage);
-        Jarrary.accumulate("disk", tapenode);
+        Jarrary.accumulate("disk", array);
         return Jarrary;
     }
 }
