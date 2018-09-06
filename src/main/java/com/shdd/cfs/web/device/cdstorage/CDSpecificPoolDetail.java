@@ -6,12 +6,13 @@
  */
 package com.shdd.cfs.web.device.cdstorage;
 
-import com.shdd.cfs.dto.device.optical.OpticalLibraryStorageSystemStoresDetail;
-import com.shdd.cfs.utils.json.GetJsonMessage;
+import com.shdd.cfs.dto.device.optical.CdPooldetail;
+import com.shdd.cfs.utils.json.OpticalJsonHandle;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
+import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -22,7 +23,7 @@ public class CDSpecificPoolDetail {
     /**
      * 获取光盘库存储系统存储详细概况
      *
-     * @param value
+     * @param poolid
      * @return
      */
     @GetMapping(value = "api/dashboard/disk/pool")
@@ -31,33 +32,25 @@ public class CDSpecificPoolDetail {
             @ApiImplicitParam(paramType = "query", dataType = "String",
                     name = "poolid", value = "光盘库存储系统光盘匣ID", required = true)
     })
-
-    public JSONObject OpticalDetailInfo(String value) {
-        JSONObject getbasicinfo = new JSONObject();
-        JSONObject getcapacity = new JSONObject();
-        GetJsonMessage jsoninfo = new GetJsonMessage();
-        String cmdstr = "{\"protoname\":\"basicinfo\",\"jukeid\":\"001\"}";// 获取光盘库型号
-        String capacity = "{\"protoname\":\"nodeconnect\"}"; //获取光盘库容量, 节点状态
-        getbasicinfo = GetJsonMessage.GetJsonStr("192.168.100.199", 8000, cmdstr);
-        getcapacity = GetJsonMessage.GetJsonStr("192.168.100.199", 8000, capacity);
-        System.out.println(getbasicinfo);
-        System.out.println(getcapacity);
-        //1.工作中 2.服务未启动 -98.创建中 3.硬盘报警 4.网络错误 -99.删除中
-        //光盘库1为工作中，1之外的状态认为是非工作状态
-        int valuestauts = Integer.parseInt(getcapacity.getString("nodestatus"));//
-        if (valuestauts != 1) {
-            valuestauts = 2;
-        }
+    public JSONObject OpticalDetailInfo(String poolid) {
         JSONObject Jarrary = new JSONObject();
-        OpticalLibraryStorageSystemStoresDetail[] tapearrary = new OpticalLibraryStorageSystemStoresDetail[1];
-        tapearrary[0] = new OpticalLibraryStorageSystemStoresDetail();
-        tapearrary[0].setName(getbasicinfo.getString("label"));
-        tapearrary[0].setCapacity(Double.parseDouble(getcapacity.getString("totalinfo")));
-        tapearrary[0].setUsed(Double.parseDouble(getcapacity.getString(("usedinfo"))));
-        tapearrary[0].setFree(Double.parseDouble(getcapacity.getString("totalinfo")) - Double.parseDouble(getcapacity.getString(("usedinfo"))));
-        tapearrary[0].setStatus(valuestauts);
+        CdPooldetail cdarrary = new CdPooldetail();
+		JSONArray boxlists = OpticalJsonHandle.cdboxlist();
+        for(int i = 0 ;  i < boxlists.size(); i++){
+			String name = boxlists.getJSONObject(i).get("label").toString();
+			String cdboxfreecapacity = boxlists.getJSONObject(i).get("cdboxfreecapacity").toString();
+			String cdboxtotalcapacity = boxlists.getJSONObject(i).get("cdboxtotalcapacity").toString();
+			String cdboxusedcapacity = boxlists.getJSONObject(i).get("cdboxusedcapacity").toString();
+			System.out.println(name +  "   " + cdboxtotalcapacity + "   "+ cdboxusedcapacity + "   " +cdboxfreecapacity);
+			if(name.equals(poolid)){
+				cdarrary.setName(name);
+				cdarrary.setCapacity(Double.parseDouble(cdboxtotalcapacity));
+				cdarrary.setUsed(Double.parseDouble(cdboxusedcapacity));
+				cdarrary.setFree(Double.parseDouble(cdboxfreecapacity));
+			}
+		}
         //返回存储池数组
-        Jarrary.accumulate("pool", tapearrary);
+        Jarrary.accumulate("pool", cdarrary);
         return Jarrary;
     }
 }

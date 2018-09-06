@@ -8,19 +8,18 @@ package com.shdd.cfs.web.general;
 
 import com.shdd.cfs.dto.dashboard.TotalCapacityInfoDto;
 import com.shdd.cfs.dto.dashboard.TotalStatusInfoDetail;
-import com.shdd.cfs.utils.json.DistributeUrlHandle;
-import com.shdd.cfs.utils.json.GetJsonMessage;
+import com.shdd.cfs.utils.json.OpticalJsonHandle;
 import com.shdd.cfs.utils.xml.iamp.HttpResult;
 import com.shdd.cfs.utils.xml.iamp.IampRequest;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
-import net.sf.json.JSONObject;
 import org.dom4j.DocumentException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 @RestController
 @Slf4j
@@ -37,13 +36,10 @@ public class ThreeinOneSummary {
 
 	public TotalCapacityInfoDto sendTotalCapacityStatusInfo(String TotalInfo) throws DocumentException {
 		log.info(TotalInfo);
-		//定义获取光盘库容量信息的对象
-		JSONObject getnodecapacity = new JSONObject();
-		//获取光盘库容量, 节点状态
-		String nodecapacity = "{\"protoname\":\"nodeconnect\"}";
-		//获取光盘库节点容量信息
-//		getnodecapacity = GetJsonMessage.GetJsonStr("192.168.100.199", 8000, nodecapacity);
-//		Double optUserCapacity = Double.parseDouble(getnodecapacity.getString(("usedinfo")));
+		//获取光盘库在线信息
+		Map<String, Integer> cdOline = OpticalJsonHandle.OnlineCdInfo();
+		Integer totalCdOline = cdOline.get("totalOlineCard");
+		Integer freeCdOline = cdOline.get("freeOlineCard");
 		//获取分布式集群信息
 //		JSONObject disjsoncapacity = DistributeUrlHandle.ClusterInfo();
 		//获取分布式存储集群总的使用容量
@@ -67,8 +63,8 @@ public class ThreeinOneSummary {
 		allCapacityInfo[0].setDistfree(12.3);
 		allCapacityInfo[0].setTapecapacity(alltapesize);
 		allCapacityInfo[0].setTapefree(fulltape);
-		allCapacityInfo[0].setCdcapacity(1);
-		allCapacityInfo[0].setCdfree(25);
+		allCapacityInfo[0].setCdcapacity(totalCdOline);
+		allCapacityInfo[0].setCdfree(freeCdOline);
 		capacityStatusInfo.setData(allCapacityInfo);
 		//返回给JSON报文
 		return capacityStatusInfo;

@@ -1,5 +1,6 @@
 package com.shdd.cfs.web;
 
+import com.shdd.cfs.utils.json.OpticalJsonHandle;
 import com.shdd.cfs.utils.xml.iamp.HttpResult;
 import com.shdd.cfs.utils.xml.iamp.IampRequest;
 import org.dom4j.Document;
@@ -20,13 +21,14 @@ public class TestController {
 	public String hello() throws DocumentException, org.dom4j.DocumentException {
 		HttpResult logon = iampRequest.logon("shuju", "69MOQca0Hv6NsOJH");
 		String teString = logon.getContent();
-		String session = iampRequest.SessionKey();
-		HttpResult massagelist = iampRequest.inquiry_task_lists(session);
-		ArrayList<String> arrayList = iampRequest.get_tapes_id(massagelist);
-		for(String list: arrayList){
-			iampRequest.task_time(massagelist,list);
-			System.out.println(iampRequest.task_message(massagelist,list));
-		}
+//		String session = iampRequest.SessionKey();
+//		HttpResult massagelist = iampRequest.inquiry_task_lists(session);
+//		ArrayList<String> arrayList = iampRequest.get_tapes_id(massagelist);
+//		for(String list: arrayList){
+//			iampRequest.task_time(massagelist,list);
+//			System.out.println(iampRequest.task_message(massagelist,list));
+//		}
+		OpticalJsonHandle.cdboxlist();
 		return teString;
 	}
 }

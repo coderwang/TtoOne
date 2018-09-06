@@ -61,7 +61,6 @@ public class TapeAllHostsSummary {
         tapearrary[0].setHardDiskCount(alltapesize);
         tapearrary[0].setMemCapacity(memcapacity);
         tapearrary[0].setName("磁带库");//配置
-        tapearrary[0].setStatus(tapeStatus);
         Jarrary.accumulate("tape", tapearrary);
         return Jarrary;
     }

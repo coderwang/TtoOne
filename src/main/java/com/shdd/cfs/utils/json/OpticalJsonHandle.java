@@ -1,4 +1,144 @@
 package com.shdd.cfs.utils.json;
 
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.Map;
+
 public class OpticalJsonHandle {
+	private enum CdApiEnum implements com.shdd.cfs.utils.json.CdApiEnum {
+		nodeconnect("{\"protoname\":\"nodeconnect\"}",                      "2.1 查询任务状态"),
+		statsinfo("{\"protoname\":\"statsinfo\"}",							"12.光盘库统计信息【statsinfo"),
+		cpuinfo("{\"protoname\":\"cpuinfo\"}",								"2.获取节点cpu信息【cpuinfo】"),
+		basicinfo("{\"protoname\":\"basicinfo\"}",							"7.光盘库基本信息【basicinfo】-光盘库"),
+		memcapacity("{\"protoname\":\"memcapacity\"}",						"6.内存使用量【memcapacity】"),
+		rammonitor("{\"protoname\":\"rammonitor\"}",						"4.内存实时利用率【rammonitor】"),
+		cpumonitor("{\"protoname\":\"cpumonitor\"}",						"3.CPU实时利用率【cpumonitor】"),
+		netmonitor("{\"protoname\":\"netmonitor\"}",						"5.网络实时情况【netmonitor】"),
+		cdboxlist("{\"protoname\":\"cdboxlist\"}",							"8.光盘匣列表【cdboxlist】-光盘匣");
+		private final String protocol;
+		private CdApiEnum(String protocol, String name) {this.protocol = protocol;}
+		public String getPath() {return protocol;}
+	}
+	private static String ip ="192.168.1.17";
+	private static Integer  port = 8000;
+	/**
+	 * 获取光盘库总容量和使用容量
+	 * @return 光盘库总容量和使用容量Map对象
+	 */
+	public static Map<String, Double> getCDLibCapacity(){
+		Map<String,Double> libCapacity = new HashMap<>();
+		JSONObject cdLibCapacity = GetJsonMessage.GetJsonStr(ip,port,CdApiEnum.nodeconnect.getPath());
+		Double allOptCapacity = Double.parseDouble(cdLibCapacity.getString("totalinfo"));
+		Double useOptCapacity = Double.parseDouble(cdLibCapacity.getString("usedinfo"));
+		System.out.println(allOptCapacity + "123456" + useOptCapacity);
+		libCapacity.put("capacity",allOptCapacity);
+		libCapacity.put("used",useOptCapacity);
+		return libCapacity;
+	}
+	/**
+	 * 获取在线光盘个数和在线空白盘个数
+	 * @return 在线光盘信息Map对象
+	 */
+	public static Map<String, Integer> OnlineCdInfo(){
+		Map<String,Integer> onlineCd = new HashMap<>();
+		JSONObject cdCardOline = GetJsonMessage.GetJsonStr(ip,port,CdApiEnum.statsinfo.getPath());
+		Integer olineCard = cdCardOline.getInt("label04");
+		Integer olineFreeCard = cdCardOline.getInt("label05");
+		onlineCd.put("totalOlineCard",olineCard);
+		onlineCd.put("freeOlineCard",olineFreeCard);
+		return onlineCd;
+		}
+	/**
+	 * 获取光盘库节点CPU基本信息
+	 * @return CPU 型号，CPU个数
+	 */
+	public static Map<String,String> CpuInfo(){
+		Map<String,String>  cpuinfo = new HashMap<>();
+		JSONObject cpuObject = GetJsonMessage.GetJsonStr(ip,port,CdApiEnum.cpuinfo.getPath());
+		String cputype = cpuObject.getString("cputype");
+		String cpucount = cpuObject.getString("cpucount");
+		cpuinfo.put("cputype",cputype);
+		cpuinfo.put("cpucount",cpucount);
+		return cpuObject;
+	}
+	/**
+	 * 获取光盘库节点基本信息
+	 * @return 光盘库节点ID，型号，光盘库名称
+	 */
+	public static Map<String,String> cdLibBasicInfo(){
+		Map<String,String>  cdlibbasic = new HashMap<>();
+		JSONObject cdLibObject = GetJsonMessage.GetJsonStr(ip,port,CdApiEnum.basicinfo.getPath());
+		String jukeid = cdLibObject.getString("jukeid");//指光盘库ID  序号
+		String label = cdLibObject.getString("label");//指光盘库型号
+		String name = cdLibObject.getString("name");//指光盘库名称
+		cdlibbasic.put("jukeid",jukeid);
+		cdlibbasic.put("label",label);
+		cdlibbasic.put("name",name);
+		return cdlibbasic;
+	}
+
+	/**
+	 *获取光盘库节点内存使用情况
+	 * @return
+	 */
+	public static Map<String,String> cdLibMemInfo(){
+		Map<String,String>  cdLibMemInfo = new HashMap<>();
+		JSONObject cdLibMemObject = GetJsonMessage.GetJsonStr(ip,port,CdApiEnum.memcapacity.getPath());
+		String memused = cdLibMemObject.getString("memused");//指内存已使用量
+		String memtotal = cdLibMemObject.getString("memtotal");//指内存总量
+		String memfree = cdLibMemObject.getString("memfree");//指内存剩余量
+		cdLibMemInfo.put("memused",memused);
+		cdLibMemInfo.put("memtotal",memtotal);
+		cdLibMemInfo.put("name",memfree);
+		return cdLibMemInfo;
+	}
+	/**
+	 * 光盘库内存利用率部分，获取光盘库当前内存情况
+	 * @return 当前内存利用率
+	 */
+	public static Double cdLibRammonitor(){
+		JSONObject cdLibMemObject = GetJsonMessage.GetJsonStr(ip,port,CdApiEnum.rammonitor.getPath());
+		Double meminfo = cdLibMemObject.getDouble("rammon");
+		return meminfo;
+	}
+	/**
+	 * 光盘库CPU利用率部分，获取光盘库当前CPU使用情况
+	 * @return 当前CPU利用率
+	 */
+	public static Double cdLibCpumonitor(){
+		JSONObject cdLibCpuObject = GetJsonMessage.GetJsonStr(ip,port,CdApiEnum.cpumonitor.getPath());
+		double cpumon = cdLibCpuObject.getDouble("cpumon");
+		return cpumon;
+	}
+	/**
+	 *光盘库网络利用率，获取当前网络情况
+	 * @return 当前网络利用率
+	 */
+	public static Double cdLibnetmonitor(){
+		JSONObject cdLibNetObject = GetJsonMessage.GetJsonStr(ip,port,CdApiEnum.netmonitor.getPath());
+		double netmon = cdLibNetObject.getDouble("netmon");
+		return netmon;
+	}
+	/**
+	 * 获取光盘匣列表
+	 * @return 光盘匣数组信息（数组名，数组使用容量，总容量，剩余容量）
+	 */
+	public static JSONArray cdboxlist(){
+		JSONObject cdlist = GetJsonMessage.GetJsonStr(ip,port,CdApiEnum.cdboxlist.getPath());
+		JSONArray boxlists = cdlist.getJSONArray("dt");
+		return boxlists;
+	}
+
+	/**
+	 *
+	 * @return
+	 */
+	public static JSONArray cdslotlist(String id ){
+		String cdslotlist = "{\"protoname\":\"cdslotlist\",\"cdboxid\":\"id\"}";
+		JSONObject cdslotlists = GetJsonMessage.GetJsonStr(ip,port,CdApiEnum.cdslotlist.getPath());
+		JSONArray cdslotlistarray = cdslotlists.getJSONArray("dt");
+		return  cdslotlistarray;
+	}
 }
