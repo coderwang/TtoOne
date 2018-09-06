@@ -60,7 +60,7 @@ public class DistSystemDataController {
     })
     public DistSystemData getDistSystemData(@PathVariable String deviceid, String value) throws Exception {
         Thread.sleep(1000); // simulated delay
-
+        
         DistSystemData distSystemData = new DistSystemData();
 
         //访问下级分布式系统接口api/hosts/host_id
@@ -68,7 +68,7 @@ public class DistSystemDataController {
         HttpRequest httpRequest = new HttpRequest();
 
         //获取cpu信息
-        String result = httpRequest.sendGet("http://192.168.1.32:8000/api/monitor/clusters/cpu/10/a/", " ");
+        String result = httpRequest.sendGet("http://192.168.1.32:8000/api/monitor/cpu/10/a/" + deviceid, " ");
         JSONObject cpuInfoObject = JSONObject.fromObject(result);
 
         //cpu信息
@@ -89,7 +89,7 @@ public class DistSystemDataController {
         distSystemData.setCpu(cpuValue);
 
         //获取mem信息
-        result = httpRequest.sendGet("http://192.168.1.32:8000/api/monitor/clusters/cpu/10/a/", " ");
+        result = httpRequest.sendGet("http://192.168.1.32:8000/api/monitor/mem/10/a/" + deviceid, " ");
         JSONObject memInfoObject = JSONObject.fromObject(result);
 
         //cpu信息
@@ -110,11 +110,11 @@ public class DistSystemDataController {
         distSystemData.setRam(memValue);
 
         //获取bandwidth信息
-        result = httpRequest.sendGet("http://192.168.1.32:8000/api/monitor/clusters/cpu/10/a/", " ");
+        result = httpRequest.sendGet("http://192.168.1.32:8000/api/monitor/clusters/bandwidth/10/a/", " ");
         JSONObject bandwidthInfoObject = JSONObject.fromObject(result);
 
         //cpu信息
-        JSONArray bandwidthsArray = memInfoObject.getJSONArray("bandwidth_write");
+        JSONArray bandwidthsArray = bandwidthInfoObject.getJSONArray("bandwidth_write");
         JSONObject bandwidthObject;
         Double bandwidthValue = 0.0;
         int bandwidthCount = bandwidthsArray.size();
@@ -129,6 +129,8 @@ public class DistSystemDataController {
             bandwidthValue /= bandwidthCount;
         }
         distSystemData.setBw(bandwidthValue);
+
+        distSystemData.setHelloMessage("hostID is " + deviceid);
 
         return distSystemData;
     }
