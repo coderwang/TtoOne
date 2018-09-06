@@ -34,23 +34,28 @@ public class CDSpecificPoolDetail {
     })
     public JSONObject OpticalDetailInfo(String poolid) {
         JSONObject Jarrary = new JSONObject();
-        CdPooldetail cdarrary = new CdPooldetail();
-		JSONArray boxlists = OpticalJsonHandle.cdboxlist();
-        for(int i = 0 ;  i < boxlists.size(); i++){
-			String name = boxlists.getJSONObject(i).get("label").toString();
-			String cdboxfreecapacity = boxlists.getJSONObject(i).get("cdboxfreecapacity").toString();
-			String cdboxtotalcapacity = boxlists.getJSONObject(i).get("cdboxtotalcapacity").toString();
-			String cdboxusedcapacity = boxlists.getJSONObject(i).get("cdboxusedcapacity").toString();
-			System.out.println(name +  "   " + cdboxtotalcapacity + "   "+ cdboxusedcapacity + "   " +cdboxfreecapacity);
-			if(name.equals(poolid)){
-				cdarrary.setName(name);
-				cdarrary.setCapacity(Double.parseDouble(cdboxtotalcapacity));
-				cdarrary.setUsed(Double.parseDouble(cdboxusedcapacity));
-				cdarrary.setFree(Double.parseDouble(cdboxfreecapacity));
-			}
-		}
+        CdPooldetail boxInfo = new CdPooldetail();
+        //从下级系统获取需求数据
+        JSONArray boxlists = OpticalJsonHandle.cdboxlist();
+        JSONObject boxInfoObject;
+        for (int i = 0; i < boxlists.size(); i++) {
+            boxInfoObject = boxlists.getJSONObject(i);
+            String name = boxInfoObject.get("label").toString();
+            String cdboxfreecapacity = boxInfoObject.getString("cdboxfreecapacity");
+            String cdboxtotalcapacity = boxInfoObject.getString("cdboxtotalcapacity");
+            String cdboxusedcapacity = boxInfoObject.getString("cdboxusedcapacity");
+            //匹配指定光盘匣
+            if (name.equals(poolid)) {
+                boxInfo.setName(name);
+                boxInfo.setCapacity(Double.parseDouble(cdboxtotalcapacity));
+                boxInfo.setUsed(Double.parseDouble(cdboxusedcapacity));
+                boxInfo.setFree(Double.parseDouble(cdboxfreecapacity));
+
+                break;
+            }
+        }
         //返回存储池数组
-        Jarrary.accumulate("pool", cdarrary);
+        Jarrary.accumulate("pool", boxInfo);
         return Jarrary;
     }
 }

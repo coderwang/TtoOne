@@ -23,5 +23,5 @@ public class DistCurStorageCapacity {
     /**
      * 分布式集群存储池列表
      */
-    ArrayList poolList;
+    ArrayList data;
 }

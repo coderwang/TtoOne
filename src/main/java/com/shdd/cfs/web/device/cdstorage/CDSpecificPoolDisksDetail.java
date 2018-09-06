@@ -7,9 +7,7 @@
 package com.shdd.cfs.web.device.cdstorage;
 
 import com.shdd.cfs.dto.device.optical.OpticalNodeDetail;
-import com.shdd.cfs.utils.json.GetJsonMessage;
 import com.shdd.cfs.utils.json.OpticalJsonHandle;
-import com.shdd.cfs.utils.page.PageOpt;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
@@ -48,27 +46,46 @@ public class CDSpecificPoolDisksDetail {
 
     public JSONObject TapeSystemNodeInfo(String value, int poolid, int page_num, int count) {
         //组织获取光盘库节点信息
-        JSONObject Jarrary = new JSONObject();
-        JSONArray cdarray = OpticalJsonHandle.cdslotlist(String.valueOf(poolid));
-        ArrayList<OpticalNodeDetail> jarray = new ArrayList<>();
-        Integer cdNum = cdarray.size();//总光盘个数
-        Integer totalPage = cdNum%count==0?cdNum/count:cdNum/count+1; //总页数
-        for(int i = 0 ; i < cdNum ; i++){
-            OpticalNodeDetail tapenode = new OpticalNodeDetail();
-            tapenode.setId(cdarray.getJSONObject(i).getInt("cdslotid"));
-            tapenode.setName(cdarray.getJSONObject(i).getString("label"));
-            tapenode.setCapacity(cdarray.getJSONObject(i).getDouble("cdinfo"));
-            tapenode.setUsed(cdarray.getJSONObject(i).getDouble("cdinfo") - cdarray.getJSONObject(i).getDouble("leftinfo"));
-            if (cdarray.getJSONObject(i).getInt("cdslotstate") == 0){
-                tapenode.setStatus(0);
-            }else {
-                tapenode.setStatus(1);
+        JSONObject rstObject = new JSONObject();
+        JSONArray slotArray = OpticalJsonHandle.cdslotlist(String.valueOf(poolid));
+        ArrayList<OpticalNodeDetail> cdDiskInfoList = new ArrayList<>();
+        JSONObject cdDiskInfoObject;
+        //翻页
+        int page_count = 0;
+
+        Integer cdNum = slotArray.size();//总光盘个数
+        for (int i = 0; i < cdNum; i++) {
+            cdDiskInfoObject = slotArray.getJSONObject(i);
+
+            //翻页
+            i++;
+            if ((i + 1) <= (page_num - 1) * count) {
+                continue;
             }
-           jarray.add(tapenode);
+
+            //处理数据
+            OpticalNodeDetail cdDiskInfoDetail = new OpticalNodeDetail();
+            cdDiskInfoDetail.setId(cdDiskInfoObject.getInt("cdslotid"));
+            cdDiskInfoDetail.setName(cdDiskInfoObject.getString("label"));
+            cdDiskInfoDetail.setCapacity(cdDiskInfoObject.getDouble("cdinfo"));
+            cdDiskInfoDetail.setUsed(cdDiskInfoObject.getDouble("cdinfo") - cdDiskInfoObject.getDouble("leftinfo"));
+            if (cdDiskInfoObject.getInt("cdslotstate") == 0) {
+                cdDiskInfoDetail.setStatus(0);
+            } else {
+                cdDiskInfoDetail.setStatus(1);
+            }
+
+            cdDiskInfoList.add(cdDiskInfoDetail);
+            page_count += 1;
+            if (page_count == count) {
+                break;
+            }
         }
-        JSONArray array = PageOpt.PagingLogicProcessing(page_num, totalPage, count, cdNum, jarray);
-        Jarrary.accumulate("totalPage", totalPage);
-        Jarrary.accumulate("disk", array);
-        return Jarrary;
+
+        Integer totalPage = cdNum % count == 0 ? cdNum / count : cdNum / count + 1; //总页数
+
+        rstObject.accumulate("totalPage", totalPage);
+        rstObject.accumulate("disk", cdDiskInfoList);
+        return rstObject;
     }
 }

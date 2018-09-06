@@ -8,13 +8,10 @@ package com.shdd.cfs.web.device.cdstorage;
 
 import com.shdd.cfs.dto.device.distribute.DiskDetailInfo;
 import com.shdd.cfs.utils.json.OpticalJsonHandle;
-import com.shdd.cfs.utils.page.PageOpt;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
-import io.swagger.models.auth.In;
 import lombok.extern.slf4j.Slf4j;
-import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -45,29 +42,49 @@ public class CDAllDisksDetail {
         JSONObject jarrary = new JSONObject();
         Double usedSize = 0.0;
 
-        ArrayList<DiskDetailInfo> arrayList = new ArrayList<>();
-        ArrayList<JSONObject> cdlists = OpticalJsonHandle.getAllCardInfo();
-        for(JSONObject list : cdlists){
-            DiskDetailInfo arrdtail = new DiskDetailInfo();
-            arrdtail.setId(list.getInt("cdslotid"));
-            arrdtail.setName(list.getString("label"));
-            arrdtail.setCapacity(list.getString("cdinfo"));
+        //翻页
+        int i = 0;
+        int page_count = 0;
 
-            usedSize = list.getDouble("cdinfo") - list.getDouble("leftinfo");
-            arrdtail.setUsed(usedSize.toString());
-            if(list.getInt("cdslotstate") == 0) {//指盘槽内无盘
-               arrdtail.setStatus(0);
-            } else {
-
-                arrdtail.setStatus(1);
+        ArrayList<DiskDetailInfo> cdDisksList = new ArrayList<>();
+        //与下级光盘库通信
+        ArrayList<JSONObject> cdInfoList = OpticalJsonHandle.getAllCardInfo();
+        for (JSONObject infoIndexObject : cdInfoList) {
+            //翻页
+            i++;
+            if ((i + 1) <= (page_num - 1) * count) {
+                continue;
             }
-            arrayList.add(arrdtail);
+
+            //处理数据
+            DiskDetailInfo diskDetailInfo = new DiskDetailInfo();
+            diskDetailInfo.setId(infoIndexObject.getInt("cdslotid"));
+            diskDetailInfo.setName(infoIndexObject.getString("label"));
+            diskDetailInfo.setCapacity(infoIndexObject.getString("cdinfo"));
+
+            usedSize = infoIndexObject.getDouble("cdinfo") - infoIndexObject.getDouble("leftinfo");
+            diskDetailInfo.setUsed(usedSize.toString());
+            if (infoIndexObject.getInt("cdslotstate") == 0) {
+                //指盘槽内无盘
+                diskDetailInfo.setStatus(0);
+            } else {
+                //光盘在位
+                diskDetailInfo.setStatus(1);
+            }
+
+            //添加数据到缓存
+            cdDisksList.add(diskDetailInfo);
+            page_count += 1;
+            if (page_count == count) {
+                break;
+            }
         }
-        Integer cdNum = cdlists.size();
-        Integer totalPage = cdNum%count==0?cdNum/count:cdNum/count+1; //总页数
-        JSONArray jarray = PageOpt.PagingLogicProcessing(page_num,totalPage,count,cdNum,arrayList);
+        Integer cdNum = cdInfoList.size();
+        Integer totalPage = cdNum % count == 0 ? cdNum / count : cdNum / count + 1; //总页数
+
+        //数据打包
         jarrary.accumulate("totalPage", totalPage);
-        jarrary.accumulate("disk", jarray);
+        jarrary.accumulate("disk", cdDisksList);
         return jarrary;
     }
 }

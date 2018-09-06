@@ -7,7 +7,6 @@
 package com.shdd.cfs.web.device.cdstorage;
 
 import com.shdd.cfs.dto.device.optical.OpticalSystemInfoDetail;
-import com.shdd.cfs.utils.json.GetJsonMessage;
 import com.shdd.cfs.utils.json.OpticalJsonHandle;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;

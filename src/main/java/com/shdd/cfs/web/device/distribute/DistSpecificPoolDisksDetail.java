@@ -25,14 +25,13 @@ import java.util.ArrayList;
 public class DistSpecificPoolDisksDetail {
     /**
      * 主机信息状态下获取分布式存储系统节点详细概况
+     * <p>
+     * <<<<<<< HEAD
      *
-<<<<<<< HEAD
-     * @param
-=======
+     * @param =======
      * @param poolid
      * @param page_num
-     * @param count
->>>>>>> feature/cfs_nexus_distribute_general
+     * @param count    >>>>>>> feature/cfs_nexus_distribute_general
      * @return
      */
     @GetMapping(value = "api/dashboard/distribute/pool/disks")

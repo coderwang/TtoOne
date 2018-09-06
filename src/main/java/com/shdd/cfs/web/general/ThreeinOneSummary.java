@@ -6,7 +6,6 @@
  */
 package com.shdd.cfs.web.general;
 
-import com.shdd.cfs.dto.dashboard.TotalCapacityInfoDto;
 import com.shdd.cfs.dto.dashboard.TotalStatusInfoDetail;
 import com.shdd.cfs.utils.json.HttpRequest;
 import com.shdd.cfs.utils.json.OpticalJsonHandle;
@@ -36,7 +35,7 @@ public class ThreeinOneSummary {
 	@GetMapping(value = "api/dashboard/capacitystatus")
 	@ApiOperation(value = "发送总容量信息", notes = "获取三合一系统的概要信息，包含总任务、运行任务、完成任务、新增任务、总容量、总告警")
 
-	public TotalCapacityInfoDto sendTotalCapacityStatusInfo(String TotalInfo) throws DocumentException {
+	public JSONObject sendTotalCapacityStatusInfo(String TotalInfo) throws DocumentException {
 
 		//data:{
 		//			"distcapacity": 1,      //分布式总容量
@@ -47,21 +46,13 @@ public class ThreeinOneSummary {
 		//			"cdfree": 1     		//光盘库可用光盘数
 		//}
 		TotalStatusInfoDetail allDistCapacityInfo = new TotalStatusInfoDetail();
+		ArrayList rstList = new ArrayList();
 
-
-
-		log.info(TotalInfo);
 		//获取光盘库在线信息
 		Map<String, Integer> cdOline = OpticalJsonHandle.OnlineCdInfo();
-		Integer totalCdOline = cdOline.get("totalOlineCard");
-		Integer freeCdOline = cdOline.get("freeOlineCard");
 
-		//获取分布式集群信息
-//		JSONObject disjsoncapacity = DistributeUrlHandle.ClusterInfo();
-		//获取分布式存储集群总的使用容量
-//		Double disUseCapacity = Double.parseDouble(disjsoncapacity.getString("storage_used"));
-		allDistCapacityInfo.setCdcapacity(1);
-		allDistCapacityInfo.setCdfree(25);
+		allDistCapacityInfo.setCdcapacity(cdOline.get("totalOlineCard"));
+		allDistCapacityInfo.setCdfree(cdOline.get("freeOlineCard"));
 
 		//磁带库存储系统
 		//获取磁带库总磁带个数
@@ -75,7 +66,6 @@ public class ThreeinOneSummary {
 				fulltape = fulltape + 1;
 			}  //空白磁带
 		}
-		//组织发送给UI的报文
 
 		allDistCapacityInfo.setTapecapacity(alltapesize);
 		allDistCapacityInfo.setTapefree(fulltape);
@@ -90,20 +80,14 @@ public class ThreeinOneSummary {
 		allDistCapacityInfo.setDistcapacity(distStorageObject.getString("storage_total"));
 		allDistCapacityInfo.setDistfree(distStorageObject.getString("storage_free"));
 
+		//添加数据到数据缓存区
+		rstList.add(allDistCapacityInfo);
 
-		TotalCapacityInfoDto capacityStatusInfo = new TotalCapacityInfoDto();
-		TotalStatusInfoDetail[] allCDCapacityInfo = new TotalStatusInfoDetail[1];
-		allCDCapacityInfo[0] = new TotalStatusInfoDetail();
-		allCDCapacityInfo[0].setDistcapacity("23.1");
-		allCDCapacityInfo[0].setDistfree("12.3");
-		allCDCapacityInfo[0].setTapecapacity(alltapesize);
-		allCDCapacityInfo[0].setTapefree(fulltape);
-		allCDCapacityInfo[0].setCdcapacity(totalCdOline);
-		allCDCapacityInfo[0].setCdfree(freeCdOline);
-
-		capacityStatusInfo.setData(allCDCapacityInfo);
 		//返回给JSON报文
-		return capacityStatusInfo;
+		JSONObject rstObject = new JSONObject();
+		rstObject.accumulate("data", rstList);
+
+		return rstObject;
 	}
 
 

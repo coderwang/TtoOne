@@ -10,7 +10,6 @@ import com.shdd.cfs.dto.dashboard.CDDiskCurStorageCapacity;
 import com.shdd.cfs.dto.dashboard.DistCurStorageCapacity;
 import com.shdd.cfs.dto.dashboard.DistPoolStorageCapacity;
 import com.shdd.cfs.dto.dashboard.TapeCurStorageCapacity;
-import com.shdd.cfs.utils.json.GetJsonMessage;
 import com.shdd.cfs.utils.json.HttpRequest;
 import com.shdd.cfs.utils.json.OpticalJsonHandle;
 import com.shdd.cfs.utils.xml.iamp.HttpResult;
@@ -52,14 +51,14 @@ public class CurrentStorageCapacity {
         //向下级系统获取数据
         distCurStorageCapacity = GetDistCurStorageCapacity();
         tapeCurStorageCapacity = GetTapeCurStorageCapacity();
-        //cddiskCurStorageCapacity = GetCDDiskCurStorageCapacity();
+        cddiskCurStorageCapacity = GetCDDiskCurStorageCapacity();
 
         log.info(distCurStorageCapacity.getDevType());
 
         JSONArray devices = new JSONArray();
         devices.add(distCurStorageCapacity);
         devices.add(tapeCurStorageCapacity);
-        //devices.add(cddiskCurStorageCapacity);
+        devices.add(cddiskCurStorageCapacity);
 
         //数据打包
         JSONObject jobject = new JSONObject();
@@ -122,7 +121,7 @@ public class CurrentStorageCapacity {
 
         //组织返回JSON数据对象
         distCurStorageCapacity.setDevType("distributed");
-        distCurStorageCapacity.setPoolList(poolList);
+        distCurStorageCapacity.setData(poolList);
 
         return distCurStorageCapacity;
     }
