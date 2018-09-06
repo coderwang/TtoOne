@@ -16,12 +16,11 @@ import lombok.extern.slf4j.Slf4j;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.messaging.handler.annotation.SendTo;
-import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Random;
 
@@ -30,14 +29,15 @@ import java.util.Random;
  * @version: 1.0 2018/8/28
  */
 @Controller
+@RestController
 @Slf4j
 public class DistSystemDataController {
 
     @Autowired
     private Store store;
 
-    @Autowired
-    private SimpMessagingTemplate template;
+    //@Autowired
+    //private SimpMessagingTemplate template;
 
     /**
      * 获取分布式存储主机cpu/内存/带宽使用情况
@@ -47,20 +47,43 @@ public class DistSystemDataController {
      * @return
      * @throws Exception
      */
+    @PostMapping("device/dist_sys_data/{deviceid}")
     @ApiOperation(value = "获取分布式存储主机cpu/内存/带宽使用情况")
-
-    //@MessageMapping("/hello")
-    @PostMapping("dist_sys_data/{deviceid}")
-    @SendTo("/device/dist_sys_data")
     @ApiImplicitParams({
             @ApiImplicitParam(paramType = "path", dataType = "string",
                     name = "deviceid", value = "存储的键", required = true),
             @ApiImplicitParam(paramType = "form", dataType = "string",
                     name = "value", value = "存储的值", required = true)
     })
-    public DistSystemData getDistSystemData(@PathVariable String deviceid, String value) throws Exception {
+    public JSONObject getDistSystemData(@PathVariable String deviceid, String value) throws Exception {
         Thread.sleep(1000); // simulated delay
-        
+
+        DistSystemData distSystemData = GetDistributeSystemData(deviceid, value);
+
+        JSONObject rstObject = new JSONObject();
+        rstObject.accumulate("data", distSystemData);
+
+        return rstObject;
+    }
+
+    @Scheduled(cron = "0/2 * * * * ? ")//每两秒触发
+    public void publishUpdates() {
+        Random random = new Random();
+        DistSystemData distSystemData = new DistSystemData();
+
+        //向下级系统通信，并获取指定数据信息，进行数据填充
+        distSystemData.setCpu(random.nextDouble());
+        distSystemData.setRam(random.nextDouble());
+        distSystemData.setBw(random.nextDouble());
+        distSystemData.setHelloMessage("定时任务");
+
+        //template.convertAndSend("/device/dist_sys_data", distSystemData);
+    }
+
+    private DistSystemData GetDistributeSystemData(String deviceid, String value) {
+        log.info("deviceid is " + deviceid);
+
+        Boolean rst = store.set("distSysData", deviceid, value);
         DistSystemData distSystemData = new DistSystemData();
 
         //访问下级分布式系统接口api/hosts/host_id
@@ -77,7 +100,7 @@ public class DistSystemDataController {
         Double cpuValue = 0.0;
         int cpuCount = cpusArray.size();
 
-        if (cpuValue > 0) {
+        if (cpuCount > 0) {
             for (int i = 0; i < cpuCount; i++) {
                 cpuObject = cpusArray.getJSONObject(i);
 
@@ -98,7 +121,7 @@ public class DistSystemDataController {
         Double memValue = 0.0;
         int memCount = memsArray.size();
 
-        if (cpuValue > 0) {
+        if (memCount > 0) {
             for (int i = 0; i < memCount; i++) {
                 memObject = memsArray.getJSONObject(i);
 
@@ -110,7 +133,7 @@ public class DistSystemDataController {
         distSystemData.setRam(memValue);
 
         //获取bandwidth信息
-        result = httpRequest.sendGet("http://192.168.1.32:8000/api/monitor/clusters/bandwidth/10/a/", " ");
+        result = httpRequest.sendGet("http://192.168.1.32:8000/api/monitor/bandwidth/10/a/h-" + deviceid, " ");
         JSONObject bandwidthInfoObject = JSONObject.fromObject(result);
 
         //cpu信息
@@ -119,7 +142,7 @@ public class DistSystemDataController {
         Double bandwidthValue = 0.0;
         int bandwidthCount = bandwidthsArray.size();
 
-        if (cpuValue > 0) {
+        if (bandwidthCount > 0) {
             for (int i = 0; i < bandwidthCount; i++) {
                 bandwidthObject = bandwidthsArray.getJSONObject(i);
 
@@ -133,20 +156,6 @@ public class DistSystemDataController {
         distSystemData.setHelloMessage("hostID is " + deviceid);
 
         return distSystemData;
-    }
-
-    @Scheduled(cron = "0/2 * * * * ? ")//每两秒触发
-    public void publishUpdates() {
-        Random random = new Random();
-        DistSystemData distSystemData = new DistSystemData();
-
-        //向下级系统通信，并获取指定数据信息，进行数据填充
-        distSystemData.setCpu(random.nextDouble());
-        distSystemData.setRam(random.nextDouble());
-        distSystemData.setBw(random.nextDouble());
-        distSystemData.setHelloMessage("定时任务");
-
-        template.convertAndSend("/device/dist_sys_data", distSystemData);
     }
 
 }
