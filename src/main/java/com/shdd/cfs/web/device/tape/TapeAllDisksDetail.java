@@ -6,7 +6,7 @@
  */
 package com.shdd.cfs.web.device.tape;
 
-import com.shdd.cfs.dto.device.tape.TapeDiskDetailInfo;
+import com.shdd.cfs.dto.device.DiskDetailInfo;
 import com.shdd.cfs.utils.xml.iamp.HttpResult;
 import com.shdd.cfs.utils.xml.iamp.IampRequest;
 import io.swagger.annotations.ApiImplicitParam;
@@ -55,7 +55,9 @@ public class TapeAllDisksDetail {
         int i = 0;
         int page_count = 0;
 
-        ArrayList<TapeDiskDetailInfo> poolTapesList = new ArrayList<>();
+        Double usedSize = 0.0;
+
+        ArrayList<DiskDetailInfo> poolTapesList = new ArrayList<>();
         for (String tapeID : tapesIdList) {
             Map<String, String> capacity = iampRequest.get_tape_capacityinfo(allTapesList, tapeID);
 
@@ -65,10 +67,12 @@ public class TapeAllDisksDetail {
                 continue;
             }
 
-            TapeDiskDetailInfo tape = new TapeDiskDetailInfo();
+            DiskDetailInfo tape = new DiskDetailInfo();
             tape.setId(tapeID);
-            tape.setCapacity(Double.parseDouble(capacity.get("total")));
-            tape.setUsed(Double.parseDouble(capacity.get("total")) - Double.parseDouble(capacity.get("remaining")));
+            tape.setCapacity(capacity.get("total"));
+
+            usedSize = Double.parseDouble(capacity.get("total")) - Double.parseDouble(capacity.get("remaining"));
+            tape.setUsed(usedSize.toString());
             tape.setName(tapeID);
             tape.setStatus(iampRequest.tape_online_info(allTapesList, tapeID));
 

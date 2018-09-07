@@ -6,7 +6,7 @@
  */
 package com.shdd.cfs.web.data.optical;
 
-import com.shdd.cfs.dto.data.RootFolderName;
+import com.shdd.cfs.dto.data.DirPathDetailInfo;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
@@ -43,8 +43,8 @@ public class CDRootDirInfo {
         JSONObject rootFolder = new JSONObject();
 
         /* 将文件夹名赋值给Json数组中*/
-        RootFolderName[] rootforder = new RootFolderName[1];
-        rootforder[0] = new RootFolderName();
+        DirPathDetailInfo[] rootforder = new DirPathDetailInfo[1];
+        rootforder[0] = new DirPathDetailInfo();
         rootforder[0].setId(1);
         rootforder[0].setName("xx");
         /*将文件夹数组塞入Json对象中*/

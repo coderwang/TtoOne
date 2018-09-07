@@ -52,13 +52,13 @@ public class WarningDataController {
         WarningInfo[] warningInfo = new WarningInfo[3];
         warningInfo[0] = new WarningInfo();
         warningInfo[0].setName("distribute");
-        warningInfo[0].setMessage(iampRequest.get_task_warn(massagelist));
+        warningInfo[0].setStatus(iampRequest.get_task_warn(massagelist));
         warningInfo[1] = new WarningInfo();
         warningInfo[1].setName("tape");
-        warningInfo[1].setMessage(1);
+        warningInfo[1].setStatus(1);
         warningInfo[2] = new WarningInfo();
         warningInfo[2].setName("optical");
-        warningInfo[2].setMessage(1);
+        warningInfo[2].setStatus(1);
         warningArr.add(warningInfo);
         warningObj.accumulate("status",warningArr);
         return warningObj;
@@ -70,7 +70,7 @@ public class WarningDataController {
 
         //向下级系统通信，并获取指定数据信息，进行数据填充
         warningInfo.setName("distribute");
-        warningInfo.setMessage(1);
+        warningInfo.setStatus(1);
 
         template.convertAndSend("/log/warning_info", warningInfo);
     }

@@ -6,7 +6,7 @@
  */
 package com.shdd.cfs.web.data.optical;
 
-import com.shdd.cfs.dto.data.CurrentPathFileName;
+import com.shdd.cfs.dto.data.FilePathDetailInfo;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
@@ -43,8 +43,8 @@ public class CDFilesInfo {
         JSONObject jfile = new JSONObject();
 
         /* 将文件名和文件属性赋值给Json数组中*/
-        CurrentPathFileName[] fileNameArr = new CurrentPathFileName[1];
-        fileNameArr[0] = new CurrentPathFileName();
+        FilePathDetailInfo[] fileNameArr = new FilePathDetailInfo[1];
+        fileNameArr[0] = new FilePathDetailInfo();
         fileNameArr[0].setId(1);
         fileNameArr[0].setName("xx");
         fileNameArr[0].setType("txt");
