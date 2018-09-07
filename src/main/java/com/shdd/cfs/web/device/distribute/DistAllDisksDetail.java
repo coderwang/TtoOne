@@ -107,17 +107,17 @@ public class DistAllDisksDetail {
                     //处理从下级系统获取到的数据
                     diskDetailInfo.setId(diskObject.getString("disk_id"));
                     diskDetailInfo.setName(diskObject.getString("disk_name"));
+                    diskDetailInfo.setHostname(diskObject.getString("host_name"));
 
                     diskDetailInfo.setCapacity(diskObject.getString("total"));
                     diskDetailInfo.setUsed(diskObject.getString("used"));
-                    if (diskObject.getString("disk_state") == "true") {
+                    if (diskObject.getString("disk_state").equalsIgnoreCase("true")) {
                         diskDetailInfo.setStatus(1);
                     } else {
                         diskDetailInfo.setStatus(0);
                     }
 
                     //将信息添加到hashMap
-                    log.info("disk_id is " + diskObject.getString("disk_id"));
                     diskDetailInfoList.add(diskDetailInfo);
                     page_count += 1;
                     if (page_count == count) {
