@@ -16,7 +16,6 @@ import lombok.extern.slf4j.Slf4j;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -66,7 +65,7 @@ public class DistSystemDataController {
         return rstObject;
     }
 
-    @Scheduled(cron = "0/2 * * * * ? ")//每两秒触发
+    //@Scheduled(cron = "0/2 * * * * ? ")//每两秒触发
     public void publishUpdates() {
         Random random = new Random();
         DistSystemData distSystemData = new DistSystemData();
