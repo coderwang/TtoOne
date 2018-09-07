@@ -15,7 +15,7 @@ import lombok.Data;
  */
 
 @Data
-public class OpticalNodeDetail {
+public class CdPoolStorageInfo {
     /**
      * 光盘库节点id
      */

@@ -3,10 +3,9 @@ package com.shdd.cfs.dto.device.tape;
 import lombok.Data;
 
 @Data
-public class TapeNodeDetail {
-    private String id;
+public class TapePoolDetail {
     private String name;
-    private Double used;
     private Double capacity;
-    private Integer status;
+    private Double used;
+    private Double free;
 }

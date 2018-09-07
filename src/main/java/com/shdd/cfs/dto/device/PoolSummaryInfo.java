@@ -1,9 +1,9 @@
-package com.shdd.cfs.dto.device.distribute;
+package com.shdd.cfs.dto.device;
 
 import lombok.Data;
 
 @Data
-public class PoolGeneralOverviewDetail {
+public class PoolSummaryInfo {
     private String name;
     /**
      * 存储池ID，磁带库中磁带组对应的ID，将使用磁带组名称代替ID

@@ -6,7 +6,7 @@
  */
 package com.shdd.cfs.web.device.distribute;
 
-import com.shdd.cfs.dto.device.distribute.HostDetailInfo;
+import com.shdd.cfs.dto.device.distribute.DistHostDetailInfo;
 import com.shdd.cfs.utils.json.HttpRequest;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -44,7 +44,7 @@ public class DistSpecificHostDetail {
         String result = httpRequest.sendGet("http://192.168.1.32:8000/api/hosts/" + deviceId, " ");
         JSONObject hostObject = JSONObject.fromObject(result);
 
-        HostDetailInfo hostDetailInfo = new HostDetailInfo();
+        DistHostDetailInfo hostDetailInfo = new DistHostDetailInfo();
 
         ArrayList hostList = new ArrayList();
 

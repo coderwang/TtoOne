@@ -6,7 +6,7 @@
  */
 package com.shdd.cfs.web.device.distribute;
 
-import com.shdd.cfs.dto.device.distribute.HostNodeInfoDetail;
+import com.shdd.cfs.dto.device.DiskDetailInfo;
 import com.shdd.cfs.utils.json.HttpRequest;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -73,7 +73,7 @@ public class DistSpecificPoolDisksDetail {
         int page_count = 0;
 
         //数据处理
-        HostNodeInfoDetail diskDetail = new HostNodeInfoDetail();
+        DiskDetailInfo diskDetail = new DiskDetailInfo();
         ArrayList diskList = new ArrayList();
 
         for (int i = 0; i < brickCount; i++) {
@@ -88,8 +88,8 @@ public class DistSpecificPoolDisksDetail {
             //diskDetail.setId(Integer.parseInt(brickObject.getString("disk_id")));
             diskDetail.setName(brickObject.getString("disk_name"));
             //diskDetail.setHostname();
-            diskDetail.setUsed(Double.parseDouble(brickObject.getString("used")));
-            diskDetail.setCapacity(Double.parseDouble(brickObject.getString("total")));
+            diskDetail.setUsed(brickObject.getString("used"));
+            diskDetail.setCapacity(brickObject.getString("total"));
             //diskDetail.setStatus();
 
             //

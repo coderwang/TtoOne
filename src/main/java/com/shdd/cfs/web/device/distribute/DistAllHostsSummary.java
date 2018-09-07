@@ -6,7 +6,7 @@
  */
 package com.shdd.cfs.web.device.distribute;
 
-import com.shdd.cfs.dto.device.distribute.HostDetailInfo;
+import com.shdd.cfs.dto.device.distribute.DistHostDetailInfo;
 import com.shdd.cfs.utils.json.HttpRequest;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -67,7 +67,7 @@ public class DistAllHostsSummary {
         for (int i = 0; i < nodesCount; i++) {
             //根据node_id通信获取到的node详细信息
             nodeObject = nodesArray.getJSONObject(i);
-            HostDetailInfo hostDetailInfo = new HostDetailInfo();
+            DistHostDetailInfo hostDetailInfo = new DistHostDetailInfo();
 
             //node_id，host_id
             hostDetailInfo.setNode_id(Integer.parseInt(nodeObject.getString("node_id")));

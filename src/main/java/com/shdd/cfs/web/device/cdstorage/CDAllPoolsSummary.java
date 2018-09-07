@@ -6,7 +6,7 @@
  */
 package com.shdd.cfs.web.device.cdstorage;
 
-import com.shdd.cfs.dto.device.distribute.PoolGeneralOverviewDetail;
+import com.shdd.cfs.dto.device.PoolSummaryInfo;
 import com.shdd.cfs.utils.json.OpticalJsonHandle;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -33,9 +33,9 @@ public class CDAllPoolsSummary {
         JSONObject storagePool = new JSONObject();
         //与下级光盘库系统通讯，获取需求数据
         JSONArray boxList = OpticalJsonHandle.cdboxlist();
-        ArrayList<PoolGeneralOverviewDetail> boxsArray = new ArrayList<>();
+        ArrayList<PoolSummaryInfo> boxsArray = new ArrayList<>();
         for (int i = 0; i < boxList.size(); i++) {
-            PoolGeneralOverviewDetail boxs = new PoolGeneralOverviewDetail();
+            PoolSummaryInfo boxs = new PoolSummaryInfo();
             boxs.setId(boxList.getJSONObject(i).getString("cdboxid"));
             boxs.setName(boxList.getJSONObject(i).getString("label"));
             boxs.setCapacity(boxList.getJSONObject(i).getDouble("cdboxtotalcapacity"));

@@ -3,7 +3,7 @@ package com.shdd.cfs.dto.device.optical;
 import lombok.Data;
 
 @Data
-public class CdPooldetail {
+public class CdPoolDetail {
     private String name;
     private Double capacity;
     private Double used;

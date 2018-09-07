@@ -6,15 +6,13 @@
  */
 package com.shdd.cfs.web.device.tape;
 
-import com.shdd.cfs.dto.device.tape.TapeNodeDetail;
-import com.shdd.cfs.utils.page.PageOpt;
+import com.shdd.cfs.dto.device.tape.TapeDiskDetailInfo;
 import com.shdd.cfs.utils.xml.iamp.HttpResult;
 import com.shdd.cfs.utils.xml.iamp.IampRequest;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
-import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.dom4j.DocumentException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,7 +55,7 @@ public class TapeAllDisksDetail {
         int i = 0;
         int page_count = 0;
 
-        ArrayList<TapeNodeDetail> poolTapesList = new ArrayList<>();
+        ArrayList<TapeDiskDetailInfo> poolTapesList = new ArrayList<>();
         for (String tapeID : tapesIdList) {
             Map<String, String> capacity = iampRequest.get_tape_capacityinfo(allTapesList, tapeID);
 
@@ -67,7 +65,7 @@ public class TapeAllDisksDetail {
                 continue;
             }
 
-            TapeNodeDetail tape = new TapeNodeDetail();
+            TapeDiskDetailInfo tape = new TapeDiskDetailInfo();
             tape.setId(tapeID);
             tape.setCapacity(Double.parseDouble(capacity.get("total")));
             tape.setUsed(Double.parseDouble(capacity.get("total")) - Double.parseDouble(capacity.get("remaining")));

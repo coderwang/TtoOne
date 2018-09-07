@@ -6,7 +6,7 @@
  */
 package com.shdd.cfs.web.device.tape;
 
-import com.shdd.cfs.dto.device.distribute.HostNodeInfoDetail;
+import com.shdd.cfs.dto.device.DiskDetailInfo;
 import com.shdd.cfs.utils.xml.iamp.HttpResult;
 import com.shdd.cfs.utils.xml.iamp.IampRequest;
 import io.swagger.annotations.ApiImplicitParam;
@@ -56,11 +56,12 @@ public class TapeSpecificPoolDisksDetail {
         //磁带ID列表
         ArrayList<String> tapesIdList = iampRequest.get_tapes_id(allTapesList);
         //指定磁带组中的所有磁带
-        ArrayList<HostNodeInfoDetail> poolTapesList = new ArrayList<>();
+        ArrayList<DiskDetailInfo> poolTapesList = new ArrayList<>();
 
         //翻页
         int i = 0;
         int page_count = 0;
+        Double usedSize = 0.0;
 
         for (String tapeID : tapesIdList) {
             String groupId = iampRequest.get_group_id(allTapesList, tapeID);
@@ -74,12 +75,13 @@ public class TapeSpecificPoolDisksDetail {
                     continue;
                 }
 
-                HostNodeInfoDetail tape = new HostNodeInfoDetail();
+                DiskDetailInfo tape = new DiskDetailInfo();
 
                 //处理从下级系统获取的数据
-                tape.setId(tapeID);
-                tape.setCapacity(Double.parseDouble(capacity.get("total")));
-                tape.setUsed(Double.parseDouble(capacity.get("total")) - Double.parseDouble(capacity.get("remaining")));
+                tape.setId(Integer.parseInt(tapeID));
+                tape.setCapacity(capacity.get("total"));
+                usedSize = Double.parseDouble(capacity.get("total")) - Double.parseDouble(capacity.get("remaining"));
+                tape.setUsed(usedSize.toString());
                 tape.setName(tapeID);
                 tape.setStatus(iampRequest.tape_online_info(allTapesList, tapeID));
 

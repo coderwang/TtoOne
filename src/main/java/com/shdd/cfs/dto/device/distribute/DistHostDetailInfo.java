@@ -13,7 +13,7 @@ import lombok.Data;
  * @version: 1.0 2018/8/28
  */
 @Data
-public class HostDetailInfo {
+public class DistHostDetailInfo {
     /**
      * 分布式主机id，涵盖系统中cluster内所有机器
      */

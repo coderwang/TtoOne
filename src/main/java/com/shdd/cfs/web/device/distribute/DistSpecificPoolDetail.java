@@ -6,7 +6,7 @@
  */
 package com.shdd.cfs.web.device.distribute;
 
-import com.shdd.cfs.dto.device.distribute.PoolDetail;
+import com.shdd.cfs.dto.device.distribute.DistPoolDetail;
 import com.shdd.cfs.utils.json.HttpRequest;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -44,7 +44,7 @@ public class DistSpecificPoolDetail {
 
         //
         ArrayList poolList = new ArrayList();
-        PoolDetail poolDetail = new PoolDetail();
+        DistPoolDetail poolDetail = new DistPoolDetail();
 
         poolDetail.setCapacity(poolObject.getString("size"));
         poolDetail.setName(poolObject.getString("vol_name"));

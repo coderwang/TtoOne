@@ -1,9 +1,9 @@
-package com.shdd.cfs.dto.device.distribute;
+package com.shdd.cfs.dto.device.tape;
 
 import lombok.Data;
 
 @Data
-public class HostNodeInfoDetail {
+public class TapeDiskDetailInfo {
     private String id;
     private String name;
     private Double used;

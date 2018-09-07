@@ -6,7 +6,7 @@
  */
 package com.shdd.cfs.web.device.tape;
 
-import com.shdd.cfs.dto.device.tape.TapeLibraryStorageSystemStoresDetail;
+import com.shdd.cfs.dto.device.tape.TapePoolDetail;
 import com.shdd.cfs.utils.xml.iamp.HttpResult;
 import com.shdd.cfs.utils.xml.iamp.IampRequest;
 import io.swagger.annotations.ApiImplicitParam;
@@ -55,7 +55,7 @@ public class TapeSpecificPoolDetail {
         //给磁带组赋值
         for (Map<String, String> group : groupsList) {
             if (poolid.equals(group.get("id"))) {
-                TapeLibraryStorageSystemStoresDetail poolInfoDetail = new TapeLibraryStorageSystemStoresDetail();
+                TapePoolDetail poolInfoDetail = new TapePoolDetail();
 
                 capacity = Double.parseDouble(group.get("alltapenum")) * 2.5;
                 freecapacity = Double.parseDouble(group.get("emptytapenum")) * 2.5;

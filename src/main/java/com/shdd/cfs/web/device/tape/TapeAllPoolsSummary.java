@@ -6,7 +6,7 @@
  */
 package com.shdd.cfs.web.device.tape;
 
-import com.shdd.cfs.dto.device.distribute.PoolGeneralOverviewDetail;
+import com.shdd.cfs.dto.device.PoolSummaryInfo;
 import com.shdd.cfs.utils.xml.iamp.HttpResult;
 import com.shdd.cfs.utils.xml.iamp.IampRequest;
 import io.swagger.annotations.ApiOperation;
@@ -43,14 +43,14 @@ public class TapeAllPoolsSummary {
         //获取磁带组列表信息
         ArrayList<Map<String, String>> groupList = iampRequest.tape_group_info(groupXmlData);
         //发送缓存区
-        ArrayList<PoolGeneralOverviewDetail> poolsList = new ArrayList<>();
+        ArrayList<PoolSummaryInfo> poolsList = new ArrayList<>();
         //给磁带组赋值
         for (Map<String, String> group : groupList) {
             Double capacity = Double.parseDouble(group.get("alltapenum")) * 2.5;
             Double freecapacity = Double.parseDouble(group.get("emptytapenum")) * 2.5;
             Double usedCapacity = capacity - freecapacity;
 
-            PoolGeneralOverviewDetail pool = new PoolGeneralOverviewDetail();
+            PoolSummaryInfo pool = new PoolSummaryInfo();
             pool.setId(group.get("id"));
             pool.setName(group.get("groupname"));
             pool.setCapacity(capacity);

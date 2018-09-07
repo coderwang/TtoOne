@@ -6,7 +6,7 @@
  */
 package com.shdd.cfs.web.device.cdstorage;
 
-import com.shdd.cfs.dto.device.optical.CdPooldetail;
+import com.shdd.cfs.dto.device.optical.CdPoolDetail;
 import com.shdd.cfs.utils.json.OpticalJsonHandle;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -34,7 +34,7 @@ public class CDSpecificPoolDetail {
     })
     public JSONObject OpticalDetailInfo(String poolid) {
         JSONObject Jarrary = new JSONObject();
-        CdPooldetail boxInfo = new CdPooldetail();
+        CdPoolDetail boxInfo = new CdPoolDetail();
         //从下级系统获取需求数据
         JSONArray boxlists = OpticalJsonHandle.cdboxlist();
         JSONObject boxInfoObject;

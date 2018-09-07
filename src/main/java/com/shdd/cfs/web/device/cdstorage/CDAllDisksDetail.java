@@ -6,7 +6,7 @@
  */
 package com.shdd.cfs.web.device.cdstorage;
 
-import com.shdd.cfs.dto.device.distribute.DiskDetailInfo;
+import com.shdd.cfs.dto.device.DiskDetailInfo;
 import com.shdd.cfs.utils.json.OpticalJsonHandle;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;

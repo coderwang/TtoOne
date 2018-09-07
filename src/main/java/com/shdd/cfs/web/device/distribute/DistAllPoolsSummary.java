@@ -6,7 +6,7 @@
  */
 package com.shdd.cfs.web.device.distribute;
 
-import com.shdd.cfs.dto.device.distribute.PoolGeneralOverviewDetail;
+import com.shdd.cfs.dto.device.PoolSummaryInfo;
 import com.shdd.cfs.utils.json.HttpRequest;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -44,7 +44,7 @@ public class DistAllPoolsSummary {
 
         for (int i = 0; i < volumeCount; i++) {
             volumeOject = volumeArray.getJSONObject(i);
-            PoolGeneralOverviewDetail volumeInfo = new PoolGeneralOverviewDetail();
+            PoolSummaryInfo volumeInfo = new PoolSummaryInfo();
 
             volumeInfo.setName(volumeOject.getString("vol_name"));
             volumeInfo.setId(volumeOject.getString("vol_id"));

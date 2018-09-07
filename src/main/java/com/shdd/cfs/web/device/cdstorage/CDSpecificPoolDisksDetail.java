@@ -6,7 +6,7 @@
  */
 package com.shdd.cfs.web.device.cdstorage;
 
-import com.shdd.cfs.dto.device.optical.OpticalNodeDetail;
+import com.shdd.cfs.dto.device.optical.CdPoolStorageInfo;
 import com.shdd.cfs.utils.json.OpticalJsonHandle;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -48,7 +48,7 @@ public class CDSpecificPoolDisksDetail {
         //组织获取光盘库节点信息
         JSONObject rstObject = new JSONObject();
         JSONArray slotArray = OpticalJsonHandle.cdslotlist(String.valueOf(poolid));
-        ArrayList<OpticalNodeDetail> cdDiskInfoList = new ArrayList<>();
+        ArrayList<CdPoolStorageInfo> cdDiskInfoList = new ArrayList<>();
         JSONObject cdDiskInfoObject;
         //翻页
         int page_count = 0;
@@ -64,7 +64,7 @@ public class CDSpecificPoolDisksDetail {
             }
 
             //处理数据
-            OpticalNodeDetail cdDiskInfoDetail = new OpticalNodeDetail();
+            CdPoolStorageInfo cdDiskInfoDetail = new CdPoolStorageInfo();
             cdDiskInfoDetail.setId(cdDiskInfoObject.getInt("cdslotid"));
             cdDiskInfoDetail.setName(cdDiskInfoObject.getString("label"));
             cdDiskInfoDetail.setCapacity(cdDiskInfoObject.getDouble("cdinfo"));

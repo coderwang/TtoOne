@@ -6,7 +6,7 @@
  */
 package com.shdd.cfs.web.device.cdstorage;
 
-import com.shdd.cfs.dto.device.optical.OpticalSystemInfoDetail;
+import com.shdd.cfs.dto.device.HostSummaryInfo;
 import com.shdd.cfs.utils.json.OpticalJsonHandle;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -41,7 +41,7 @@ public class CDAllHostsSummary {
         //光盘库存储信息发送接口
         JSONObject Jobject = new JSONObject();
         JSONArray Jarrary = new JSONArray();
-        OpticalSystemInfoDetail cdarrary = new OpticalSystemInfoDetail();
+        HostSummaryInfo cdarrary = new HostSummaryInfo();
         cdarrary.setCpuCount(cpucount);
         cdarrary.setCpuType(cputype);
         cdarrary.setHardDiskCount(cdCount);
