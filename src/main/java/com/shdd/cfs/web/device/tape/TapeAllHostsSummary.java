@@ -56,7 +56,7 @@ public class TapeAllHostsSummary {
             alltapesize = alltapelist.size();
             tapeStatus = 1;
             cpucount = 1;//待定
-            cputype = "pythium(mytest)"; //待定
+            cputype = "pythium"; //待定
             memcapacity = 34.5;//待定
 
             hostInfo.setCpuCount(cpucount);

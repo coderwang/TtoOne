@@ -64,7 +64,7 @@ public class TapeSpecificPoolDetail {
                 poolInfoDetail.setCapacity(capacity);
                 poolInfoDetail.setFree(freecapacity);
                 poolInfoDetail.setUsed(usedCapacity);
-                poolInfoDetail.setName("磁带长期保存库" + poolid);
+                poolInfoDetail.setName("磁带长期保存库");
 
                 poolList.add(poolInfoDetail);
                 break;

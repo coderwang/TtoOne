@@ -73,7 +73,7 @@ public class DistAllHostsSummary {
             hostDetailInfo.setNode_id(Integer.parseInt(nodeObject.getString("node_id")));
             hostDetailInfo.setHost_id(Integer.parseInt(nodeObject.getString("host_id")));
             //处理node节点状态信息
-            if (nodeObject.getString("node_state") == "Connected") {
+            if (nodeObject.getString("node_state").equalsIgnoreCase("Connected")) {
                 hostDetailInfo.setStatus(1);
             } else {
                 hostDetailInfo.setStatus(0);

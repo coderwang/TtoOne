@@ -18,6 +18,8 @@ import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
 
+import java.util.ArrayList;
+
 /**
  * @author: wangpeng
  * @version: 1.0 2018/8/29
@@ -35,7 +37,10 @@ public class DistLogDataController {
     @ApiOperation(value = "获取分布式存储系统告警详细信息", notes = "获取分布式存储系统告警详细信息")
     @MessageMapping("/dist_warning_log")
     @SendTo("/log/dist_warning_log")
-    public JournalInfo GetLogData() {
+    public JSONObject GetLogData() {
+        //
+        JSONObject rstObject = new JSONObject();
+        ArrayList logsList = new ArrayList();
 
         //访问下级分布式系统接口api/monitor/clusters/cpu/10/a/获取cpu信息
         HttpRequest httpRequest = new HttpRequest();
@@ -44,15 +49,16 @@ public class DistLogDataController {
         JSONArray logArray = JSONArray.fromObject(result);
         JSONObject logObject = logArray.getJSONObject(0);
 
-
-
         JournalInfo journalInfo = new JournalInfo();
 
         journalInfo.setType("distribute");
         journalInfo.setTime(logObject.getString("created"));
         journalInfo.setContent(logObject.getString("description"));
 
-        return journalInfo;
+        logsList.add(journalInfo);
+
+        rstObject.accumulate("journal", logsList);
+        return rstObject;
     }
 
     //@Scheduled(cron = "0/2 * * * * ? ")//每两秒触发

@@ -85,12 +85,12 @@ public class DistSpecificPoolDisksDetail {
 
             brickObject = bricksArray.getJSONObject(i);
 
-            //diskDetail.setId(Integer.parseInt(brickObject.getString("disk_id")));
+            diskDetail.setId(brickObject.getString("disk_id"));
             diskDetail.setName(brickObject.getString("disk_name"));
-            //diskDetail.setHostname();
+            diskDetail.setHostname(brickObject.getString("host_name"));
             diskDetail.setUsed(brickObject.getString("used"));
             diskDetail.setCapacity(brickObject.getString("total"));
-            //diskDetail.setStatus();
+            diskDetail.setStatus(Integer.parseInt(brickObject.getString("disk_state")));
 
             //
             diskList.add(diskDetail);
