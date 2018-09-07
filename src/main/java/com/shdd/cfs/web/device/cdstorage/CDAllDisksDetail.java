@@ -58,7 +58,7 @@ public class CDAllDisksDetail {
 
             //处理数据
             DiskDetailInfo diskDetailInfo = new DiskDetailInfo();
-            diskDetailInfo.setId(infoIndexObject.getInt("cdslotid"));
+            diskDetailInfo.setId(infoIndexObject.getString("cdslotid"));
             diskDetailInfo.setName(infoIndexObject.getString("label"));
             diskDetailInfo.setCapacity(infoIndexObject.getString("cdinfo"));
 

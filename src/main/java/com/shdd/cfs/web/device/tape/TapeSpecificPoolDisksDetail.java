@@ -78,7 +78,7 @@ public class TapeSpecificPoolDisksDetail {
                 DiskDetailInfo tape = new DiskDetailInfo();
 
                 //处理从下级系统获取的数据
-                tape.setId(Integer.parseInt(tapeID));
+                tape.setId(tapeID);
                 tape.setCapacity(capacity.get("total"));
                 usedSize = Double.parseDouble(capacity.get("total")) - Double.parseDouble(capacity.get("remaining"));
                 tape.setUsed(usedSize.toString());

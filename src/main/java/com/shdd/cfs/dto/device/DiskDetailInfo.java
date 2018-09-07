@@ -7,7 +7,7 @@ public class DiskDetailInfo {
     /**
      * 磁盘/光盘/磁带设备id
      */
-    private Integer id;
+    private String id;
     /**
      * 设备名称
      */
