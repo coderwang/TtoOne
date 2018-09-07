@@ -13,7 +13,6 @@ import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -46,7 +45,7 @@ public class DemoController {
         return returnObj;
     }
 
-    @Scheduled(cron = "0/5 * * * * ? ")//每五秒触发
+    //@Scheduled(cron = "0/5 * * * * ? ")//每五秒触发
     public void printStore() {
         String value = store.get("demoStore", "testKey");
         log.info("The value stored with 'testKey' is '{}'.", value);

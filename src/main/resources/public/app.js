@@ -18,7 +18,7 @@ function connect() {
     stompClient.connect({}, function (frame) {
         setConnected(true);
         console.log('Connected: ' + frame);
-        stompClient.subscribe('/device/dist_sys_data', function (greeting) {
+        stompClient.subscribe('/device/cddisk_sys_info', function (greeting) {
             showGreeting(JSON.parse(greeting.body));
         });
     });
@@ -33,7 +33,7 @@ function disconnect() {
 }
 
 function sendMessage() {
-    stompClient.send("/app/hello", {}, JSON.stringify({'message': $("#message").val()}));
+    stompClient.send("/app/cddisk_sys_info", {}, JSON.stringify({'message': $("#message").val()}));
 }
 
 function showGreeting(data) {

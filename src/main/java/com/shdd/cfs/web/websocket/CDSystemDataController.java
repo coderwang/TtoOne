@@ -7,7 +7,6 @@
 package com.shdd.cfs.web.websocket;
 
 import com.shdd.cfs.dto.message.DistSystemData;
-import com.shdd.cfs.dto.message.HelloMessage;
 import com.shdd.cfs.utils.json.OpticalJsonHandle;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -33,14 +32,14 @@ public class CDSystemDataController {
     /**
      * 获取光盘库存储cpu/内存/带宽使用情况
      *
-     * @param helloMessage
+     * @param
      * @return
      * @throws Exception
      */
     @ApiOperation(value = "获取光盘库存储cpu/内存/带宽使用情况")
     @MessageMapping("/cddisk_sys_info")
     @SendTo("/device/cddisk_sys_info")
-    public DistSystemData getCddiskSystemData(HelloMessage helloMessage) throws Exception {
+    public DistSystemData getCddiskSystemData() throws Exception {
         Thread.sleep(1000); // simulated delay
 
         DistSystemData distSystemData = new DistSystemData();
