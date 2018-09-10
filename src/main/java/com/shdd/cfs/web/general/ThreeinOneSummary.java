@@ -59,12 +59,20 @@ public class ThreeinOneSummary {
 		String sessonKey = iampRequest.SessionKey();
 		HttpResult tape_lists = iampRequest.inquiry_tape_lists(sessonKey);
 		ArrayList<Integer> alltapelist = iampRequest.all_of_tape_status(tape_lists);
+		//通过磁带列表获取所有磁带组ID
+		ArrayList<String> groupList = iampRequest.get_GroupId_From_Tapgelist(tape_lists);
 		Integer alltapesize  = 	alltapelist.size();
 		int fulltape = 0;
 		for(Integer list: alltapelist){
 			if (list == 1){
 				fulltape = fulltape + 1;
 			}  //空白磁带
+		}
+		//遍历磁带组ID，将没有分配到磁带组中的磁带按照空白磁带处理
+		for(String group:groupList){
+			if (group.equals("00000000-0000-0000-0000-000000000000")){
+				fulltape++;
+			}
 		}
 
 		allDistCapacityInfo.setTapecapacity(alltapesize);

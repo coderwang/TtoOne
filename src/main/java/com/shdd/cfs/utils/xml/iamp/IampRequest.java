@@ -194,6 +194,26 @@ public class IampRequest {
     }
 
     /**
+     *
+     * @param tape_lists //磁带列表
+     * @return  获取磁带组ID
+     */
+    public ArrayList<String> get_GroupId_From_Tapgelist(HttpResult tape_lists) throws DocumentException {
+        String result = tape_lists.getContent();
+        Document document = DocumentHelper.parseText(result);
+        Element root = document.getRootElement();
+        ArrayList<String> groupList = new ArrayList<>();
+        String groupId = "";
+        // 遍历root节点下的所有子节点
+        for (Iterator itemGroup = root.elementIterator(); itemGroup.hasNext(); ) {
+            Element tape_group = (Element) itemGroup.next();
+            String tape_id = tape_group.attributeValue("id");
+                groupId = tape_group.attributeValue("group");
+                groupList.add(groupId);
+        }
+        return groupList;
+    }
+    /**
      * 根据磁带id获取磁带总容量和剩余容量信息
      *
      * @param tape_lists 后台返回的磁带列表
