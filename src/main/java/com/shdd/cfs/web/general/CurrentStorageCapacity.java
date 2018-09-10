@@ -136,20 +136,19 @@ public class CurrentStorageCapacity {
         //获取磁带库容量信息
         String sessonKey = iampRequest.SessionKey();
         HttpResult tape_lists = iampRequest.inquiry_tape_lists(sessonKey);
-        ArrayList<Integer> alltapelist = iampRequest.all_of_tape_status(tape_lists);
-        Integer alltapesize = alltapelist.size();
-        Double singleTapeCapacity = 2.5;
-        int fulltape = 0;
-
-        for (Integer list : alltapelist) {
-            if (list == 1) {
-                fulltape = fulltape + 1;
-            }  //空白磁带
+        ArrayList<String> totalTapelist = iampRequest.get_tapes_capacityinfo(tape_lists,"total");
+        ArrayList<String> RemindTapelist = iampRequest.get_tapes_capacityinfo(tape_lists,"remaining");
+        Double allTapeCapacity = 0.0; //所有磁带总容量相加
+        Double remindTapeCapacity = 0.0;//所有磁带剩余容量相加
+        for (String tape : totalTapelist) {
+            allTapeCapacity += Integer.parseInt(tape);
+        }
+        for(String remind : RemindTapelist){
+            remindTapeCapacity += Integer.parseInt(remind);
         }
         //磁带库总容量大小
-        Double allTapeCapacity = alltapesize * singleTapeCapacity;
         //磁带库使用容量大小
-        Double useTapeCapacity = (alltapesize - fulltape) * singleTapeCapacity;
+        Double useTapeCapacity = allTapeCapacity - remindTapeCapacity;
 
         //TODO 容量数据存入数据库
         //给磁带库当前容量赋值
