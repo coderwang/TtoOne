@@ -74,7 +74,7 @@ public class DistSpecificPoolDisksDetail {
 
         //数据处理
         DiskDetailInfo diskDetail = new DiskDetailInfo();
-        ArrayList diskList = new ArrayList();
+        JSONArray diskList = new JSONArray();
 
         for (int i = 0; i < brickCount; i++) {
 
@@ -82,16 +82,13 @@ public class DistSpecificPoolDisksDetail {
             if ((i + 1) <= (page_num - 1) * count) {
                 continue;
             }
-
             brickObject = bricksArray.getJSONObject(i);
-
             diskDetail.setId(brickObject.getString("disk_id"));
             diskDetail.setName(brickObject.getString("disk_name"));
             diskDetail.setHostname(brickObject.getString("host_name"));
             diskDetail.setUsed(brickObject.getString("used"));
             diskDetail.setCapacity(brickObject.getString("total"));
             diskDetail.setStatus(Integer.parseInt(brickObject.getString("disk_state")));
-
             //
             diskList.add(diskDetail);
             page_count += 1;

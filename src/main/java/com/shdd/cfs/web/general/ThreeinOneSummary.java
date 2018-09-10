@@ -97,6 +97,4 @@ public class ThreeinOneSummary {
 
 		return rstObject;
 	}
-
-
 }
