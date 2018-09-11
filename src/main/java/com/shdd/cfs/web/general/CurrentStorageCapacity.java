@@ -136,8 +136,8 @@ public class CurrentStorageCapacity {
         //获取磁带库容量信息
         String sessonKey = iampRequest.SessionKey();
         HttpResult tape_lists = iampRequest.inquiry_tape_lists(sessonKey);
-        ArrayList<String> totalTapelist = iampRequest.get_tapes_capacityinfo(tape_lists,"total");
-        ArrayList<String> RemindTapelist = iampRequest.get_tapes_capacityinfo(tape_lists,"remaining");
+        ArrayList<String> totalTapelist = iampRequest.get_tapes_capacityinfo(tape_lists,"total","null");
+        ArrayList<String> RemindTapelist = iampRequest.get_tapes_capacityinfo(tape_lists,"remaining","null");
         Double allTapeCapacity = 0.0; //所有磁带总容量相加
         Double remindTapeCapacity = 0.0;//所有磁带剩余容量相加
         for (String tape : totalTapelist) {

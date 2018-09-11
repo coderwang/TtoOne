@@ -43,33 +43,36 @@ public class TapeSpecificPoolDetail {
 
     public JSONObject TapeDetailInfo(String poolid) throws DocumentException {
         Double capacity = 0.0;
-        Double freecapacity = 0.0;
         Double usedCapacity = 0.0;
+        Double remainCapacity = 0.0;
         //获取session_key
         String session = iampRequest.SessionKey();
         //获取xml数据
         HttpResult groupsXmlData = iampRequest.inquiry_gtape_lists(session);
+        HttpResult tapeXmlDate = iampRequest.inquiry_tape_lists(session);
         //获取磁带组列表信息
         ArrayList<Map<String, String>> groupsList = iampRequest.tape_group_info(groupsXmlData);
         ArrayList poolList = new ArrayList();
+        //获取磁带组id =  poolid 总容量和剩余总容量
+        ArrayList totalArrary = iampRequest.get_tapes_capacityinfo(tapeXmlDate,"total",poolid);
+        ArrayList remainArrary = iampRequest.get_tapes_capacityinfo(tapeXmlDate,"remaining",poolid);
+        for( int i = 0 ; i < totalArrary.size(); i++){
+            capacity += Double.parseDouble(totalArrary.get(i).toString());
+        }
+        for( int j = 0 ; j < remainArrary.size(); j++){
+            remainCapacity += Double.parseDouble(remainArrary.get(j).toString());
+        }
+        usedCapacity = capacity - remainCapacity;
+		TapePoolDetail poolInfoDetail = new TapePoolDetail();
+		poolInfoDetail.setCapacity(capacity);
+		poolInfoDetail.setFree(remainCapacity);
+		poolInfoDetail.setUsed(usedCapacity);
         //给磁带组赋值
         for (Map<String, String> group : groupsList) {
-            if (poolid.equals(group.get("id"))) {
-                TapePoolDetail poolInfoDetail = new TapePoolDetail();
-
-                capacity = Double.parseDouble(group.get("alltapenum")) * 2.5;
-                freecapacity = Double.parseDouble(group.get("emptytapenum")) * 2.5;
-                usedCapacity = capacity - freecapacity;
-
-                poolInfoDetail.setCapacity(capacity);
-                poolInfoDetail.setFree(freecapacity);
-                poolInfoDetail.setUsed(usedCapacity);
-                poolInfoDetail.setName("磁带长期保存库");
+             if (poolid.equals(group.get("id"))) {
+                poolInfoDetail.setName(group.get("groupname"));
 
                 poolList.add(poolInfoDetail);
-                break;
-            } else {
-                System.out.println("未知的磁带组" + poolid);
             }
         }
 
