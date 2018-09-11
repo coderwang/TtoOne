@@ -109,11 +109,12 @@ public class CurrentStorageCapacity {
 
             result = httpRequest.sendGet("http://192.168.1.32:8000/api/volumes/" + volumeID + "/storage", " ");
             volumeStorageObject = JSONObject.fromObject(result);
-
+            String totalCapacity = volumeStorageObject.getString("size");
+            String usedCapacity = volumeStorageObject.getString("used");
             //TODO 容量数据存入数据库
-            distPoolStorageCapacity.setCapacity(volumeStorageObject.getString("size"));
+            distPoolStorageCapacity.setCapacity(totalCapacity.substring(0,totalCapacity.length()-1));
             distPoolStorageCapacity.setPoolName(volumeStorageObject.getString("vol_name"));
-            distPoolStorageCapacity.setUsedCapacity(volumeStorageObject.getString("used"));
+            distPoolStorageCapacity.setUsedCapacity(usedCapacity.substring(0,usedCapacity.length()-1));
 
             poolList.add(distPoolStorageCapacity);
 
