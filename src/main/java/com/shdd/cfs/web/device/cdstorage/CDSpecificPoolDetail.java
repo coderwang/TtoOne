@@ -50,7 +50,6 @@ public class CDSpecificPoolDetail {
                 boxInfo.setCapacity(Double.parseDouble(cdboxtotalcapacity));
                 boxInfo.setUsed(Double.parseDouble(cdboxusedcapacity));
                 boxInfo.setFree(Double.parseDouble(cdboxfreecapacity));
-
                 break;
             }
         }
