@@ -58,11 +58,9 @@ public class CDSpecificPoolDisksDetail {
             cdDiskInfoObject = slotArray.getJSONObject(i);
 
             //翻页
-            i++;
             if ((i + 1) <= (page_num - 1) * count) {
                 continue;
             }
-
             //处理数据
             CdPoolStorageInfo cdDiskInfoDetail = new CdPoolStorageInfo();
             cdDiskInfoDetail.setId(cdDiskInfoObject.getInt("cdslotid"));

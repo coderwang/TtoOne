@@ -2,6 +2,7 @@ package com.shdd.cfs.utils.xml.iamp;
 
 import com.shdd.cfs.utils.xml.HttpClientOperate;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.ObjectUtils;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.DocumentHelper;
@@ -194,6 +195,26 @@ public class IampRequest {
     }
 
     /**
+     *
+     * @param tape_lists //磁带列表
+     * @return  获取磁带组ID
+     */
+    public ArrayList<String> get_GroupId_From_Tapgelist(HttpResult tape_lists) throws DocumentException {
+        String result = tape_lists.getContent();
+        Document document = DocumentHelper.parseText(result);
+        Element root = document.getRootElement();
+        ArrayList<String> groupList = new ArrayList<>();
+        String groupId = "";
+        // 遍历root节点下的所有子节点
+        for (Iterator itemGroup = root.elementIterator(); itemGroup.hasNext(); ) {
+            Element tape_group = (Element) itemGroup.next();
+            String tape_id = tape_group.attributeValue("id");
+                groupId = tape_group.attributeValue("group");
+                groupList.add(groupId);
+        }
+        return groupList;
+    }
+    /**
      * 根据磁带id获取磁带总容量和剩余容量信息
      *
      * @param tape_lists 后台返回的磁带列表
@@ -228,6 +249,41 @@ public class IampRequest {
         }
         return capacityoftotalused;
     }
+
+    /**
+     *遍历磁带列表信息，获取所有磁带容量信息 。
+     * @param tape_lists 磁带库后台返回的磁带列表
+     * @param str 目前有2个参数，当为 total 表示返回所有磁带总容量数组，当为remaining 表示返回剩余容量数组
+     * @param groupid  磁带组id ，获取当前磁带组id中所有磁带容量 groupid = "null" 表示获取所有磁带的容量
+     * @return 容量数组信息
+     */
+    public ArrayList<String> get_tapes_capacityinfo(HttpResult tape_lists, String str,String groupid) throws DocumentException {
+        String result = tape_lists.getContent();
+        Document document = DocumentHelper.parseText(result);
+        Element root = document.getRootElement();
+        ArrayList<String> capacityinfotape = new ArrayList<>();
+        // 遍历root节点下的所有子节点
+        for (Iterator itemGroup = root.elementIterator(); itemGroup.hasNext(); ) {
+            // 得到磁带组ID
+            Element tape_group = (Element) itemGroup.next();
+            //通过磁带列表获取磁带所在磁带组ID
+            String group_id = tape_group.attributeValue("group");
+            if(groupid.equals(group_id) || groupid.equals("null")) {
+                for (Iterator itemCapacity = tape_group.elementIterator(); itemCapacity.hasNext(); ) {
+                    Element capacity = (Element) itemCapacity.next();
+                    //获取所有磁带属性值【tape/capacity/total,remaining】
+                    for (Iterator capacityinfo = capacity.elementIterator(); capacityinfo.hasNext(); ) {
+                        Element tapecapacity = (Element) capacityinfo.next();
+                        if (tapecapacity.getName().equals(str)) {
+                            capacityinfotape.add(tapecapacity.getText());
+                        }
+                    }
+                }
+            }
+        }
+        return capacityinfotape;
+    }
+
 
     /**
      * 根据磁带id获取磁带是否在线

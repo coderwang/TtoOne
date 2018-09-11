@@ -45,12 +45,13 @@ public class DistSpecificPoolDetail {
         //
         ArrayList poolList = new ArrayList();
         DistPoolDetail poolDetail = new DistPoolDetail();
-
-        poolDetail.setCapacity(poolObject.getString("size"));
+        String totalCapacity = poolObject.getString("size");
+        String freeCapacity = poolObject.getString("avail");
+        String usedCapacity = poolObject.getString("used");
+        poolDetail.setCapacity(totalCapacity.substring(0,totalCapacity.length()-1));
         poolDetail.setName(poolObject.getString("vol_name"));
-        poolDetail.setFree(poolObject.getString("avail"));
-        poolDetail.setUsed(poolObject.getString("used"));
-
+        poolDetail.setFree(freeCapacity.substring(0,freeCapacity.length()-1));
+        poolDetail.setUsed(usedCapacity.substring(0,usedCapacity.length()-1));
         //访问下级分布式系统接口api/volumes/volume_id
         result = httpRequest.sendGet("http://192.168.1.32:8000/api/volumes/" + poolid, " ");
         poolObject = JSONObject.fromObject(result);
