@@ -17,8 +17,6 @@ import net.sf.json.JSONObject;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
-
 @RestController
 @Slf4j
 
@@ -86,9 +84,47 @@ public class DistSpecificPoolDisksDetail {
             diskDetail.setId(brickObject.getString("disk_id"));
             diskDetail.setName(brickObject.getString("disk_name"));
             diskDetail.setHostname(brickObject.getString("host_name"));
-            diskDetail.setUsed(brickObject.getString("used"));
-            diskDetail.setCapacity(brickObject.getString("total"));
             diskDetail.setStatus(Integer.parseInt(brickObject.getString("disk_state")));
+
+            Double Capacity = 0.0;
+            Double used = 0.0;
+            String unitCapacity = "";
+            String unitUsed = "";
+            String capacityString = brickObject.getString("total");
+            String usedString = brickObject.getString("used");
+
+            unitCapacity = capacityString.substring(capacityString.length() - 1, capacityString.length());
+            if (unitCapacity.equalsIgnoreCase("T")) {
+                //根据单位信息，转成TB级别数据
+                Capacity = Double.parseDouble(capacityString.substring(0, capacityString.length() - 1));
+            } else if (unitCapacity.equalsIgnoreCase("G")) {
+                //根据单位信息为GB，转成TB级别数据
+                Capacity = Double.parseDouble(capacityString.substring(0, capacityString.length() - 1)) / 1024;
+            } else if (unitCapacity.equalsIgnoreCase("M")) {
+                //根据单位信息为MB，转成TB级别数据
+                Capacity = Double.parseDouble(capacityString.substring(0, capacityString.length() - 1)) / 1024 / 1024;
+            } else {
+                //根据单位信息为Byte，转成TB级别数据
+                Capacity = Double.parseDouble(capacityString) / 1024 / 1024 / 1024;
+            }
+
+            if (unitUsed.equalsIgnoreCase("T")) {
+                //根据单位信息，转成TB级别数据
+                used = Double.parseDouble(usedString.substring(0, usedString.length() - 1));
+            } else if (unitUsed.equalsIgnoreCase("G")) {
+                //根据单位信息为GB，转成TB级别数据
+                used = Double.parseDouble(usedString.substring(0, usedString.length() - 1)) / 1024;
+            } else if (unitUsed.equalsIgnoreCase("M")) {
+                //根据单位信息为MB，转成TB级别数据
+                used = Double.parseDouble(usedString.substring(0, usedString.length() - 1)) / 1024 / 1024;
+            } else {
+                //根据单位信息为Byte，转成TB级别数据
+                used = Double.parseDouble(usedString) / 1024 / 1024 / 1024;
+            }
+
+            diskDetail.setUsed(used);
+            diskDetail.setCapacity(Capacity);
+
             //
             diskList.add(diskDetail);
             page_count += 1;

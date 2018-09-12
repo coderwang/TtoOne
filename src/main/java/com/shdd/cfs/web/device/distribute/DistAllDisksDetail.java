@@ -92,7 +92,7 @@ public class DistAllDisksDetail {
                     //从disk数组中获取disk信息
                     diskObject = disksArray.getJSONObject(k);
 
-                    if (diskObject.getString("system_disk") == "true") {
+                    if (diskObject.getString("system_disk").equalsIgnoreCase("true")) {
                         allDiskCount -= 1;
                         continue;
                     }
@@ -109,8 +109,8 @@ public class DistAllDisksDetail {
                     diskDetailInfo.setName(diskObject.getString("disk_name"));
                     diskDetailInfo.setHostname(hostName);
 
-                    diskDetailInfo.setCapacity(diskObject.getString("total"));
-                    diskDetailInfo.setUsed(diskObject.getString("used"));
+                    diskDetailInfo.setCapacity(Double.parseDouble(diskObject.getString("total")));
+                    diskDetailInfo.setUsed(Double.parseDouble(diskObject.getString("used")));
                     if (diskObject.getString("disk_state").equalsIgnoreCase("true")) {
                         diskDetailInfo.setStatus(1);
                     } else {

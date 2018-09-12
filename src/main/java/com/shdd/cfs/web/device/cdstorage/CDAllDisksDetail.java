@@ -60,10 +60,10 @@ public class CDAllDisksDetail {
             DiskDetailInfo diskDetailInfo = new DiskDetailInfo();
             diskDetailInfo.setId(infoIndexObject.getString("cdslotid"));
             diskDetailInfo.setName(infoIndexObject.getString("label"));
-            diskDetailInfo.setCapacity(infoIndexObject.getString("cdinfo"));
+            diskDetailInfo.setCapacity(Double.parseDouble(infoIndexObject.getString("cdinfo")));
 
             usedSize = infoIndexObject.getDouble("cdinfo") - infoIndexObject.getDouble("leftinfo");
-            diskDetailInfo.setUsed(usedSize.toString());
+            diskDetailInfo.setUsed(usedSize);
             if (infoIndexObject.getInt("cdslotstate") == 0) {
                 //指盘槽内无盘
                 diskDetailInfo.setStatus(0);

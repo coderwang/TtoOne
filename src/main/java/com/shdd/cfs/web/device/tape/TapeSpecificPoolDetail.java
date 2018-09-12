@@ -54,22 +54,22 @@ public class TapeSpecificPoolDetail {
         ArrayList<Map<String, String>> groupsList = iampRequest.tape_group_info(groupsXmlData);
         ArrayList poolList = new ArrayList();
         //获取磁带组id =  poolid 总容量和剩余总容量
-        ArrayList totalArrary = iampRequest.get_tapes_capacityinfo(tapeXmlDate,"total",poolid);
-        ArrayList remainArrary = iampRequest.get_tapes_capacityinfo(tapeXmlDate,"remaining",poolid);
-        for( int i = 0 ; i < totalArrary.size(); i++){
+        ArrayList totalArrary = iampRequest.get_tapes_capacityinfo(tapeXmlDate, "total", poolid);
+        ArrayList remainArrary = iampRequest.get_tapes_capacityinfo(tapeXmlDate, "remaining", poolid);
+        for (int i = 0; i < totalArrary.size(); i++) {
             capacity += Double.parseDouble(totalArrary.get(i).toString());
         }
-        for( int j = 0 ; j < remainArrary.size(); j++){
+        for (int j = 0; j < remainArrary.size(); j++) {
             remainCapacity += Double.parseDouble(remainArrary.get(j).toString());
         }
         usedCapacity = capacity - remainCapacity;
-		TapePoolDetail poolInfoDetail = new TapePoolDetail();
-		poolInfoDetail.setCapacity(capacity);
-		poolInfoDetail.setFree(remainCapacity);
-		poolInfoDetail.setUsed(usedCapacity);
+        TapePoolDetail poolInfoDetail = new TapePoolDetail();
+        poolInfoDetail.setCapacity(capacity / 1024 / 1024);
+        poolInfoDetail.setFree(remainCapacity / 1024 / 1024);
+        poolInfoDetail.setUsed(usedCapacity / 1024 / 1024);
         //给磁带组赋值
         for (Map<String, String> group : groupsList) {
-             if (poolid.equals(group.get("id"))) {
+            if (poolid.equals(group.get("id"))) {
                 poolInfoDetail.setName(group.get("groupname"));
 
                 poolList.add(poolInfoDetail);

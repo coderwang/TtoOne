@@ -50,6 +50,9 @@ public class CDSpecificPoolDetail {
                 boxInfo.setCapacity(Double.parseDouble(cdboxtotalcapacity)/1024);
                 boxInfo.setUsed(Double.parseDouble(cdboxusedcapacity)/1024);
                 boxInfo.setFree(Double.parseDouble(cdboxfreecapacity)/1024);
+
+                //TODO 根据光盘库型号，自动获取信息配置光盘匣在位状态，当前光盘匣状态默认在线
+                boxInfo.setStatus(1);
                 break;
             }
         }

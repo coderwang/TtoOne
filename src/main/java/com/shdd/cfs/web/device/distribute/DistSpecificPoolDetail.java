@@ -48,10 +48,47 @@ public class DistSpecificPoolDetail {
         String totalCapacity = poolObject.getString("size");
         String freeCapacity = poolObject.getString("avail");
         String usedCapacity = poolObject.getString("used");
-        poolDetail.setCapacity(totalCapacity.substring(0,totalCapacity.length()-1));
+        poolDetail.setCapacity(totalCapacity.substring(0, totalCapacity.length() - 1));
         poolDetail.setName(poolObject.getString("vol_name"));
-        poolDetail.setFree(freeCapacity.substring(0,freeCapacity.length()-1));
-        poolDetail.setUsed(usedCapacity.substring(0,usedCapacity.length()-1));
+
+        String unitCapacity = "";
+        String unitUsed = "";
+        //获取到单位信息，并做出判断
+        Double Capacity = 0.0;
+        Double used = 0.0;
+        unitCapacity = freeCapacity.substring(freeCapacity.length() - 1, freeCapacity.length());
+        unitUsed = usedCapacity.substring(usedCapacity.length() - 1, usedCapacity.length());
+
+        if (unitCapacity.equalsIgnoreCase("T")) {
+            //根据单位信息，转成TB级别数据
+            Capacity = Double.parseDouble(freeCapacity.substring(0, freeCapacity.length() - 1));
+        } else if (unitCapacity.equalsIgnoreCase("G")) {
+            //根据单位信息为GB，转成TB级别数据
+            Capacity = Double.parseDouble(freeCapacity.substring(0, freeCapacity.length() - 1)) / 1024;
+        } else if (unitCapacity.equalsIgnoreCase("M")) {
+            //根据单位信息为MB，转成TB级别数据
+            Capacity = Double.parseDouble(freeCapacity.substring(0, freeCapacity.length() - 1)) / 1024 / 1024;
+        } else {
+            //根据单位信息为Byte，转成TB级别数据
+            Capacity = Double.parseDouble(freeCapacity.substring(0, freeCapacity.length() - 1)) / 1024 / 1024 / 1024;
+        }
+        poolDetail.setFree(Capacity.toString());
+
+        if (unitUsed.equalsIgnoreCase("T")) {
+            //根据单位信息，转成TB级别数据
+            used = Double.parseDouble(usedCapacity.substring(0, usedCapacity.length() - 1));
+        } else if (unitUsed.equalsIgnoreCase("G")) {
+            //根据单位信息为GB，转成TB级别数据
+            used = Double.parseDouble(usedCapacity.substring(0, usedCapacity.length() - 1)) / 1024;
+        } else if (unitUsed.equalsIgnoreCase("M")) {
+            //根据单位信息为MB，转成TB级别数据
+            used = Double.parseDouble(usedCapacity.substring(0, usedCapacity.length() - 1)) / 1024 / 1024;
+        } else {
+            //根据单位信息为Byte，转成TB级别数据
+            used = Double.parseDouble(usedCapacity.substring(0, usedCapacity.length() - 1)) / 1024 / 1024 / 1024;
+        }
+        poolDetail.setUsed(used);
+
         //访问下级分布式系统接口api/volumes/volume_id
         result = httpRequest.sendGet("http://192.168.1.32:8000/api/volumes/" + poolid, " ");
         poolObject = JSONObject.fromObject(result);

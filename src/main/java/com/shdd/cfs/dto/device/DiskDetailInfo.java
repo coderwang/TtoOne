@@ -19,11 +19,11 @@ public class DiskDetailInfo {
     /**
      * 已使用容量
      */
-    private String used;
+    private Double used;
     /**
      * 总容量
      */
-    private String capacity;
+    private Double capacity;
     /**
      * 设备在线状态
      */

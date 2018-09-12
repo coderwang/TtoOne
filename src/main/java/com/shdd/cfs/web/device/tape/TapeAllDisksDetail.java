@@ -69,10 +69,10 @@ public class TapeAllDisksDetail {
 
             DiskDetailInfo tape = new DiskDetailInfo();
             tape.setId(tapeID);
-            tape.setCapacity(capacity.get("total"));
+            tape.setCapacity(Double.parseDouble(capacity.get("total")));
 
             usedSize = Double.parseDouble(capacity.get("total")) - Double.parseDouble(capacity.get("remaining"));
-            tape.setUsed(usedSize.toString());
+            tape.setUsed(Double.parseDouble(usedSize.toString()));
             tape.setName(tapeID);
             tape.setStatus(iampRequest.tape_online_info(allTapesList, tapeID));
 

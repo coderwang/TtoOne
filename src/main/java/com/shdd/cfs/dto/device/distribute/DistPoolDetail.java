@@ -6,7 +6,7 @@ import lombok.Data;
 public class DistPoolDetail {
     private String name;
     private String capacity;
-    private String used;
+    private Double used;
     private String free;
     private Integer status;
 }
