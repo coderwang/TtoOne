@@ -112,9 +112,42 @@ public class CurrentStorageCapacity {
             String totalCapacity = volumeStorageObject.getString("size");
             String usedCapacity = volumeStorageObject.getString("used");
             //TODO 容量数据存入数据库
-            distPoolStorageCapacity.setCapacity(totalCapacity.substring(0, totalCapacity.length() - 1));
+            Double Capacity = 0.0;
+            Double used = 0.0;
+            String unitCapacity = totalCapacity.substring(totalCapacity.length() - 1, totalCapacity.length());
+            String unitUsed = usedCapacity.substring(usedCapacity.length() - 1, usedCapacity.length());
+
+            if (unitCapacity.equalsIgnoreCase("T")) {
+                //根据单位信息，转成TB级别数据
+                Capacity = Double.parseDouble(totalCapacity.substring(0, totalCapacity.length() - 1));
+            } else if (unitCapacity.equalsIgnoreCase("G")) {
+                //根据单位信息为GB，转成TB级别数据
+                Capacity = Double.parseDouble(totalCapacity.substring(0, totalCapacity.length() - 1)) / 1024;
+            } else if (unitCapacity.equalsIgnoreCase("M")) {
+                //根据单位信息为MB，转成TB级别数据
+                Capacity = Double.parseDouble(totalCapacity.substring(0, totalCapacity.length() - 1)) / 1024 / 1024;
+            } else {
+                //根据单位信息为Byte，转成TB级别数据
+                Capacity = Double.parseDouble(totalCapacity.substring(0, totalCapacity.length() - 1)) / 1024 / 1024 / 1024;
+            }
+            distPoolStorageCapacity.setCapacity(Capacity);
+
+            if (unitUsed.equalsIgnoreCase("T")) {
+                //根据单位信息，转成TB级别数据
+                used = Double.parseDouble(usedCapacity.substring(0, usedCapacity.length() - 1));
+            } else if (unitUsed.equalsIgnoreCase("G")) {
+                //根据单位信息为GB，转成TB级别数据
+                used = Double.parseDouble(usedCapacity.substring(0, usedCapacity.length() - 1)) / 1024;
+            } else if (unitUsed.equalsIgnoreCase("M")) {
+                //根据单位信息为MB，转成TB级别数据
+                used = Double.parseDouble(usedCapacity.substring(0, usedCapacity.length() - 1)) / 1024 / 1024;
+            } else {
+                //根据单位信息为Byte，转成TB级别数据
+                used = Double.parseDouble(usedCapacity.substring(0, usedCapacity.length() - 1)) / 1024 / 1024 / 1024;
+            }
+
             distPoolStorageCapacity.setPoolName(volumeStorageObject.getString("vol_name"));
-            distPoolStorageCapacity.setUsedCapacity(usedCapacity.substring(0, usedCapacity.length() - 1));
+            distPoolStorageCapacity.setUsedCapacity(used);
 
             poolList.add(distPoolStorageCapacity);
 

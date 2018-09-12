@@ -21,9 +21,9 @@ public class DistPoolStorageCapacity {
     /**
      * 单个分布式集群存储总容量
      */
-    private String capacity;
+    private Double capacity;
     /**
      * 单个分布式集群已使用容量
      */
-    private String usedCapacity;
+    private Double usedCapacity;
 }
