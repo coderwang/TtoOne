@@ -56,7 +56,7 @@ public class DistSpecificPoolDetail {
         result = httpRequest.sendGet("http://192.168.1.32:8000/api/volumes/" + poolid, " ");
         poolObject = JSONObject.fromObject(result);
 
-        if (poolObject.getString("vol_status") == "started") {
+        if (poolObject.getString("vol_status").equalsIgnoreCase("started")) {
             poolDetail.setStatus(1);
         } else {
             poolDetail.setStatus(0);
