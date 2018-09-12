@@ -145,6 +145,24 @@ public class OpticalJsonHandle {
 		JSONArray cdslotlistarray = cdslotlists.getJSONArray("dt");
 		return  cdslotlistarray;
 	}
+
+	/**
+	 * 通过光盘匣id内光盘总容量属性是否为0判断进线与离线光盘数, 0 表示离线，非0表示在线
+	 * @param id
+	 * @return
+	 */
+	public static Integer getCardOlineNumInbox(String id){
+		Integer num = 0;
+		JSONArray cardArrary = cdslotlist(id);
+		for( int i = 0 ; i < cardArrary.size(); i++){
+			String cdinfo = cardArrary.getJSONObject(i).get("cdinfo").toString();
+			if(!cdinfo.equals("0")){
+				//计算在线光盘个数
+				num++;
+			}
+		}
+		return  num;
+	}
 	/**
 	 * 将所有光盘槽属性塞入数组
 	 * @return 所有光盘槽属性
