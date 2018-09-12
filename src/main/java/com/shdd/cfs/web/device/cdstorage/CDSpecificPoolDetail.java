@@ -53,6 +53,8 @@ public class CDSpecificPoolDetail {
 
                 //TODO 根据光盘库型号，自动获取信息配置光盘匣在位状态，当前光盘匣状态默认在线
                 boxInfo.setStatus(1);
+                //TODO 显示光盘匣内在线光盘个数
+                boxInfo.setCardnum(10);
                 break;
             }
         }

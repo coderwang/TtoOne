@@ -9,4 +9,5 @@ public class CdPoolDetail {
     private Double used;
     private Double free;
     private Integer status;
+    private Integer cardnum;
 }
