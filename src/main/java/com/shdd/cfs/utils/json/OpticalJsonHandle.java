@@ -24,6 +24,8 @@ public class OpticalJsonHandle {
 	}
 	private static String ip ="192.168.1.17";
 	private static Integer  port = 8000;
+	private static Double singleDiskCapacity = 23.3;
+
 	/**
 	 * 获取光盘库总容量和使用容量
 	 * @return 光盘库总容量和使用容量Map对象
@@ -160,5 +162,22 @@ public class OpticalJsonHandle {
 			}
 		 }
 		 return cdlists;
+	}
+
+	public static Double getCapacityFromCDType(String tape){
+		Double capacpty = 0.0; //GB
+		//0 未知 1 CD  2 VCD  3DVD  4 BD
+		if(tape.equals("4")){//BD
+			capacpty = singleDiskCapacity ;
+		}else if(tape.equals("2")){//VCD
+			capacpty=4.7;
+		}else if(tape.equals("1")){//CD
+			capacpty=0.7;
+		}else if(tape.equals("3")){//DVD
+			capacpty=4.7;
+		}else {
+			capacpty = 0.0;
+		}
+		return  capacpty;
 	}
 }

@@ -60,19 +60,19 @@ public class CDAllDisksDetail {
             DiskDetailInfo diskDetailInfo = new DiskDetailInfo();
             diskDetailInfo.setId(infoIndexObject.getString("cdslotid"));
             diskDetailInfo.setName(infoIndexObject.getString("label"));
-
-            //光盘容量为GB，下级系统取值默认是MB
-            diskDetailInfo.setCapacity(Double.parseDouble(infoIndexObject.getString("cdinfo")) / 1024);
+            //获取光盘库类型 0 未知 1 CD  2 VCD  3DVD  4 BD
+            String diskTape = infoIndexObject.getString("type");
+            Double capacity = OpticalJsonHandle.getCapacityFromCDType(diskTape);
+            diskDetailInfo.setCapacity(capacity);
             usedSize = infoIndexObject.getDouble("cdinfo") - infoIndexObject.getDouble("leftinfo");
-            diskDetailInfo.setUsed(usedSize / 1024);
-            if (infoIndexObject.getInt("cdslotstate") == 0) {
-                //指盘槽内无盘
+            diskDetailInfo.setUsed(usedSize/1024);
+            if (infoIndexObject.getString("cdinfo").equals("0")) {
+                //光盘槽容量为0，表示光盘离线
                 diskDetailInfo.setStatus(0);
             } else {
-                //光盘在位
+                //光盘容量不为0，表示光盘近线
                 diskDetailInfo.setStatus(1);
             }
-
             //添加数据到缓存
             cdDisksList.add(diskDetailInfo);
             page_count += 1;
