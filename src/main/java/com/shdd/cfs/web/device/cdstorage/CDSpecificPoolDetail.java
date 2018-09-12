@@ -47,9 +47,9 @@ public class CDSpecificPoolDetail {
             //匹配指定光盘匣
             if (name.equals(poolid)) {
                 boxInfo.setName(name);
-                boxInfo.setCapacity(Double.parseDouble(cdboxtotalcapacity));
-                boxInfo.setUsed(Double.parseDouble(cdboxusedcapacity));
-                boxInfo.setFree(Double.parseDouble(cdboxfreecapacity));
+                boxInfo.setCapacity(Double.parseDouble(cdboxtotalcapacity)/1024);
+                boxInfo.setUsed(Double.parseDouble(cdboxusedcapacity)/1024);
+                boxInfo.setFree(Double.parseDouble(cdboxfreecapacity)/1024);
                 break;
             }
         }
