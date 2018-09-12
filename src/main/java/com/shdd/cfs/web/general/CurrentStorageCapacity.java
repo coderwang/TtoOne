@@ -112,9 +112,9 @@ public class CurrentStorageCapacity {
             String totalCapacity = volumeStorageObject.getString("size");
             String usedCapacity = volumeStorageObject.getString("used");
             //TODO 容量数据存入数据库
-            distPoolStorageCapacity.setCapacity(totalCapacity.substring(0,totalCapacity.length()-1));
+            distPoolStorageCapacity.setCapacity(totalCapacity.substring(0, totalCapacity.length() - 1));
             distPoolStorageCapacity.setPoolName(volumeStorageObject.getString("vol_name"));
-            distPoolStorageCapacity.setUsedCapacity(usedCapacity.substring(0,usedCapacity.length()-1));
+            distPoolStorageCapacity.setUsedCapacity(usedCapacity.substring(0, usedCapacity.length() - 1));
 
             poolList.add(distPoolStorageCapacity);
 
@@ -137,14 +137,14 @@ public class CurrentStorageCapacity {
         //获取磁带库容量信息
         String sessonKey = iampRequest.SessionKey();
         HttpResult tape_lists = iampRequest.inquiry_tape_lists(sessonKey);
-        ArrayList<String> totalTapelist = iampRequest.get_tapes_capacityinfo(tape_lists,"total","null");
-        ArrayList<String> RemindTapelist = iampRequest.get_tapes_capacityinfo(tape_lists,"remaining","null");
+        ArrayList<String> totalTapelist = iampRequest.get_tapes_capacityinfo(tape_lists, "total", "null");
+        ArrayList<String> RemindTapelist = iampRequest.get_tapes_capacityinfo(tape_lists, "remaining", "null");
         Double allTapeCapacity = 0.0; //所有磁带总容量相加
         Double remindTapeCapacity = 0.0;//所有磁带剩余容量相加
         for (String tape : totalTapelist) {
             allTapeCapacity += Integer.parseInt(tape);
         }
-        for(String remind : RemindTapelist){
+        for (String remind : RemindTapelist) {
             remindTapeCapacity += Integer.parseInt(remind);
         }
         //磁带库总容量大小

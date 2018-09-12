@@ -66,9 +66,9 @@ public class CDSpecificPoolDisksDetail {
             cdDiskInfoDetail.setId(cdDiskInfoObject.getInt("cdslotid"));
             cdDiskInfoDetail.setName(cdDiskInfoObject.getString("label"));
 
-            //总容量、已用容量获取数值的默认单位为GB
-            cdDiskInfoDetail.setCapacity(cdDiskInfoObject.getDouble("cdinfo"));
-            cdDiskInfoDetail.setUsed(cdDiskInfoObject.getDouble("cdinfo") - cdDiskInfoObject.getDouble("leftinfo"));
+            //总容量、已用容量获取数值的默认单位为MB
+            cdDiskInfoDetail.setCapacity(cdDiskInfoObject.getDouble("cdinfo") / 1024);
+            cdDiskInfoDetail.setUsed((cdDiskInfoObject.getDouble("cdinfo") - cdDiskInfoObject.getDouble("leftinfo")) / 1024);
             if (cdDiskInfoObject.getInt("cdslotstate") == 0) {
                 cdDiskInfoDetail.setStatus(0);
             } else {

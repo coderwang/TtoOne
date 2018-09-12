@@ -60,10 +60,11 @@ public class CDAllDisksDetail {
             DiskDetailInfo diskDetailInfo = new DiskDetailInfo();
             diskDetailInfo.setId(infoIndexObject.getString("cdslotid"));
             diskDetailInfo.setName(infoIndexObject.getString("label"));
-            diskDetailInfo.setCapacity(Double.parseDouble(infoIndexObject.getString("cdinfo")));
 
+            //光盘容量为GB，下级系统取值默认是MB
+            diskDetailInfo.setCapacity(Double.parseDouble(infoIndexObject.getString("cdinfo")) / 1024);
             usedSize = infoIndexObject.getDouble("cdinfo") - infoIndexObject.getDouble("leftinfo");
-            diskDetailInfo.setUsed(usedSize);
+            diskDetailInfo.setUsed(usedSize / 1024);
             if (infoIndexObject.getInt("cdslotstate") == 0) {
                 //指盘槽内无盘
                 diskDetailInfo.setStatus(0);
