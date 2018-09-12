@@ -44,6 +44,9 @@ public class DistSpecificHostDetail {
         String result = httpRequest.sendGet("http://192.168.1.32:8000/api/hosts/" + deviceId, " ");
         JSONObject hostObject = JSONObject.fromObject(result);
 
+        result = httpRequest.sendGet("http://192.168.1.32:8000/api/nodes/" + deviceId, " ");
+        JSONObject nodeObject = JSONObject.fromObject(result);
+
         DistHostDetailInfo hostDetailInfo = new DistHostDetailInfo();
 
         ArrayList hostList = new ArrayList();
@@ -70,6 +73,13 @@ public class DistSpecificHostDetail {
 
         //host主机名信息
         hostDetailInfo.setName(hostObject.getString("host_name"));
+
+        //host主机状态
+        if (nodeObject.getString("node_state").equalsIgnoreCase("Connected")) {
+            hostDetailInfo.setStatus(1);
+        } else {
+            hostDetailInfo.setStatus(0);
+        }
 
         //cpu信息
         cpuArray = hostObject.getJSONArray("cpus");
