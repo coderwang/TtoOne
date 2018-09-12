@@ -80,9 +80,9 @@ public class TapeSpecificPoolDisksDetail {
                 //处理从下级系统获取的数据
                 tape.setId(tapeID);
 
-                Double capacityTotal = Double.parseDouble(capacity.get("total")) / 1024 / 1024;
+                Double capacityTotal = Double.parseDouble(capacity.get("total")) / 1024;
                 tape.setCapacity(capacityTotal);
-                usedSize = (Double.parseDouble(capacity.get("total")) - Double.parseDouble(capacity.get("remaining"))) / 1024 / 1024;
+                usedSize = (Double.parseDouble(capacity.get("total")) - Double.parseDouble(capacity.get("remaining"))) / 1024;
                 tape.setUsed(usedSize);
                 tape.setName(tapeID);
                 tape.setStatus(iampRequest.tape_online_info(allTapesList, tapeID));
