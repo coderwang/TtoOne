@@ -60,8 +60,10 @@ public class CDAllDisksDetail {
             DiskDetailInfo diskDetailInfo = new DiskDetailInfo();
             diskDetailInfo.setId(infoIndexObject.getString("cdslotid"));
             diskDetailInfo.setName(infoIndexObject.getString("label"));
-            diskDetailInfo.setCapacity(Double.parseDouble(infoIndexObject.getString("cdinfo")));
-
+            //获取光盘库类型 0 未知 1 CD  2 VCD  3DVD  4 BD
+            String diskTape = infoIndexObject.getString("type");
+            Double capacity = OpticalJsonHandle.getCapacityFromCDType(diskTape);
+            diskDetailInfo.setCapacity(capacity);
             usedSize = infoIndexObject.getDouble("cdinfo") - infoIndexObject.getDouble("leftinfo");
             diskDetailInfo.setUsed(usedSize);
             //if (infoIndexObject.getInt("cdslotstate") == 0) {
