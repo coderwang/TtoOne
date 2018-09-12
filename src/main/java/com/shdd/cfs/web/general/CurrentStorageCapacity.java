@@ -153,8 +153,8 @@ public class CurrentStorageCapacity {
 
         //TODO 容量数据存入数据库
         //给磁带库当前容量赋值
-        tapeCurStorageCapacity.setCapacity(allTapeCapacity);
-        tapeCurStorageCapacity.setUsedCapacity(useTapeCapacity);
+        tapeCurStorageCapacity.setCapacity(allTapeCapacity/1024/1024);
+        tapeCurStorageCapacity.setUsedCapacity(useTapeCapacity/1024/1024);
         tapeCurStorageCapacity.setDevType("tape");
 
         return tapeCurStorageCapacity;
@@ -169,8 +169,8 @@ public class CurrentStorageCapacity {
 
         //获取光盘库容量, 节点状态
         Map<String, Double> cdLibCapacity = OpticalJsonHandle.getCDLibCapacity();
-        Double cdTotalCapacity = cdLibCapacity.get("capacity");
-        Double cdUsedCapacity = cdLibCapacity.get("used");
+        Double cdTotalCapacity = cdLibCapacity.get("capacity")/1024;
+        Double cdUsedCapacity = cdLibCapacity.get("used")/1024;
 
         //TODO 容量数据存入数据库
         //给光盘库当前容量赋值
