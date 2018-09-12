@@ -64,11 +64,12 @@ public class CDAllDisksDetail {
 
             usedSize = infoIndexObject.getDouble("cdinfo") - infoIndexObject.getDouble("leftinfo");
             diskDetailInfo.setUsed(usedSize);
-            if (infoIndexObject.getInt("cdslotstate") == 0) {
-                //指盘槽内无盘
+            //if (infoIndexObject.getInt("cdslotstate") == 0) {
+            if (infoIndexObject.getString("cdinfo").equals("0")) {
+                //光盘槽容量为0，表示光盘离线
                 diskDetailInfo.setStatus(0);
             } else {
-                //光盘在位
+                //光盘容量不为0，表示光盘近线
                 diskDetailInfo.setStatus(1);
             }
 
