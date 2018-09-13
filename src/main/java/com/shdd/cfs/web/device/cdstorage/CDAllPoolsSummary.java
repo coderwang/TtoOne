@@ -35,13 +35,17 @@ public class CDAllPoolsSummary {
         JSONArray boxList = OpticalJsonHandle.cdboxlist();
         ArrayList<PoolSummaryInfo> boxsArray = new ArrayList<>();
         for (int i = 0; i < boxList.size(); i++) {
-            PoolSummaryInfo boxs = new PoolSummaryInfo();
-            boxs.setId(boxList.getJSONObject(i).getString("cdboxid"));
-            boxs.setName(boxList.getJSONObject(i).getString("label"));
-            boxs.setCapacity(boxList.getJSONObject(i).getDouble("cdboxtotalcapacity"));
-            boxs.setUsed(boxList.getJSONObject(i).getDouble("cdboxusedcapacity"));
-            boxs.setFree(boxList.getJSONObject(i).getDouble("cdboxfreecapacity"));
-            boxsArray.add(boxs);
+        	//如果光盘匣内有在线光盘，则显示该光盘所在的光盘匣
+            int j = i + 1;
+            if(OpticalJsonHandle.getCardOlineNumInbox(Integer.toString(j)) != 0){
+                PoolSummaryInfo boxs = new PoolSummaryInfo();
+                boxs.setId(boxList.getJSONObject(i).getString("cdboxid"));
+                boxs.setName(boxList.getJSONObject(i).getString("label"));
+                boxs.setCapacity(boxList.getJSONObject(i).getDouble("cdboxtotalcapacity"));
+                boxs.setUsed(boxList.getJSONObject(i).getDouble("cdboxusedcapacity"));
+                boxs.setFree(boxList.getJSONObject(i).getDouble("cdboxfreecapacity"));
+                boxsArray.add(boxs);
+            }
         }
         storagePool.accumulate("poolCount", boxList.size());
         storagePool.accumulate("poollist", boxsArray);

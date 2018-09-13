@@ -66,7 +66,7 @@ public class CDAllDisksDetail {
             diskDetailInfo.setCapacity(capacity);
             usedSize = infoIndexObject.getDouble("cdinfo") - infoIndexObject.getDouble("leftinfo");
             diskDetailInfo.setUsed(usedSize/1024);
-            if (infoIndexObject.getString("cdinfo").equals("0")) {
+            if (Integer.parseInt(infoIndexObject.getString("cdinfo")) == 0) {
                 //光盘槽容量为0，表示光盘离线
                 diskDetailInfo.setStatus(0);
             } else {

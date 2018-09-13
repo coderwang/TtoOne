@@ -156,7 +156,7 @@ public class OpticalJsonHandle {
 		JSONArray cardArrary = cdslotlist(id);
 		for( int i = 0 ; i < cardArrary.size(); i++){
 			String cdinfo = cardArrary.getJSONObject(i).get("cdinfo").toString();
-			if(!cdinfo.equals("0")){
+			if(Integer.parseInt(cdinfo) != 0){
 				//计算在线光盘个数
 				num++;
 			}
@@ -182,6 +182,11 @@ public class OpticalJsonHandle {
 		 return cdlists;
 	}
 
+	/**
+	 * 通过光盘类型判断光盘总容量大小
+	 * @param tape 光盘库类型
+	 * @return 光盘库容量大小
+	 */
 	public static Double getCapacityFromCDType(String tape){
 		Double capacpty = 0.0; //GB
 		//0 未知 1 CD  2 VCD  3DVD  4 BD
