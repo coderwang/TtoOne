@@ -163,6 +163,25 @@ public class OpticalJsonHandle {
 		}
 		return  num;
 	}
+
+	/**
+	 * 获取含有在线光盘的光盘匣中所有光盘
+ 	 * @param id 光盘匣ID
+	 * @return 含有在线光盘的光盘匣中所有光盘
+	 */
+	public static ArrayList<JSONObject> cdslotlistOnlinePool(String id ){
+		JSONObject statsinfo = GetJsonMessage.GetJsonStr(ip,port,CdApiEnum.statsinfo.getPath());
+		ArrayList<JSONObject> cdlists = new ArrayList<>();
+		Integer boxnum = statsinfo.getInt("label01");
+		for(int i = 0 ; i < boxnum; i++){
+			int j = i + 1;
+			if(getCardOlineNumInbox(Integer.toString(i)) == 0){
+
+			}
+		}
+		return  cdlists;
+	}
+
 	/**
 	 * 将所有光盘槽属性塞入数组
 	 * @return 所有光盘槽属性
