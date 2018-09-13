@@ -7,6 +7,7 @@
 package com.shdd.cfs.web.device.distribute;
 
 import com.shdd.cfs.dto.device.DiskDetailInfo;
+import com.shdd.cfs.utils.base.UnitHandle;
 import com.shdd.cfs.utils.json.HttpRequest;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -103,49 +104,15 @@ public class DistAllDisksDetail {
                     }
 
                     DiskDetailInfo diskDetailInfo = new DiskDetailInfo();
-
                     //处理从下级系统获取到的数据
                     diskDetailInfo.setId(diskObject.getString("disk_id"));
                     diskDetailInfo.setName(diskObject.getString("disk_name"));
                     diskDetailInfo.setHostname(hostName);
-
-                    Double Capacity = 0.0;
-                    Double used = 0.0;
                     String totalString = diskObject.getString("total");
                     String usedString = diskObject.getString("used");
-                    String unitCapacity = "";
-                    String unitUsed = "";
-                    unitCapacity = totalString.substring(totalString.length() - 1, totalString.length());
-                    unitUsed = usedString.substring(usedString.length() - 1, usedString.length());
-
-                    if (unitCapacity.equalsIgnoreCase("T")) {
-                        //根据单位信息，转成GB级别数据
-                        Capacity = Double.parseDouble(totalString.substring(0, totalString.length() - 1));
-                        Capacity = Capacity *1024;
-                    } else if (unitCapacity.equalsIgnoreCase("G")) {
-                        Capacity = Double.parseDouble(totalString.substring(0, totalString.length() - 1)) / 1024;
-                    } else if (unitCapacity.equalsIgnoreCase("M")) {
-                        //根据单位信息为MB，转成GB级别数据
-                        Capacity = Double.parseDouble(totalString.substring(0, totalString.length() - 1)) / 1024 ;
-                    } else {
-                        //根据单位信息为Byte，转成GB级别数据
-                        Capacity = Double.parseDouble(totalString.substring(0, totalString.length() - 1)) / 1024 / 1024;
-                    }
-
-                    if (unitUsed.equalsIgnoreCase("T")) {
-                        //根据单位信息，转成GB级别数据
-                        used = Double.parseDouble(usedString.substring(0, usedString.length() - 1));
-                        used = used * 1024;
-                    } else if (unitUsed.equalsIgnoreCase("G")) {
-                        //根据单位信息为GB，转成GB级别数据
-                        used = Double.parseDouble(usedString.substring(0, usedString.length() - 1)) / 1024;
-                    } else if (unitUsed.equalsIgnoreCase("M")) {
-                        //根据单位信息为MB，转成GB级别数据
-                        used = Double.parseDouble(usedString.substring(0, usedString.length() - 1)) / 1024 ;
-                    } else {
-                        //根据单位信息为Byte，转成GB级别数据
-                        used = Double.parseDouble(usedString.substring(0, usedString.length() - 1)) / 1024 / 1024 ;
-                    }
+                    //将单位转换成GB
+                    Double  Capacity = UnitHandle.unitConversionToGB(totalString);
+                    Double used = UnitHandle.unitConversionToGB(usedString);
 
                     diskDetailInfo.setCapacity(Capacity);
                     diskDetailInfo.setUsed(used);
@@ -155,7 +122,6 @@ public class DistAllDisksDetail {
                     } else {
                         diskDetailInfo.setStatus(0);
                     }
-
                     //将信息添加到hashMap
                     diskDetailInfoList.add(diskDetailInfo);
                     page_count += 1;
