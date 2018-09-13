@@ -65,10 +65,11 @@ public class CDSpecificPoolDisksDetail {
             CdPoolStorageInfo cdDiskInfoDetail = new CdPoolStorageInfo();
             cdDiskInfoDetail.setId(cdDiskInfoObject.getInt("cdslotid"));
             cdDiskInfoDetail.setName(cdDiskInfoObject.getString("label"));
-
             //总容量、已用容量获取数值的默认单位为MB
-            //cdDiskInfoDetail.setCapacity(cdDiskInfoObject.getDouble("cdinfo") / 1024);
-            cdDiskInfoDetail.setCapacity(cdDiskInfoObject.getDouble("cdinfo") / 1024);
+            //获取光盘库类型 0 未知 1 CD  2 VCD  3DVD  4 BD
+            String diskTape = cdDiskInfoObject.getString("type");
+            Double capacity = OpticalJsonHandle.getCapacityFromCDType(diskTape);
+            cdDiskInfoDetail.setCapacity(capacity);
             cdDiskInfoDetail.setUsed((cdDiskInfoObject.getDouble("cdinfo") - cdDiskInfoObject.getDouble("leftinfo")) / 1024);
             if (cdDiskInfoObject.getInt("cdinfo") == 0) {
                 //光怕总容量为0表示离线

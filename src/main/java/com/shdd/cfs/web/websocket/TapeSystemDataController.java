@@ -32,21 +32,20 @@ public class TapeSystemDataController {
     /**
      * 获取磁带库存储cpu/内存/带宽使用情况
      *
-     * @param helloMessage
      * @return
      * @throws Exception
      */
     @ApiOperation(value = "获取磁带库存储cpu/内存/带宽使用情况")
     @MessageMapping("/tape_sys_info")
     @SendTo("/device/tape_sys_info")
-    public DistSystemData getTapeSystemData(HelloMessage helloMessage) throws Exception {
-        Thread.sleep(1000); // simulated delay
-
-        DistSystemData distSystemData = new DistSystemData();
-        distSystemData.setCpu(95.3);
-        distSystemData.setRam(23.45);
-        distSystemData.setBw(78.2);
-
+    public DistSystemData getTapeSystemData() throws Exception {
+//        Thread.sleep(1000); // simulated delay
+//
+//        DistSystemData distSystemData = new DistSystemData();
+//        distSystemData.setCpu(95.3);
+//        distSystemData.setRam(23.45);
+//        distSystemData.setBw(78.2);
+          DistSystemData distSystemData = CDSystemDataController.cdHandleMassage();
         return distSystemData;
     }
 

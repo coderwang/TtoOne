@@ -48,7 +48,7 @@ public class CDAllDisksDetail {
 
         ArrayList<DiskDetailInfo> cdDisksList = new ArrayList<>();
         //与下级光盘库通信
-        ArrayList<JSONObject> cdInfoList = OpticalJsonHandle.getAllCardInfo();
+        ArrayList<JSONObject> cdInfoList = OpticalJsonHandle.cdslotlistOnlinePool();
         for (JSONObject infoIndexObject : cdInfoList) {
             //翻页
             i++;

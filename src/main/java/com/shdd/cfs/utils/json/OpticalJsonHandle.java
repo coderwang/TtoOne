@@ -165,21 +165,39 @@ public class OpticalJsonHandle {
 	}
 
 	/**
+	 *获取在线光盘匣（光盘匣内有在线光盘为在在光盘匣）
+	 * @return
+	 */
+	public static ArrayList<Integer> getOlineBoxNum(){
+		ArrayList<Integer> onlineBox = new ArrayList<>();
+		JSONObject statsinfo = GetJsonMessage.GetJsonStr(ip,port,CdApiEnum.statsinfo.getPath());
+		Integer boxnum = statsinfo.getInt("label01");
+		for(int i = 0 ; i < boxnum ; i++){
+			int j = i + 1;
+			if(getCardOlineNumInbox(Integer.toString(j)) != 0){
+				onlineBox.add(j);
+			}
+
+		}
+		return  onlineBox;
+	}
+	/**
 	 * 获取含有在线光盘的光盘匣中所有光盘
- 	 * @param id 光盘匣ID
 	 * @return 含有在线光盘的光盘匣中所有光盘
 	 */
-	public static ArrayList<JSONObject> cdslotlistOnlinePool(String id ){
-		JSONObject statsinfo = GetJsonMessage.GetJsonStr(ip,port,CdApiEnum.statsinfo.getPath());
-		ArrayList<JSONObject> cdlists = new ArrayList<>();
-		Integer boxnum = statsinfo.getInt("label01");
-		for(int i = 0 ; i < boxnum; i++){
-			int j = i + 1;
-			if(getCardOlineNumInbox(Integer.toString(i)) == 0){
-
+	public static ArrayList<JSONObject> cdslotlistOnlinePool(){
+		ArrayList <JSONObject> cardlist = new ArrayList<>();
+		//获取在线光盘匣列表
+		ArrayList<Integer> boxid = getOlineBoxNum();
+		for(int i = 0 ; i < boxid.size(); i++){
+			//获取光盘匣列表中光盘属性
+			JSONArray boxlistOline = cdslotlist(boxid.get(i).toString());
+			for(int j = 0 ; j < boxlistOline.size(); j++){
+				JSONObject card = boxlistOline.getJSONObject(j);
+				cardlist.add(card);
 			}
 		}
-		return  cdlists;
+		return cardlist;
 	}
 
 	/**
@@ -193,7 +211,6 @@ public class OpticalJsonHandle {
 		 for(int i = 1 ; i <= boxnum ; i++){
 		 	JSONArray box = cdslotlist(Integer.toString(i));
 		 	for(int j = 0 ; j < box.size(); j++){
-				Map<String,String> cardInfo = new HashMap<>();
 				JSONObject cdslot = (JSONObject) box.getJSONObject(j);
 				cdlists.add(cdslot);
 			}

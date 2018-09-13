@@ -39,17 +39,19 @@ public class CDSystemDataController {
     @ApiOperation(value = "获取光盘库存储cpu/内存/带宽使用情况")
     @MessageMapping("/cddisk_sys_info")
     @SendTo("/device/cddisk_sys_info")
-    public DistSystemData getCddiskSystemData() throws Exception {
-        Thread.sleep(1000); // simulated delay
+    public  DistSystemData getCddiskSystemData() throws Exception {
 
+        return cdHandleMassage();
+    }
+
+    public  static DistSystemData cdHandleMassage() throws InterruptedException {
+        Thread.sleep(1000); // simulated delay
         DistSystemData distSystemData = new DistSystemData();
         distSystemData.setCpu(OpticalJsonHandle.cdLibCpumonitor());
         distSystemData.setRam(OpticalJsonHandle.cdLibRammonitor());
         distSystemData.setBw(OpticalJsonHandle.cdLibnetmonitor());
-
         return distSystemData;
     }
-
 
     //@Scheduled(cron = "0/2 * * * * ? ")//每两秒触发
     public void publishUpdates() {
