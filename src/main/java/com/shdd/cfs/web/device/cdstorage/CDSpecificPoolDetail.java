@@ -42,12 +42,11 @@ public class CDSpecificPoolDetail {
             boxInfoObject = boxlists.getJSONObject(i);
             String name = boxInfoObject.get("label").toString();
             String cdboxfreecapacity = boxInfoObject.getString("cdboxfreecapacity");
-            String cdboxtotalcapacity = boxInfoObject.getString("cdboxtotalcapacity");
             String cdboxusedcapacity = boxInfoObject.getString("cdboxusedcapacity");
             //匹配指定光盘匣
             if (name.equals(poolid)) {
                 boxInfo.setName(name);
-                boxInfo.setCapacity(Double.parseDouble(cdboxtotalcapacity) / 1024);
+                boxInfo.setCapacity(OpticalJsonHandle.singleBoxCapacity());
                 boxInfo.setUsed(Double.parseDouble(cdboxusedcapacity) / 1024);
                 boxInfo.setFree(Double.parseDouble(cdboxfreecapacity) / 1024);
 

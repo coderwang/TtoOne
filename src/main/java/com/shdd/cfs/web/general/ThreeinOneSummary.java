@@ -7,6 +7,7 @@
 package com.shdd.cfs.web.general;
 
 import com.shdd.cfs.dto.dashboard.TotalStatusInfoDetail;
+import com.shdd.cfs.utils.base.UnitHandle;
 import com.shdd.cfs.utils.json.HttpRequest;
 import com.shdd.cfs.utils.json.OpticalJsonHandle;
 import com.shdd.cfs.utils.xml.iamp.HttpResult;
@@ -85,8 +86,12 @@ public class ThreeinOneSummary {
 		String result = httpRequest.sendGet("http://192.168.1.32:8000/api/monitor/clusters/storage/", " ");
 		JSONObject distStorageObject = JSONObject.fromObject(result);
 
-		allDistCapacityInfo.setDistcapacity(distStorageObject.getString("storage_total"));
-		allDistCapacityInfo.setDistfree(distStorageObject.getString("storage_free"));
+		String totalCapacity = distStorageObject.getString("storage_total");
+		String freeCapacity = distStorageObject.getString("storage_free");
+		Double total = UnitHandle.unitConversionToTB(totalCapacity);
+		Double free = UnitHandle.unitConversionToTB(freeCapacity);
+		allDistCapacityInfo.setDistcapacity(total);
+		allDistCapacityInfo.setDistfree(free);
 
 		//添加数据到数据缓存区
 		rstList.add(allDistCapacityInfo);

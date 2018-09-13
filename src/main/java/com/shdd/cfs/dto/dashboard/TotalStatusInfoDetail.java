@@ -17,11 +17,11 @@ public class TotalStatusInfoDetail {
 	/**
 	 * 分布式总容量
 	 */
-	private String distcapacity;
+	private Double distcapacity;
 	/**
 	 * 分布式可用容量
 	 */
-	private String distfree;
+	private Double distfree;
 	/**
 	 * 磁带库总磁带数
 	 */

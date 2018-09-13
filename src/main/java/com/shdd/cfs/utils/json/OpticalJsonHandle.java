@@ -1,5 +1,6 @@
 package com.shdd.cfs.utils.json;
 
+import jdk.internal.dynalink.beans.StaticClass;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
@@ -25,7 +26,17 @@ public class OpticalJsonHandle {
 	private static String ip ="192.168.1.17";
 	private static Integer  port = 8000;
 	private static Double singleDiskCapacity = 23.3;
+	private static Integer singleBoxCardNum = 25;
 
+	/**
+	 * 获取单个光盘匣总容量
+	 * @return
+	 */
+
+	public static Double singleBoxCapacity(){
+		Double singleBoxCap = singleDiskCapacity * singleBoxCardNum;
+		return  singleBoxCap;
+	}
 	/**
 	 * 获取光盘库总容量和使用容量
 	 * @return 光盘库总容量和使用容量Map对象
@@ -135,6 +146,22 @@ public class OpticalJsonHandle {
 	}
 
 	/**
+	 * 通过指定光盘匣ID，从光盘匣列表中获取光盘匣属性
+	 * @param boxid 光盘匣ID
+	 * @return  光盘匣属性对象
+	 */
+	public static JSONObject boxInfoFromCdBoxList(Integer boxid){
+		JSONObject box = new JSONObject();
+		JSONArray boxlist = cdboxlist();
+		for(int i = 0 ; i < boxlist.size(); i++){
+			if(Integer.parseInt(boxlist.getJSONObject(i).get("cdboxid").toString()) == boxid){
+				box = boxlist.getJSONObject(i);
+			}
+		}
+		return  box;
+	}
+
+	/**
 	 * 通过指定光盘匣ID获取光盘匣内所有光盘信息
 	 * @return 光盘匣ID内光盘属性
 	 */
@@ -149,7 +176,7 @@ public class OpticalJsonHandle {
 	/**
 	 * 通过光盘匣id内光盘总容量属性是否为0判断进线与离线光盘数, 0 表示离线，非0表示在线
 	 * @param id
-	 * @return
+	 * @return  在线光盘个数
 	 */
 	public static Integer getCardOlineNumInbox(String id){
 		Integer num = 0;
@@ -172,12 +199,10 @@ public class OpticalJsonHandle {
 		ArrayList<Integer> onlineBox = new ArrayList<>();
 		JSONObject statsinfo = GetJsonMessage.GetJsonStr(ip,port,CdApiEnum.statsinfo.getPath());
 		Integer boxnum = statsinfo.getInt("label01");
-		for(int i = 0 ; i < boxnum ; i++){
-			int j = i + 1;
-			if(getCardOlineNumInbox(Integer.toString(j)) != 0){
-				onlineBox.add(j);
+		for(int i = 1 ; i <= boxnum ; i++){
+			if(getCardOlineNumInbox(Integer.toString(i)) != 0){
+				onlineBox.add(i);
 			}
-
 		}
 		return  onlineBox;
 	}
