@@ -1,6 +1,5 @@
 package com.shdd.cfs.utils.base;
 
-import com.sun.glass.ui.View;
 
 public class UnitHandle {
 

@@ -1,6 +1,5 @@
 package com.shdd.cfs.utils.json;
 
-import jdk.internal.dynalink.beans.StaticClass;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
