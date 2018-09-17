@@ -174,13 +174,13 @@ public class CurrentStorageCapacity {
         Map<String, Double> cdLibCapacity = OpticalJsonHandle.getCDLibCapacity();
         Double cdTotalCapacity = cdLibCapacity.get("capacity")/1024;
         Double cdUsedCapacity = cdLibCapacity.get("used")/1024;
-
+        Double cdremainCapacity = cdTotalCapacity - cdUsedCapacity;
         //TODO 容量数据存入数据库
         //给光盘库当前容量赋值
 
         cddiskCurStorageCapacity.setCapacity(cdTotalCapacity);
         cddiskCurStorageCapacity.setDevType("cdstorage");
-        cddiskCurStorageCapacity.setUsedCapacity(cdUsedCapacity);
+        cddiskCurStorageCapacity.setUsedCapacity(cdremainCapacity);
 
         return cddiskCurStorageCapacity;
 
