@@ -102,7 +102,8 @@ public class CurrentStorageCapacity {
         String volumeID;
 
         JSONObject volumeStorageObject;
-
+        Double Capacity = 0.0;
+        Double avail = 0.0;
         for (int i = 0; i < volumeCount; i++) {
             volumeObject = volumeArray.getJSONObject(i);
 
@@ -112,16 +113,13 @@ public class CurrentStorageCapacity {
             volumeStorageObject = JSONObject.fromObject(result);
             String totalCapacity = volumeStorageObject.getString("size");
             String availCapacity = volumeStorageObject.getString("avail");
-            Double Capacity = UnitHandle.unitConversionToTB(totalCapacity);
-            Double avail = UnitHandle.unitConversionToTB(availCapacity);
-
-            distPoolStorageCapacity.setCapacity(Capacity);
-            distPoolStorageCapacity.setPoolName(volumeStorageObject.getString("vol_name"));
-            distPoolStorageCapacity.setUsedCapacity(avail);
-
-            poolList.add(distPoolStorageCapacity);
-
+            Capacity = Capacity + UnitHandle.unitConversionToTB(totalCapacity);
+            avail = avail + UnitHandle.unitConversionToTB(availCapacity);
         }
+        distPoolStorageCapacity.setCapacity(Capacity);
+        distPoolStorageCapacity.setUsedCapacity(avail);
+
+        poolList.add(distPoolStorageCapacity);
 
         //组织返回JSON数据对象
         distCurStorageCapacity.setDevType("distributed");

@@ -15,10 +15,6 @@ import lombok.Data;
 @Data
 public class DistPoolStorageCapacity {
     /**
-     * 单个分布式集群名称
-     */
-    private String poolName;
-    /**
      * 单个分布式集群存储总容量
      */
     private Double capacity;
