@@ -1,6 +1,8 @@
 package com.shdd.cfs.utils.base;
 
 
+import java.io.File;
+
 public class UnitHandle {
 
 	public static Double unitConversionToGB(String val){
@@ -49,7 +51,41 @@ public class UnitHandle {
 		return Capacity;
 	}
 
+	/**
+	 *
+	 * @param fileDir  根目录
+	 * @param num 递归层次
+	 */
+	private static void consoleFile(String fileDir, int num) {
+		File file = new File(fileDir);
+		File[] files = file.listFiles();// 获取目录下的所有文件或文件夹
+		if (files == null) {// 如果目录为空，直接退出
+			return;
+		}
+		// 遍历，目录下的所有文件
+		num+=1;
+		for (File f : files) {
+			System.out.println(f.getAbsoluteFile());
+			if (f.isDirectory()) {
+				System.out.println(spliteStr(f.getAbsolutePath()+"+++++++++++++++++++"+ num));
+				consoleFile(f.getAbsolutePath(), num);
+			} else if (f.isFile()) {
+				System.out.println(spliteStr(f.getAbsolutePath())+"+++++++++++++++++++" + num);
+			}
+		}
+	}
 
+	/**
+	 * 截取最后一个/后面的所有字符
+	 * @param Str  要截取的字符串
+	 * @return 最后一个/后面的所有字符
+	 */
+	private static String spliteStr(String Str) {
+		return Str.substring(Str.lastIndexOf("\\")+1);
+	}
 
+	public static void main(String[] args) {
+		consoleFile("D:\\cdrskin", 0);
+	}
 
 }
