@@ -7,6 +7,7 @@
 package com.shdd.cfs.web.data.distribute;
 
 import com.shdd.cfs.dto.data.DirPathDetailInfo;
+import com.shdd.cfs.dto.data.FilePathDetailInfo;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
@@ -14,6 +15,9 @@ import lombok.extern.slf4j.Slf4j;
 import net.sf.json.JSONObject;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import static com.shdd.cfs.utils.base.UnitHandle.SendCurrentFolderName;
+import static com.shdd.cfs.utils.base.UnitHandle.getCurrentPathFilename;
 
 
 /**
@@ -39,18 +43,16 @@ public class DistRootDirInfo {
     })
 
     public JSONObject GetDistDirInfo(String val) {
-        log.info(val);
 
-        JSONObject rootFolder = new JSONObject();
-
-        // 将文件夹名赋值给Json数组中
-        DirPathDetailInfo[] rootforder = new DirPathDetailInfo[1];
-        rootforder[0] = new DirPathDetailInfo();
-        rootforder[0].setId(1);
-        rootforder[0].setName("xx");
+        String path= "D://git";
+        JSONObject rootpath = new JSONObject();
+        // 获取根目录下文件夹赋值给Json数组中
+        DirPathDetailInfo[] rootFolder = SendCurrentFolderName(path);
+        FilePathDetailInfo[] rootFile =  getCurrentPathFilename(path);
         //将文件夹数组塞入Json对象中
-        rootFolder.accumulate("folder", rootforder);
+        rootpath.accumulate("folder",rootFolder);
+        rootpath.accumulate("file",rootFile);
         // 发送Json 协议
-        return rootFolder;
+        return rootpath;
     }
 }

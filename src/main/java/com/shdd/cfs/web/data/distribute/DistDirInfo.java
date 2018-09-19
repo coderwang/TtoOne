@@ -15,6 +15,8 @@ import net.sf.json.JSONObject;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import static com.shdd.cfs.utils.base.UnitHandle.SendCurrentFolderName;
+
 /**
  * @author: wangpeng
  * @version: 1.0 2018/8/28
@@ -40,15 +42,13 @@ public class DistDirInfo {
         log.info(path);
 
         //将获取到的数据进行填充
-        JSONObject rootFolder = new JSONObject();
+        JSONObject folderName = new JSONObject();
+        path = "D://git/" + path;
+        DirPathDetailInfo[] rootFolder = SendCurrentFolderName(path);
 
-        DirPathDetailInfo[] rootforder = new DirPathDetailInfo[1];
-        rootforder[0] = new DirPathDetailInfo();
-        rootforder[0].setId(1);
-        rootforder[0].setName("xx");
         /*将文件夹数组塞入Json对象中*/
-        rootFolder.accumulate("folder", rootforder);
+        folderName.accumulate("folder", rootFolder);
         /* 发送Json 协议*/
-        return rootFolder;
+        return folderName;
     }
 }

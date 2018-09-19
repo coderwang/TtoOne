@@ -9,8 +9,6 @@ import org.apache.commons.io.FilenameUtils;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 public class UnitHandle {
 
@@ -104,9 +102,8 @@ public class UnitHandle {
 	 * @param pathfolder  指定的文件夹路径
 	 * @return
 	 */
-	public static JSONObject SendCurrentFolderName(String pathfolder){
+	public static DirPathDetailInfo[] SendCurrentFolderName(String pathfolder){
 
-		JSONObject rootFolder = new JSONObject();
 		ArrayList<String> folderList = new ArrayList<String>();
 		/* 将目录下的文件夹添加到文件夹列表*/
 		File file = new File(pathfolder);
@@ -126,14 +123,10 @@ public class UnitHandle {
 			rootforder[i].setId(i + 1);
 			rootforder[i].setName(folderList.get(i));
 		}
-		/*将文件夹数组塞入Json对象中*/
-		rootFolder.accumulate("folder",rootforder);
-		/* 发送Json 协议*/
-		return  rootFolder;
+		return  rootforder;
 	}
 
-	public JSONObject getCurrentPathFilename (String path) {
-		JSONObject jfile = new JSONObject();
+	public static FilePathDetailInfo[] getCurrentPathFilename (String path) {
 		ArrayList<FilePathDetailInfo> fileList = new ArrayList<FilePathDetailInfo>();
 		/* 将目录下的文件名和文件类型添加到文件列表*/
 		File file = new File(path);
@@ -158,10 +151,7 @@ public class UnitHandle {
 			fileNameArr[i].setName(fileList.get(i).getName());
 			fileNameArr[i].setType(fileList.get(i).getType());
 		}
-		/*将文件数组塞入Json对象中*/
-		jfile.accumulate("file", fileNameArr);
-		/* 发送Json 协议*/
-		return jfile;
+		return fileNameArr;
 	}
 
 	public static void main(String[] args) {
@@ -175,4 +165,5 @@ public class UnitHandle {
 			System.out.println(filearrary.getJSONObject(i).get("id")+"=file="+ filearrary.getJSONObject(i).get("name")+"==="+ filearrary.getJSONObject(i).get("type"));
 		}
 	}
+
 }
