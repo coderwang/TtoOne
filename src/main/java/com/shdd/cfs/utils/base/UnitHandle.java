@@ -2,10 +2,15 @@ package com.shdd.cfs.utils.base;
 
 
 import com.shdd.cfs.dto.data.DirPathDetailInfo;
+import com.shdd.cfs.dto.data.FilePathDetailInfo;
+import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
+import org.apache.commons.io.FilenameUtils;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class UnitHandle {
 
@@ -56,23 +61,35 @@ public class UnitHandle {
 	}
 
 	/**
-	 * @param fileDir  根目录
-	 * @param num 递归层次
+	 * @param fileDir  要访问目录的绝对路径
+	 * @param num 记录目录层级，当前目录num=0,当前目录下的为第一级目录num=1，依次类推
 	 */
-	private static void consoleFile(String fileDir, int num) {
+	private static void consoleFile(String fileDir, int num, JSONArray dirarrary, JSONArray filearrary) {
 		File file = new File(fileDir);
 		File[] files = file.listFiles();// 获取目录下的所有文件或文件夹
 		if (files == null) {// 如果目录为空，直接退出
 			return;
 		}
 		// 遍历，目录下的所有文件夹
-		num+=1;
 		for (File f : files) {
-			System.out.println(f.getAbsoluteFile());
 			if (f.isDirectory()) {
-				consoleFile(f.getAbsolutePath(), num);
+				DirPathDetailInfo diratt = new DirPathDetailInfo();
+				diratt.setId(num);
+				diratt.setName(spliteStr(f.getAbsolutePath()));
+				dirarrary.add(diratt);
+				consoleFile(f.getAbsolutePath(), num+1,dirarrary,filearrary);
+			}else if(f.isFile()){
+				FilePathDetailInfo fileatt = new FilePathDetailInfo();
+				fileatt.setId(num);
+				fileatt.setName(spliteStr(f.getAbsolutePath()));
+				File fileName = new File(f.getAbsolutePath().trim());
+				String filename = fileName.getName();
+				String type = FilenameUtils.getExtension(filename);
+				fileatt.setType(type);
+				filearrary.add(fileatt);
 			}
 		}
+
 	}
 	/**
 	 * 截取最后一个/后面的所有字符
@@ -82,13 +99,12 @@ public class UnitHandle {
 	private static String spliteStr(String Str) {
 		return Str.substring(Str.lastIndexOf("\\")+1);
 	}
-
 	/**
 	 * 获取指定文件夹下的所有文件夹名称
 	 * @param pathfolder  指定的文件夹路径
 	 * @return
 	 */
-	public static JSONObject SendPathFolderName(String pathfolder){
+	public static JSONObject SendCurrentFolderName(String pathfolder){
 
 		JSONObject rootFolder = new JSONObject();
 		ArrayList<String> folderList = new ArrayList<String>();
@@ -109,7 +125,6 @@ public class UnitHandle {
 			rootforder[i] = new DirPathDetailInfo();
 			rootforder[i].setId(i + 1);
 			rootforder[i].setName(folderList.get(i));
-			System.out.println(folderList.get(i));
 		}
 		/*将文件夹数组塞入Json对象中*/
 		rootFolder.accumulate("folder",rootforder);
@@ -117,7 +132,47 @@ public class UnitHandle {
 		return  rootFolder;
 	}
 
+	public JSONObject getCurrentPathFilename (String path) {
+		JSONObject jfile = new JSONObject();
+		ArrayList<FilePathDetailInfo> fileList = new ArrayList<FilePathDetailInfo>();
+		/* 将目录下的文件名和文件类型添加到文件列表*/
+		File file = new File(path);
+		File[] tempList = file.listFiles();
+		for (int i = 0; i < tempList.length; i++) {
+			if (tempList[i].isFile()) {
+				String fileAndPath = tempList[i].toString();
+				File fileName = new File(fileAndPath.trim());
+				String filename = fileName.getName();
+				String type = FilenameUtils.getExtension(filename);
+				FilePathDetailInfo fileAttribute = new FilePathDetailInfo();
+				fileAttribute.setName(filename);
+				fileAttribute.setType(type);
+				fileList.add(fileAttribute);
+			}
+		}
+		/* 将文件名和文件属性赋值给Json数组中*/
+		FilePathDetailInfo[] fileNameArr = new FilePathDetailInfo[fileList.size()];
+		for (int i = 0; i < fileList.size(); i++) {
+			fileNameArr[i] = new FilePathDetailInfo();
+			fileNameArr[i].setId(i + 1);
+			fileNameArr[i].setName(fileList.get(i).getName());
+			fileNameArr[i].setType(fileList.get(i).getType());
+		}
+		/*将文件数组塞入Json对象中*/
+		jfile.accumulate("file", fileNameArr);
+		/* 发送Json 协议*/
+		return jfile;
+	}
+
 	public static void main(String[] args) {
-		//consoleFile("D:\\cdrskin", 0);
+		JSONArray dirarrary = new JSONArray();
+		JSONArray filearrary = new JSONArray();
+		consoleFile("D:\\test", 0, dirarrary, filearrary);
+		for(int i = 0 ; i < dirarrary.size(); i++){
+			System.out.println(dirarrary.getJSONObject(i).get("id")+"=dir="+ dirarrary.getJSONObject(i).get("name"));
+		}
+		for(int i = 0 ; i < filearrary.size(); i++){
+			System.out.println(filearrary.getJSONObject(i).get("id")+"=file="+ filearrary.getJSONObject(i).get("name")+"==="+ filearrary.getJSONObject(i).get("type"));
+		}
 	}
 }
