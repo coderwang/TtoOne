@@ -4,7 +4,6 @@ package com.shdd.cfs.utils.base;
 import com.shdd.cfs.dto.data.DirPathDetailInfo;
 import com.shdd.cfs.dto.data.FilePathDetailInfo;
 import net.sf.json.JSONArray;
-import net.sf.json.JSONObject;
 import org.apache.commons.io.FilenameUtils;
 
 import java.io.File;

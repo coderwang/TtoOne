@@ -6,13 +6,17 @@
  */
 package com.shdd.cfs.web.data.distribute;
 
+import com.shdd.cfs.config.DateConfig;
 import com.shdd.cfs.dto.data.DirPathDetailInfo;
 import com.shdd.cfs.dto.data.FilePathDetailInfo;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+import lombok.Value;
 import lombok.extern.slf4j.Slf4j;
 import net.sf.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -35,6 +39,8 @@ public class DistRootDirInfo {
      * @return
      */
 
+    @Autowired
+    private DateConfig config;
     @GetMapping(value = "api/dashboard/distribute/rootdirs")
     @ApiOperation(value = "获取目录下的文件夹名", notes = "根据路径参数获取分布式根路径下的目录名称列表")
     @ApiImplicitParams({
@@ -44,7 +50,7 @@ public class DistRootDirInfo {
 
     public JSONObject GetDistDirInfo(String val) {
 
-        String path= "D://git";
+        String path= config.getdistributemount();
         JSONObject rootpath = new JSONObject();
         // 获取根目录下文件夹赋值给Json数组中
         DirPathDetailInfo[] rootFolder = SendCurrentFolderName(path);

@@ -13,3 +13,10 @@ http:
     staleConnectionCheckEnabled: true
     uri:
       iamp: http://192.168.1.27:8080/iamp
+mount:
+  distributemount: D://git/
+OpticalLib:
+  opticalip: 192.168.1.17
+  opticalport: 8000
+  singleDiskCapacity: 23.3
+  singleBoxCardNum: 25

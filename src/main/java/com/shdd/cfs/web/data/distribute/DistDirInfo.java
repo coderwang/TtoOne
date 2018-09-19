@@ -6,12 +6,14 @@
  */
 package com.shdd.cfs.web.data.distribute;
 
+import com.shdd.cfs.config.DateConfig;
 import com.shdd.cfs.dto.data.DirPathDetailInfo;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import net.sf.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -30,6 +32,8 @@ public class DistDirInfo {
      * @param path
      * @return
      */
+    @Autowired
+    private DateConfig config;
     @GetMapping(value = "api/dashboard/distribute/dirs")
     @ApiOperation(value = "点击某文件夹时，返回该文件夹路径下文件夹", notes = "根据路径参数获取指定路径下的目录名称列表")
     @ApiImplicitParams({
@@ -43,7 +47,7 @@ public class DistDirInfo {
 
         //将获取到的数据进行填充
         JSONObject folderName = new JSONObject();
-        path = "D://git/" + path;
+        path = config.getdistributemount() + path;
         DirPathDetailInfo[] rootFolder = SendCurrentFolderName(path);
 
         /*将文件夹数组塞入Json对象中*/
