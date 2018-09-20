@@ -5,6 +5,7 @@ import com.shdd.cfs.utils.base.UnitHandle;
 import com.shdd.cfs.utils.json.OpticalJsonHandle;
 import com.shdd.cfs.utils.xml.iamp.HttpResult;
 import com.shdd.cfs.utils.xml.iamp.IampRequest;
+import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
@@ -22,7 +23,7 @@ public class TestController {
 	//private IampRequest iampRequest;
 	private DateConfig config;
 	@GetMapping("/hello")
-	public String hello() throws DocumentException {
+	public JSONArray hello() throws DocumentException {
 //		HttpResult logon = iampRequest.logon("shuju", "69MOQca0Hv6NsOJH");
 //		String teString = logon.getContent();
 //		ArrayList<JSONObject> card = OpticalJsonHandle.getAllCardInfo();
@@ -45,7 +46,12 @@ public class TestController {
 		System.out.println("+++++++++++++++++"+ config.getTapewebusername());
 		System.out.println("+++++++++++++++++"+ config.getSessionKey());
 		System.out.println("+++++++++++++++++"+ config.getDistributeUrl());
- 		return config.getdistributemount();
+		JSONArray array= OpticalJsonHandle.getErrMessage("2018-07-20");
+		for(int i = 0 ; i < array.size(); i++){
+		    System.out.println(array.getJSONObject(i).get("message"));
+        }
+		return array;
+// 		return config.getdistributemount();
 //		return teString;
 	}
 }

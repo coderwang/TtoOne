@@ -24,12 +24,17 @@ public class OpticalJsonHandle {
 		private CdApiEnum(String protocol, String name) {this.protocol = protocol;}
 		public String getPath() {return protocol;}
 	}
-	@Autowired
-	private static DateConfig config;
-	private static String ip =config.getOpticalIP();
-	private static Integer  port = Integer.parseInt(config.getOpticalPort());
-	private static Double singleDiskCapacity = Double.parseDouble(config.getSingleDiskCapacity());
-	private static Integer singleBoxCardNum = Integer.parseInt(config.getSingleBoxCardNum());
+//	@Autowired
+//	private static DateConfig config;
+//	private static String ip =config.getOpticalIP();
+//	private static Integer  port = Integer.parseInt(config.getOpticalPort());
+//	private static Double singleDiskCapacity = Double.parseDouble(config.getSingleDiskCapacity());
+//	private static Integer singleBoxCardNum = Integer.parseInt(config.getSingleBoxCardNum());
+
+	private static String ip ="192.168.100.199";
+	private static Integer  port = 8000;
+	private static Double singleDiskCapacity = 23.3;
+	private static Integer singleBoxCardNum = 25;
 
 	/**
 	 * 获取单个光盘匣总容量
@@ -266,5 +271,12 @@ public class OpticalJsonHandle {
 			capacpty = 0.0;
 		}
 		return  capacpty;
+	}
+	public static JSONArray getErrMessage(String time){
+		String message = "{\"protoname\":\"sysloginfo\",\"level\":\"err\",\"time\":\"2018-07-20 09:10\"}";
+		String protocol = message.replace("2018-07-20 09:10", time);
+		JSONObject cdslotlists = GetJsonMessage.GetJsonStr(ip,port,message);
+		JSONArray cdslotlistarray = cdslotlists.getJSONArray("dt");
+		return cdslotlistarray;
 	}
 }

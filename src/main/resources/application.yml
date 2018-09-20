@@ -16,7 +16,7 @@ http:
 mount:
   distributemount: D://git/
 OpticalLib:
-  opticalip: 192.168.1.17
+  opticalip: 192.168.100.199
   opticalport: 8000
   singleDiskCapacity: 23.3
   singleBoxCardNum: 25
