@@ -6,6 +6,7 @@
  */
 package com.shdd.cfs.web.device.distribute;
 
+import com.shdd.cfs.config.DateConfig;
 import com.shdd.cfs.dto.device.DiskDetailInfo;
 import com.shdd.cfs.utils.base.UnitHandle;
 import com.shdd.cfs.utils.json.HttpRequest;
@@ -15,6 +16,7 @@ import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -33,6 +35,8 @@ public class DistSpecificPoolDisksDetail {
      * @param count    >>>>>>> feature/cfs_nexus_distribute_general
      * @return
      */
+    @Autowired
+    private DateConfig config;
     @GetMapping(value = "api/dashboard/distribute/pool/disks")
     @ApiOperation(value = "主机信息状态下获取分布式存储系统节点详细概况", notes = "分布式系统指定存储池中的磁盘详细信息")
     @ApiImplicitParams({
@@ -59,8 +63,8 @@ public class DistSpecificPoolDisksDetail {
 
         //访问下级分布式系统接口api/volumes/{volume_id}
         HttpRequest httpRequest = new HttpRequest();
-
-        String result = httpRequest.sendGet("http://192.168.1.32:8000/api/volumes/" + poolid, " ");
+        String urlvol = config.getDistributeUrl() + "api/volumes/";
+        String result = httpRequest.sendGet(urlvol + poolid, " ");
         JSONObject volumeObject = JSONObject.fromObject(result);
 
         //brick详细信息

@@ -42,6 +42,9 @@ public class TestController {
 		System.out.println("+++++++++++++++++"+ config.getOpticalPort());
 		System.out.println("+++++++++++++++++"+ config.getSingleDiskCapacity());
 		System.out.println("+++++++++++++++++"+ config.getSingleBoxCardNum());
+		System.out.println("+++++++++++++++++"+ config.getTapewebusername());
+		System.out.println("+++++++++++++++++"+ config.getSessionKey());
+		System.out.println("+++++++++++++++++"+ config.getDistributeUrl());
  		return config.getdistributemount();
 //		return teString;
 	}

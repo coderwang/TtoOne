@@ -6,6 +6,7 @@
  */
 package com.shdd.cfs.web.device.distribute;
 
+import com.shdd.cfs.config.DateConfig;
 import com.shdd.cfs.dto.device.DiskDetailInfo;
 import com.shdd.cfs.utils.base.UnitHandle;
 import com.shdd.cfs.utils.json.HttpRequest;
@@ -15,6 +16,7 @@ import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -29,6 +31,8 @@ public class DistAllDisksDetail {
      * @param value
      * @return
      */
+    @Autowired
+    private DateConfig config;
     @GetMapping(value = "api/dashboard/distribute/disks")
     @ApiOperation(value = "集群信息状态下获取分布式存储系统节点详细概况", notes = "分布式存储池中的所有磁盘的详细信息")
     @ApiImplicitParams({
@@ -42,8 +46,8 @@ public class DistAllDisksDetail {
 
         //访问下级分布式系统接口api/devices
         HttpRequest httpRequest = new HttpRequest();
-
-        String result = httpRequest.sendGet("http://192.168.1.32:8000/api/devices", " ");
+        String url = config.getDistributeUrl() + "api/devices";
+        String result = httpRequest.sendGet(url, " ");
         JSONArray deviceArray = JSONArray.fromObject(result);
         JSONArray hostsArray;
         JSONArray disksArray;

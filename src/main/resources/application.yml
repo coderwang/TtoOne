@@ -20,3 +20,8 @@ OpticalLib:
   opticalport: 8000
   singleDiskCapacity: 23.3
   singleBoxCardNum: 25
+TapeLib:
+  webusername: shuju
+  sessionKey: 69MOQca0Hv6NsOJH
+Distribute:
+  url: http://192.168.1.32:8000/

@@ -1,12 +1,15 @@
 package com.shdd.cfs.utils.xml.iamp;
 
+import com.shdd.cfs.config.DateConfig;
 import com.shdd.cfs.utils.xml.HttpClientOperate;
+import lombok.Value;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ObjectUtils;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
@@ -61,7 +64,8 @@ public class IampRequest {
     @Resource
     private HttpClientOperate httpClientOperate;
     private static String uri;
-
+    @Autowired
+    private static DateConfig config;
     public IampRequest(String uri) {
         IampRequest.uri = uri;
     }
@@ -86,7 +90,7 @@ public class IampRequest {
      */
     public String SessionKey() throws DocumentException {
         String sessonkey = "";
-        HttpResult loginfo = logon("shuju", "69MOQca0Hv6NsOJH");
+        HttpResult loginfo = logon(config.getTapewebusername(), config.getSessionKey());
         if (!loginfo.isFlag()) {
             return "wrong";
         }

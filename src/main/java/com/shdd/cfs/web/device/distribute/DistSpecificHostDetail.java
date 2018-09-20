@@ -6,6 +6,7 @@
  */
 package com.shdd.cfs.web.device.distribute;
 
+import com.shdd.cfs.config.DateConfig;
 import com.shdd.cfs.dto.device.distribute.DistHostDetailInfo;
 import com.shdd.cfs.utils.json.HttpRequest;
 import io.swagger.annotations.ApiImplicitParam;
@@ -14,6 +15,7 @@ import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -29,6 +31,8 @@ public class DistSpecificHostDetail {
      * @param value
      * @return
      */
+    @Autowired
+    private DateConfig config;
     @GetMapping(value = "api/device/distribute/host")
     @ApiOperation(value = "获取分布式存储系统主机概况", notes = "获取分布式存储系统指定服务器节点的详细信息")
     @ApiImplicitParams({
@@ -40,11 +44,11 @@ public class DistSpecificHostDetail {
 
         //访问下级分布式系统接口api/hosts/host_id
         HttpRequest httpRequest = new HttpRequest();
-
-        String result = httpRequest.sendGet("http://192.168.1.32:8000/api/hosts/" + deviceId, " ");
+        String urlhost = config.getDistributeUrl() + "api/hosts/";
+        String result = httpRequest.sendGet(urlhost + deviceId, " ");
         JSONObject hostObject = JSONObject.fromObject(result);
-
-        result = httpRequest.sendGet("http://192.168.1.32:8000/api/nodes/" + deviceId, " ");
+        String urlnode = config.getDistributeUrl() + "api/nodes/";
+        result = httpRequest.sendGet(urlnode + deviceId, " ");
         JSONObject nodeObject = JSONObject.fromObject(result);
 
         DistHostDetailInfo hostDetailInfo = new DistHostDetailInfo();

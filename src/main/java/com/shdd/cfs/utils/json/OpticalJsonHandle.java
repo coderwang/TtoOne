@@ -1,13 +1,15 @@
 package com.shdd.cfs.utils.json;
 
+import com.shdd.cfs.config.DateConfig;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-
 public class OpticalJsonHandle {
+
 	private enum CdApiEnum implements com.shdd.cfs.utils.json.CdApiEnum {
 		nodeconnect("{\"protoname\":\"nodeconnect\"}",                      "2.1 查询任务状态"),
 		statsinfo("{\"protoname\":\"statsinfo\"}",							"12.光盘库统计信息【statsinfo"),
@@ -22,10 +24,12 @@ public class OpticalJsonHandle {
 		private CdApiEnum(String protocol, String name) {this.protocol = protocol;}
 		public String getPath() {return protocol;}
 	}
-	private static String ip ="192.168.1.17";
-	private static Integer  port = 8000;
-	private static Double singleDiskCapacity = 23.3;
-	private static Integer singleBoxCardNum = 25;
+	@Autowired
+	private static DateConfig config;
+	private static String ip =config.getOpticalIP();
+	private static Integer  port = Integer.parseInt(config.getOpticalPort());
+	private static Double singleDiskCapacity = Double.parseDouble(config.getSingleDiskCapacity());
+	private static Integer singleBoxCardNum = Integer.parseInt(config.getSingleBoxCardNum());
 
 	/**
 	 * 获取单个光盘匣总容量

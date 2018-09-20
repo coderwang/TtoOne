@@ -6,12 +6,14 @@
  */
 package com.shdd.cfs.web.device.distribute;
 
+import com.shdd.cfs.config.DateConfig;
 import com.shdd.cfs.dto.device.PoolSummaryInfo;
 import com.shdd.cfs.utils.json.HttpRequest;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -26,6 +28,8 @@ public class DistAllPoolsSummary {
      * @param value
      * @return
      */
+    @Autowired
+    private DateConfig config;
     @GetMapping(value = "api/dashboard/distribute/pools")
     @ApiOperation(value = "获取分布式存储系统存储池总体概况", notes = "分布式存储系统所有存储池总体概况")
 
@@ -33,8 +37,8 @@ public class DistAllPoolsSummary {
 
         //访问下级分布式系统接口api/volumes/
         HttpRequest httpRequest = new HttpRequest();
-
-        String result = httpRequest.sendGet("http://192.168.1.32:8000/api/volumes/", " ");
+        String url = config.getDistributeUrl() + "api/volumes";
+        String result = httpRequest.sendGet(url, " ");
         JSONArray volumeArray = JSONArray.fromObject(result);
 
         //存储池详细信息

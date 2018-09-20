@@ -6,12 +6,14 @@
  */
 package com.shdd.cfs.web.device.distribute;
 
+import com.shdd.cfs.config.DateConfig;
 import com.shdd.cfs.dto.device.distribute.DistHostDetailInfo;
 import com.shdd.cfs.utils.json.HttpRequest;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -26,6 +28,8 @@ public class DistAllHostsSummary {
      * @param value
      * @return
      */
+    @Autowired
+    private DateConfig config;
     @GetMapping(value = "api/device/distribute/hosts")
     @ApiOperation(value = "获取分布式存储系统集群情况", notes = "分布式存储系统所有主机概况")
 
@@ -33,8 +37,8 @@ public class DistAllHostsSummary {
 
         //访问下级分布式系统接口api/nodes/
         HttpRequest httpRequest = new HttpRequest();
-
-        String result = httpRequest.sendGet("http://192.168.1.32:8000/api/nodes", " ");
+        String url = config.getDistributeUrl() + "api/nodes";
+        String result = httpRequest.sendGet(url, " ");
         JSONArray nodesArray = JSONArray.fromObject(result);
 
         //所有节点数目
@@ -80,7 +84,8 @@ public class DistAllHostsSummary {
             }
 
             //根据host_id通信获取详细信息，api/hosts/host_id
-            result = httpRequest.sendGet("http://192.168.1.32:8000/api/hosts/" + nodeObject.getString("host_id"), " ");
+            String urlhost = config.getDistributeUrl() + "api/hosts/";
+            result = httpRequest.sendGet(urlhost + nodeObject.getString("host_id"), " ");
             //处理根据host_id获取到的host详细信息
             hostObject = JSONObject.fromObject(result);
             //host主机名信息
