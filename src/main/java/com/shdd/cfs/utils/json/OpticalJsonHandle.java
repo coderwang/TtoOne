@@ -273,10 +273,10 @@ public class OpticalJsonHandle {
 		return  capacpty;
 	}
 	public static JSONArray getErrMessage(String time){
-		String message = "{\"protoname\":\"sysloginfo\",\"level\":\"err\",\"time\":\"2018-07-20 09:10\"}";
-		String protocol = message.replace("2018-07-20 09:10", time);
-		JSONObject cdslotlists = GetJsonMessage.GetJsonStr(ip,port,message);
-		JSONArray cdslotlistarray = cdslotlists.getJSONArray("dt");
-		return cdslotlistarray;
+		String message = "{\"protoname\":\"sysloginfo\",\"level\":\"err\",\"time\":\"2018-07-20\"}";
+		String protocol = message.replace("2018-07-20", time);
+		JSONObject cdslotlists = GetJsonMessage.GetJsonStr(ip,port,protocol);
+		JSONArray messarray = cdslotlists.getJSONArray("dt");
+		return messarray;
 	}
 }

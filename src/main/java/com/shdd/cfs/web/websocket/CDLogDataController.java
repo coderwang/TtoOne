@@ -18,7 +18,9 @@ import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 /**
  * @author: wangpeng
@@ -39,13 +41,16 @@ public class CDLogDataController {
     public JSONObject GetCDLogData() {
 
         JSONObject Jobject = new JSONObject();
+        Date time = new Date();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        String currenttime = sdf.format(time);
         ArrayList<JournalInfo> messarrary = new ArrayList<>();
-        JSONArray array= OpticalJsonHandle.getErrMessage("2018-07-20");
+        JSONArray array= OpticalJsonHandle.getErrMessage(currenttime);
         for(int i = 0 ; i < array.size(); i++){
             System.out.println(array.getJSONObject(i).get("message"));
             JournalInfo journalInfo = new JournalInfo();
             journalInfo.setType("disk");
-            journalInfo.setTime("2018-07-20");
+            journalInfo.setTime(currenttime);
             journalInfo.setContent(array.getJSONObject(i).get("message").toString());
             messarrary.add(journalInfo);
         }

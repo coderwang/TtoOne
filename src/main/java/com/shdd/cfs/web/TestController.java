@@ -14,7 +14,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Map;
 
 @RestController
@@ -23,7 +25,7 @@ public class TestController {
 	//private IampRequest iampRequest;
 	private DateConfig config;
 	@GetMapping("/hello")
-	public JSONArray hello() throws DocumentException {
+	public void hello() throws DocumentException {
 //		HttpResult logon = iampRequest.logon("shuju", "69MOQca0Hv6NsOJH");
 //		String teString = logon.getContent();
 //		ArrayList<JSONObject> card = OpticalJsonHandle.getAllCardInfo();
@@ -46,11 +48,13 @@ public class TestController {
 		System.out.println("+++++++++++++++++"+ config.getTapewebusername());
 		System.out.println("+++++++++++++++++"+ config.getSessionKey());
 		System.out.println("+++++++++++++++++"+ config.getDistributeUrl());
-		JSONArray array= OpticalJsonHandle.getErrMessage("2018-07-20");
-		for(int i = 0 ; i < array.size(); i++){
-		    System.out.println(array.getJSONObject(i).get("message"));
-        }
-		return array;
+//		JSONArray array= OpticalJsonHandle.getErrMessage("2018-07-20");
+//		for(int i = 0 ; i < array.size(); i++){
+//		    System.out.println(array.getJSONObject(i).get("message"));
+//        }
+		Date d = new Date();
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		System.out.println("当前时间：" + sdf.format(d));
 // 		return config.getdistributemount();
 //		return teString;
 	}
