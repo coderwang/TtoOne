@@ -6,6 +6,7 @@
  */
 package com.shdd.cfs.web.websocket;
 
+import com.shdd.cfs.config.DateConfig;
 import com.shdd.cfs.dto.log.JournalInfo;
 import com.shdd.cfs.utils.json.HttpRequest;
 import io.swagger.annotations.ApiOperation;
@@ -34,6 +35,9 @@ public class DistLogDataController {
     /**
      * @return
      */
+
+    @Autowired
+    private DateConfig config;
     @ApiOperation(value = "获取分布式存储系统告警详细信息", notes = "获取分布式存储系统告警详细信息")
     @MessageMapping("/dist_warning_log")
     @SendTo("/log/dist_warning_log")
@@ -44,8 +48,8 @@ public class DistLogDataController {
 
         //访问下级分布式系统接口api/monitor/clusters/cpu/10/a/获取cpu信息
         HttpRequest httpRequest = new HttpRequest();
-
-        String result = httpRequest.sendGet("http://192.168.1.32:8000/api/logs/", "level:warning");
+        String urllog = config.getDistributeUrl() + "api/logs/";
+        String result = httpRequest.sendGet(urllog, "level:warning");
         JSONArray logArray = JSONArray.fromObject(result);
         for(int i = 0 ; i < logArray.size(); i++){
             JSONObject logObject = logArray.getJSONObject(i);

@@ -6,6 +6,7 @@
  */
 package com.shdd.cfs.web.websocket;
 
+import com.shdd.cfs.config.DateConfig;
 import com.shdd.cfs.dto.message.DistSystemData;
 import com.shdd.cfs.utils.json.HttpRequest;
 import com.shdd.cfs.utils.storage.Store;
@@ -79,6 +80,8 @@ public class DistSystemDataController {
         //template.convertAndSend("/device/dist_sys_data", distSystemData);
     }
 
+    @Autowired
+    private DateConfig config;
     private DistSystemData GetDistributeSystemData(String deviceid, String value) {
         log.info("deviceid is " + deviceid);
 
@@ -90,7 +93,8 @@ public class DistSystemDataController {
         HttpRequest httpRequest = new HttpRequest();
 
         //获取cpu信息
-        String result = httpRequest.sendGet("http://192.168.1.32:8000/api/monitor/cpu/10/a/" + deviceid, " ");
+		String urlcpu = config.getDistributeUrl() + "api/monitor/cpu/10/a/";
+        String result = httpRequest.sendGet(urlcpu + deviceid, " ");
         JSONObject cpuInfoObject = JSONObject.fromObject(result);
 
         //cpu信息
@@ -111,7 +115,8 @@ public class DistSystemDataController {
         distSystemData.setCpu(cpuValue);
 
         //获取mem信息
-        result = httpRequest.sendGet("http://192.168.1.32:8000/api/monitor/mem/10/a/" + deviceid, " ");
+        String urlmem =config.getDistributeUrl() + "api/monitor/mem/10/a/";
+        result = httpRequest.sendGet(urlmem + deviceid, " ");
         JSONObject memInfoObject = JSONObject.fromObject(result);
 
         //cpu信息
@@ -132,7 +137,8 @@ public class DistSystemDataController {
         distSystemData.setRam(memValue);
 
         //获取bandwidth信息
-        result = httpRequest.sendGet("http://192.168.1.32:8000/api/monitor/bandwidth/10/a/h-" + deviceid, " ");
+        String urlbandwidth = config.getDistributeUrl() + "api/monitor/bandwidth/10/a/h-";
+        result = httpRequest.sendGet(urlbandwidth + deviceid, " ");
         JSONObject bandwidthInfoObject = JSONObject.fromObject(result);
 
         //cpu信息
