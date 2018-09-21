@@ -1,10 +1,8 @@
 package com.shdd.cfs.utils.json;
 
 import com.shdd.cfs.config.DateConfig;
-import com.shdd.cfs.dto.log.JournalInfo;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
-import net.sf.json.JsonConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.text.SimpleDateFormat;
@@ -30,10 +28,12 @@ public class OpticalJsonHandle {
 	}
 //	@Autowired
 //	private static DateConfig config;
-//	private static String ip =config.getOpticalIP();
-//	private static Integer  port = Integer.parseInt(config.getOpticalPort());
-//	private static Double singleDiskCapacity = Double.parseDouble(config.getSingleDiskCapacity());
-//	private static Integer singleBoxCardNum = Integer.parseInt(config.getSingleBoxCardNum());
+//	public  OpticalJsonHandle (){
+//	 String ip =config.getOpticalIP();
+//	 Integer  port = Integer.parseInt(config.getOpticalPort());
+//	 Double singleDiskCapacity = Double.parseDouble(config.getSingleDiskCapacity());
+//	 Integer singleBoxCardNum = Integer.parseInt(config.getSingleBoxCardNum());
+//	}
 
 	private static String ip ="192.168.1.17";
 	private static Integer  port = 8000;

@@ -45,18 +45,19 @@ public class DistLogDataController {
         //访问下级分布式系统接口api/monitor/clusters/cpu/10/a/获取cpu信息
         HttpRequest httpRequest = new HttpRequest();
 
-        String result = httpRequest.sendPost("http://192.168.1.32:8000/api/logs/level", "level:error");
+        String result = httpRequest.sendGet("http://192.168.1.32:8000/api/logs/", "level:warning");
         JSONArray logArray = JSONArray.fromObject(result);
-        JSONObject logObject = logArray.getJSONObject(0);
-
-        JournalInfo journalInfo = new JournalInfo();
-
-        journalInfo.setType("distribute");
-        journalInfo.setTime(logObject.getString("created"));
-        journalInfo.setContent(logObject.getString("description"));
-
-        logsList.add(journalInfo);
-
+        for(int i = 0 ; i < logArray.size(); i++){
+            JSONObject logObject = logArray.getJSONObject(i);
+            String loglevel = logObject.get("log_level").toString();
+            if(loglevel.equals("warning") || loglevel.equals("error")){
+                JournalInfo journalInfo = new JournalInfo();
+                journalInfo.setType("distribute");
+                journalInfo.setTime(logObject.getString("updated"));
+                journalInfo.setContent(logObject.getString("description"));
+                logsList.add(journalInfo);
+            }
+        }
         rstObject.accumulate("journal", logsList);
         return rstObject;
     }
