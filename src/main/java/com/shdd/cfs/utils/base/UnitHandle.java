@@ -8,6 +8,8 @@ import org.apache.commons.io.FilenameUtils;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class UnitHandle {
 
@@ -102,8 +104,8 @@ public class UnitHandle {
 	 * @return
 	 */
 	public static DirPathDetailInfo[] SendCurrentFolderName(String pathfolder){
-
-		ArrayList<String> folderList = new ArrayList<String>();
+		ArrayList<Map<String,String>> folderList = new ArrayList<>();
+		Map<String,String> folderNameAndPath = new HashMap<>();
 		/* 将目录下的文件夹添加到文件夹列表*/
 		File file = new File(pathfolder);
 		File[] tempList = file.listFiles();
@@ -112,7 +114,9 @@ public class UnitHandle {
 				String folderAndPath = tempList[i].toString();
 				File fName = new File(folderAndPath.trim());
 				String folderName = fName.getName();
-				folderList.add(folderName);
+				folderNameAndPath.put("foldername",folderName);
+				folderNameAndPath.put("folderpath",tempList[i].getAbsolutePath());
+				folderList.add(folderNameAndPath);
 			}
 		}
 		/* 将文件夹名赋值给Json数组中*/
@@ -120,7 +124,8 @@ public class UnitHandle {
 		for(int i = 0; i< folderList.size(); i++){
 			rootforder[i] = new DirPathDetailInfo();
 			rootforder[i].setId(i + 1);
-			rootforder[i].setName(folderList.get(i));
+			rootforder[i].setName(folderList.get(i).get("foldername"));
+			rootforder[i].setPath(folderList.get(i).get("folderpath"));
 		}
 		return  rootforder;
 	}

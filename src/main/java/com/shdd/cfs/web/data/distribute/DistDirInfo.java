@@ -47,7 +47,6 @@ public class DistDirInfo {
 
         //将获取到的数据进行填充
         JSONObject folderName = new JSONObject();
-        path = config.getdistributemount() + path;
         DirPathDetailInfo[] rootFolder = SendCurrentFolderName(path);
 
         /*将文件夹数组塞入Json对象中*/

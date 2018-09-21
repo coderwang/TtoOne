@@ -12,4 +12,8 @@ public class DirPathDetailInfo {
      * 目录名称
      */
     private String name;
+    /**
+     * 目录绝对路径
+     */
+    private String path;
 }

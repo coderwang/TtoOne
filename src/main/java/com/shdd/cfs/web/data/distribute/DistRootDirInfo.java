@@ -12,11 +12,9 @@ import com.shdd.cfs.dto.data.FilePathDetailInfo;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
-import lombok.Value;
 import lombok.extern.slf4j.Slf4j;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -31,14 +29,12 @@ import static com.shdd.cfs.utils.base.UnitHandle.getCurrentPathFilename;
 @RestController
 @Slf4j
 public class DistRootDirInfo {
-
     /**
      * 获取目录下文件夹名称
      *
      * @param val
      * @return
      */
-
     @Autowired
     private DateConfig config;
     @GetMapping(value = "api/dashboard/distribute/rootdirs")

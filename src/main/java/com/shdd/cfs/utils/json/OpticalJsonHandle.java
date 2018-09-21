@@ -40,7 +40,6 @@ public class OpticalJsonHandle {
 	 * 获取单个光盘匣总容量
 	 * @return
 	 */
-
 	public static Double singleBoxCapacity(){
 		Double singleBoxCap = singleDiskCapacity * singleBoxCardNum;
 		return  singleBoxCap;

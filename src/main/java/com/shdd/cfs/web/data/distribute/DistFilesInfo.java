@@ -49,7 +49,6 @@ public class DistFilesInfo {
         JSONObject jfile = new JSONObject();
 
         /* 将文件名和文件属性赋值给Json数组中*/
-        path = config.getdistributemount() + path;
         FilePathDetailInfo[] rootFile =  getCurrentPathFilename(path);
         /*将文件数组塞入Json对象中*/
         jfile.accumulate("file",rootFile);
