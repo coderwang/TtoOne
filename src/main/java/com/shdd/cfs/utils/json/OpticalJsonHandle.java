@@ -1,11 +1,15 @@
 package com.shdd.cfs.utils.json;
 
 import com.shdd.cfs.config.DateConfig;
+import com.shdd.cfs.dto.log.JournalInfo;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
+import net.sf.json.JsonConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 public class OpticalJsonHandle {
@@ -272,10 +276,22 @@ public class OpticalJsonHandle {
 		return  capacpty;
 	}
 	public static JSONArray getErrMessage(String time){
+		JSONArray messarray = new JSONArray();
 		String message = "{\"protoname\":\"sysloginfo\",\"level\":\"err\",\"time\":\"2018-07-20\"}";
 		String protocol = message.replace("2018-07-20", time);
 		JSONObject cdslotlists = GetJsonMessage.GetJsonStr(ip,port,protocol);
-		JSONArray messarray = cdslotlists.getJSONArray("dt");
+		if(cdslotlists.get("returncode").equals("0")){
+			JSONObject errmessage = new JSONObject();
+			String returnmsg = cdslotlists.get("returnmsg").toString();
+			Date currtime = new Date();
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+			String currenttime = sdf.format(currtime);
+			errmessage.accumulate("time", currenttime);
+			errmessage.accumulate("message",returnmsg);
+			messarray.add(errmessage);
+		}else{
+			messarray = cdslotlists.getJSONArray("dt");
+		}
 		return messarray;
 	}
 }
