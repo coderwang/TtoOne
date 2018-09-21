@@ -31,7 +31,7 @@ public class OpticalJsonHandle {
 //	private static Double singleDiskCapacity = Double.parseDouble(config.getSingleDiskCapacity());
 //	private static Integer singleBoxCardNum = Integer.parseInt(config.getSingleBoxCardNum());
 
-	private static String ip ="192.168.100.199";
+	private static String ip ="192.168.1.17";
 	private static Integer  port = 8000;
 	private static Double singleDiskCapacity = 23.3;
 	private static Integer singleBoxCardNum = 25;

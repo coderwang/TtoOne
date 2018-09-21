@@ -90,7 +90,7 @@ public class IampRequest {
      */
     public String SessionKey() throws DocumentException {
         String sessonkey = "";
-        HttpResult loginfo = logon(config.getTapewebusername(), config.getSessionKey());
+        HttpResult loginfo = logon("shuju", "69MOQca0Hv6NsOJH");
         if (!loginfo.isFlag()) {
             return "wrong";
         }
