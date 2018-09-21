@@ -47,10 +47,9 @@ public class CDLogDataController {
         ArrayList<JournalInfo> messarrary = new ArrayList<>();
         JSONArray array= OpticalJsonHandle.getErrMessage(currenttime);
         for(int i = 0 ; i < array.size(); i++){
-            System.out.println(array.getJSONObject(i).get("message"));
             JournalInfo journalInfo = new JournalInfo();
             journalInfo.setType("disk");
-            journalInfo.setTime(currenttime);
+            journalInfo.setTime(array.getJSONObject(i).get("time").toString());
             journalInfo.setContent(array.getJSONObject(i).get("message").toString());
             messarrary.add(journalInfo);
         }
