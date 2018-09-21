@@ -15,6 +15,8 @@ import net.sf.json.JSONObject;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import static com.shdd.cfs.utils.base.UnitHandle.getCurrentPathFilename;
+
 /**
  * @author: wangpeng
  * @version: 1.0 2018/8/28
@@ -43,14 +45,9 @@ public class TapeFilesInfo {
         JSONObject jfile = new JSONObject();
 
         /* 将文件名和文件属性赋值给Json数组中*/
-        FilePathDetailInfo[] fileNameArr = new FilePathDetailInfo[1];
-        fileNameArr[0] = new FilePathDetailInfo();
-        fileNameArr[0].setId(1);
-        fileNameArr[0].setName("xx");
-        fileNameArr[0].setType("txt");
-
+        FilePathDetailInfo[] rootFile =  getCurrentPathFilename(path);
         /*将文件数组塞入Json对象中*/
-        jfile.accumulate("file", fileNameArr);
+        jfile.accumulate("file",rootFile);
         /* 发送Json 协议*/
         return jfile;
     }

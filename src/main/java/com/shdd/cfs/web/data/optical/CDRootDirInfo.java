@@ -6,14 +6,20 @@
  */
 package com.shdd.cfs.web.data.optical;
 
+import com.shdd.cfs.config.DateConfig;
 import com.shdd.cfs.dto.data.DirPathDetailInfo;
+import com.shdd.cfs.dto.data.FilePathDetailInfo;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import net.sf.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import static com.shdd.cfs.utils.base.UnitHandle.SendCurrentFolderName;
+import static com.shdd.cfs.utils.base.UnitHandle.getCurrentPathFilename;
 
 /**
  * @author: wangpeng
@@ -30,6 +36,8 @@ public class CDRootDirInfo {
      * @return
      */
 
+    @Autowired
+    private DateConfig config;
     @GetMapping(value = "api/dashboard/disk/rootdirs")
     @ApiOperation(value = "获取目录下的文件夹名", notes = "根据路径参数获取光盘库存储系统根路径下的目录名称列表")
     @ApiImplicitParams({
@@ -39,17 +47,16 @@ public class CDRootDirInfo {
 
     public JSONObject GetDiskRootDirInfo(String val) {
         log.info(val);
+        String path= config.getOpticalMount();
+        JSONObject rootpath = new JSONObject();
+        // 获取根目录下文件夹赋值给Json数组中
+        DirPathDetailInfo[] rootFolder = SendCurrentFolderName(path);
+        FilePathDetailInfo[] rootFile =  getCurrentPathFilename(path);
+        //将文件夹数组塞入Json对象中
+        rootpath.accumulate("folder",rootFolder);
+        rootpath.accumulate("file",rootFile);
+        // 发送Json 协议
+        return rootpath;
 
-        JSONObject rootFolder = new JSONObject();
-
-        /* 将文件夹名赋值给Json数组中*/
-        DirPathDetailInfo[] rootforder = new DirPathDetailInfo[1];
-        rootforder[0] = new DirPathDetailInfo();
-        rootforder[0].setId(1);
-        rootforder[0].setName("xx");
-        /*将文件夹数组塞入Json对象中*/
-        rootFolder.accumulate("folder", rootforder);
-        /* 发送Json 协议*/
-        return rootFolder;
     }
 }

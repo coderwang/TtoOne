@@ -18,6 +18,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.net.MalformedURLException;
 
+import static com.shdd.cfs.utils.base.UnitHandle.SendCurrentFolderName;
+
 /**
  * @author: wangpeng
  * @version: 1.0 2018/8/28
@@ -41,26 +43,13 @@ public class TapeDirInfo {
     public JSONObject GetTapeDirsData(String path) throws MalformedURLException, DocumentException {
 
         log.info(path);
+        //将获取到的数据进行填充
+        JSONObject folderName = new JSONObject();
+        DirPathDetailInfo[] rootFolder = SendCurrentFolderName(path);
 
-        ////从指定URL获取xml数据，并进行解析
-        //XmlFromURL xmlFromURL = new XmlFromURL();
-        ////Document document = xmlFromURL.GetXmlDocument("http://www.w3school.com.cn/example/xmle/note.xml");
-        //Document document = xmlFromURL.GetXmlDocument("http://www.w3school.com.cn/example/xmle/simple.xml");
-//
-        ////TODO 确认xml字段，并进行解析
-        //xmlFromURL.GetStringsFromXml(document, "name");
-        ////xmlFromURL.GetStringsFromXml(document, "name");
-        ////xmlFromURL.GetStringsFromXml(document, "description");
-
-        JSONObject rootFolder = new JSONObject();
-
-        DirPathDetailInfo[] rootforder = new DirPathDetailInfo[1];
-        rootforder[0] = new DirPathDetailInfo();
-        rootforder[0].setId(1);
-        rootforder[0].setName("xx");
         /*将文件夹数组塞入Json对象中*/
-        rootFolder.accumulate("folder", rootforder);
+        folderName.accumulate("folder", rootFolder);
         /* 发送Json 协议*/
-        return rootFolder;
+        return folderName;
     }
 }

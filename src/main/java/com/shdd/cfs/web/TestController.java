@@ -48,6 +48,9 @@ public class TestController {
 		System.out.println("+++++++++++++++++"+ config.getTapewebusername());
 		System.out.println("+++++++++++++++++"+ config.getSessionKey());
 		System.out.println("+++++++++++++++++"+ config.getDistributeUrl());
+		System.out.println("+++++++++++++++++"+ config.getOpticalMount());
+		System.out.println("+++++++++++++++++"+ config.getTapeMount());
+
 //		JSONArray array= OpticalJsonHandle.getErrMessage("2018-07-20");
 //		for(int i = 0 ; i < array.size(); i++){
 //		    System.out.println(array.getJSONObject(i).get("message"));

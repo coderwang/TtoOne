@@ -26,12 +26,28 @@ public class DateConfig {
    //获取磁带库sessionKey
    @Value("${TapeLib.sessionKey}")
    private String sessionKey;
+   //获取分布式Url 接口
    @Value("${Distribute.url}")
    private String distributeUrl;
+   //获取光盘库挂载点
+   @Value("${mount.opticalmount}")
+   private String opticalmount;
+   //获取磁带库挂载点
+   @Value("${mount.tapemount}")
+   private String tapemount;
+
+   public String getOpticalMount(){
+      return  opticalmount;
+   } //获取光盘库挂载点
+
+   public String getTapeMount() {
+      return  tapemount;
+   }// 获取磁带库挂载点
 
    public String getDistributeUrl(){
       return distributeUrl;
    }//获取分布式URL
+
    public String getTapewebusername(){
       return tapewebusername;
    }//获取磁带库web用户名
