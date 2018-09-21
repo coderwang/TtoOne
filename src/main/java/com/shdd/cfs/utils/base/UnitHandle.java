@@ -105,7 +105,6 @@ public class UnitHandle {
 	 */
 	public static DirPathDetailInfo[] SendCurrentFolderName(String pathfolder){
 		ArrayList<Map<String,String>> folderList = new ArrayList<>();
-		Map<String,String> folderNameAndPath = new HashMap<>();
 		/* 将目录下的文件夹添加到文件夹列表*/
 		File file = new File(pathfolder);
 		File[] tempList = file.listFiles();
@@ -113,6 +112,7 @@ public class UnitHandle {
 			if (tempList[i].isDirectory()) {
 				String folderAndPath = tempList[i].toString();
 				File fName = new File(folderAndPath.trim());
+				Map<String,String> folderNameAndPath = new HashMap<>();
 				String folderName = fName.getName();
 				folderNameAndPath.put("foldername",folderName);
 				folderNameAndPath.put("folderpath",tempList[i].getAbsolutePath());
